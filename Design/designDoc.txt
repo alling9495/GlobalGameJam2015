@@ -1,0 +1,23 @@
+Tenative Name: Kinetikos
+
+Gameplay Overview:
+	Hidden Information Game + Puzzle + Platformer.
+
+	The game is split into three phases
+
+
+
+Robot Design:
+	Hover Robot (Super fast):
+		Four directional basic motion:
+			Forward, Up, Down, Back.
+		Two directional dash:
+			Forward, Back
+		Two stage gun:
+			Load, fire
+		Vertical Thruster:
+			Double jump
+
+Wiring Design:	
+	X screens
+
