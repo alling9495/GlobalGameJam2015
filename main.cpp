@@ -12,6 +12,7 @@ Player player;
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(800, 600), "Main Window");
+    window.setFramerateLimit(60);
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
     sf::Clock clock;
