@@ -1,5 +1,4 @@
 SFMLLink=game
 SFMLLib= -lsfml-graphics -lsfml-window -lsfml-system 
 linux:
-	g++ main.cpp Player.cpp Tile.cpp -o $(SFMLLink) $(SFMLLib)
-  
+	g++ main.cpp Camera.cpp Player.cpp -o $(SFMLLink) $(SFMLLib)

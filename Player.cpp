@@ -21,6 +21,10 @@ void Player::turn(float deg){
 	triangle.setRotation(angle+90);
 }
 
+sf::Vector2<float> Player::getCenter(){
+	return pos;
+}
+
 sf::Vector2<float> Player::forward(){
 	return sf::Vector2<float>
 		((float)cos(angle*1/RAD2DEGf) * RAD2DEGf,(float)sin(angle*1/RAD2DEGf) * RAD2DEGf);
