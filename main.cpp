@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "World.h"
 #include "LinearBullet.h"
+#include "VectorUtil.h"
 #include <iostream>
 #include <deque>
 #define KEY_S(keyStroke) sf::Keyboard::Key::keyStroke
@@ -17,6 +18,7 @@ void pollInput();
 
 std::deque<Bullet *> bullets;
 sf::CircleShape bulletImage(10.0f);
+
 
 World world = World(0);
 int main()
@@ -52,7 +54,7 @@ int main()
         sf::Time elapsed = clock.restart();
         world.update(elapsed);
         update(elapsed);
-        camera.setCenter(world.getPlayer().getCenter());
+        camera.setCenter(VectorUtil::offset(world.getPlayer().getCenter(), world.getPlayer().forward()*4.0f));
         std::string location = "(" + std::to_string((int)(world.getPlayer().getCenter().x)) + ", " 
             + std::to_string((int)(world.getPlayer().getCenter().y)) + ")\n" + "Number of Bullets" + 
             std::to_string(bullets.size());

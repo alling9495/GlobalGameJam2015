@@ -31,6 +31,7 @@ public:
 	sf::Keyboard::Key keyToSwapIn;
 	void swapKey(sf::Keyboard::Key keyToSwapOut);
 	void swapOrDoAction(sf::Keyboard::Key keyStroke);
+	st::Vector2<float> left();
 private:
 	sf::CircleShape triangle;
 	sf::Vector2<float> pos;

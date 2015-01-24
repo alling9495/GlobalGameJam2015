@@ -1,10 +1,10 @@
 #include "Camera.h"
 
-
+#define DEFAULTPERCENT 02.5f
 Camera::Camera(){
 	width = 800;
 	height = 600;
-	percent = 10.0f;
+	percent = DEFAULTPERCENT;
 	panel = sf::FloatRect(100, 100, width, height);
 	view.reset(panel);
 };
@@ -53,7 +53,7 @@ void Camera::zoomIn(float percentIncrement) {
 };
 
 void Camera::resetZoom() {
-	percent = 10.0f;
+	percent = DEFAULTPERCENT;
 	panel.width = width * percent;
 	panel.height = height * percent;
 	view.reset(panel);
