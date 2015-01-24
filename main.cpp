@@ -10,6 +10,30 @@ void pollInput();
 
 Player player;
 
+int main() {
+    sf::RenderWindow window(sf::VideoMode(800, 600), "Main Window");
+    sf::CircleShape shape(100.f);
+    shape.setFillColor(sf::Color::Green);
+    sf::Clock clock;
+
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            closeWindowEvent(window, event);
+        }
+
+        sf::Time elapsed = clock.restart();
+        update(elapsed);
+
+        window.clear();
+        window.draw(shape);
+        player.draw(window);
+        window.display();
+    }
+
+    return 0;
+}
+
 void closeWindowEvent(sf::RenderWindow & window, sf::Event event) {
     if (event.type == sf::Event::Closed) {
         window.close();
@@ -46,29 +70,4 @@ void startGraphicsLoops() {
 }
 
 void pollInput() {
-}
-
-int main() {
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Main Window");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
-    sf::Clock clock;
-
-    while (window.isOpen())
-    {
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            closeWindowEvent(window, event);
-        }
-
-        sf::Time elapsed = clock.restart();
-        update(elapsed);
-
-        window.clear();
-        window.draw(shape);
-        player.draw(window);
-        window.display();
-    }
-
-    return 0;
 }
