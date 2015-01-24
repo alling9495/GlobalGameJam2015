@@ -95,9 +95,12 @@ void Player::swapKey(sf::Keyboard::Key keyToSwapOut) {
 }
 
 void Player::swapOrDoAction(sf::Keyboard::Key keyStroke) {
+	doAction(keyStroke);
+    /*
     if (keyToSwapIn == sf::Keyboard::Unknown) {
         doAction(keyStroke);
     } else {
         swapKey(keyStroke);
     }
+    */
 }

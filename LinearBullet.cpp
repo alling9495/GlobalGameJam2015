@@ -2,16 +2,21 @@
 
 bool LinearBullet::move(float x = 0, float y = 0)
 {
-	sf::Transformable bullet;
-	if(usingSprite)
-		bullet = sprite;
-	else
-		bullet = shape;
+	if(!usingSprite)
+	{
 
-	if(x == 0 && y == 0)
-		bullet.move(velX,velY);
+		if(x == 0 && y == 0)
+			shape.move(velX,velY);
+		else
+			shape.move(x,y);
+	}
 	else
-		bullet.move(x,y);
+	{
 
+		if(x == 0 && y == 0)
+			sprite.move(velX,velY);
+		else
+			sprite.move(x,y);	
+	}
 	return stillAlive();
 }

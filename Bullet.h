@@ -17,7 +17,7 @@ public:
 		timeAlive.restart();
 	}
 
-	virtual bool move(float x, float y) = 0;
+	virtual bool move(float x = 0, float y = 0) = 0;
 
 	void render(sf::RenderWindow& window)
 	{
@@ -26,7 +26,7 @@ public:
 		else
 			window.draw(shape);
 	}
-	~Bullet();
+	~Bullet(){};
 
 
 protected:
@@ -40,7 +40,7 @@ protected:
 
 	bool stillAlive()
 	{
-		return timeAlive.getElapsedTime().asMilliseconds() > lifeTime.asMilliseconds();
+		return timeAlive.getElapsedTime().asMilliseconds() < lifeTime.asMilliseconds();
 	}
 
 };
