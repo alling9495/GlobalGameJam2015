@@ -43,6 +43,7 @@ const sf::Vector2<float> & Player::getCenter(){
 }
 
 sf::Vector2<float> Player::forward(){
+	triangle.setRotation(angle+90);	
 	return sf::Vector2<float>
 		((float)cos(angle*1/RAD2DEGf) * RAD2DEGf,(float)sin(angle*1/RAD2DEGf) * RAD2DEGf);
 }

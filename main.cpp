@@ -73,7 +73,7 @@ int main()
     }
 
     return 0;
-}
+};
 
 void closeWindowEvent(sf::RenderWindow & window, sf::Event event) {
     if (event.type == sf::Event::Closed) {
@@ -83,10 +83,10 @@ void closeWindowEvent(sf::RenderWindow & window, sf::Event event) {
     if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape)) {
         window.close();
     }
-}
+};
 
 void startGameLoop() {
-}
+};
 
 void handleInput() {
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
@@ -123,14 +123,14 @@ void handleInput() {
         world.getPlayer().doAction(sf::Keyboard::G);
     }
 
-}
+};
 
 void update(sf::Time elapsed) {
     handleInput();
-}
+};
 
 void startGraphicsLoops() {
-}
+};
 
 void pollInput() {
-}
+};
