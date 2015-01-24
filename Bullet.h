@@ -3,7 +3,7 @@
 class Bullet
 {
 public:
-	Bullet(sf::Shape shape, int lifeCycle, float startX = 0, float startY = 0, 
+	Bullet(sf::Shape& shape, int lifeCycle, float startX = 0, float startY = 0, 
 		float vX  = 1, float vY = 1):
 	shape(shape),
 	posX(startX),
@@ -13,7 +13,7 @@ public:
 	usingSprite(false)
 	{
 		lifeTime = sf::milliseconds(lifeCycle);
-		shape.setPosition(posX,PosY);
+		shape.setPosition(posX,posY);
 		timeAlive.restart();
 	}
 
@@ -33,14 +33,14 @@ protected:
 	bool usingSprite;
 	sf::Time lifeTime;
 	sf::Clock timeAlive;
-	sf::Shape shape;
+	sf::Shape& shape;
 	sf::Sprite sprite;
-	float posX, PosY; 
+	float posX, posY; 
 	float velX,velY;//future use	
 
-	void stillAlive()
+	bool stillAlive()
 	{
 		return timeAlive.getElapsedTime().asMilliseconds() > lifeTime.asMilliseconds();
 	}
 
-}
+};
