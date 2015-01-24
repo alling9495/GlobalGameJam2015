@@ -5,6 +5,7 @@
 Camera::Camera(){
 	width = 800;
 	height = 600;
+	percent = 1.0f;
 	panel = sf::FloatRect(100, 100, width, height);
 	view.reset(panel);
 };
@@ -12,6 +13,7 @@ Camera::Camera(){
 Camera::Camera(sf::Vector2<float> center) {
 	width = 800;
 	height = 600;
+	percent = 1.0f;
 	panel = sf::FloatRect(100, 100, width, height);
 	view.reset(panel);
 	previous = center;
