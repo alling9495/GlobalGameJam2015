@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "Player.h"
-#include "Tile.h"
+#include "WorldChunk.h"
 
 void closeWindowEvent(sf::RenderWindow & window, sf::Event event);
 void startGameLoop();
@@ -13,12 +13,7 @@ Player player;
 
 int main()
 {
-
-    Tile test1 = Tile(0,1,1);
-    Tile test2 = Tile(0,1,2);
-    Tile test3 = Tile(0,2,1);
-    Tile test4 = Tile(0,2,2);
-
+    WorldChunk* wc = new WorldChunk(0,0,0);
     sf::RenderWindow window(sf::VideoMode(800, 600), "Main Window");
     window.setFramerateLimit(60);
     sf::CircleShape shape(100.f);
@@ -35,12 +30,9 @@ int main()
         update(elapsed);
 
         window.clear();
+        wc->draw(window);
         window.draw(shape);
         player.draw(window);
-        test1.draw(window);
-        test2.draw(window);
-        test3.draw(window);
-        test4.draw(window);
         window.display();
     }
 
