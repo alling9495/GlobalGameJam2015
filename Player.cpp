@@ -21,7 +21,7 @@ void Player::turn(float deg){
 	triangle.setRotation(angle+90);
 }
 
-sf::Vector2<float> Player::getCenter(){
+const sf::Vector2<float> & Player::getCenter(){
 	return pos;
 }
 

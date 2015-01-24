@@ -11,13 +11,12 @@ public:
 	void rotate(float dir);
 	void draw(sf::RenderWindow & window);
 	void turn(float angle);
-	sf::Vector2<float> getCenter();
+	const sf::Vector2<float> & getCenter();
 	sf::Vector2<float> forward();
 	const sf::Vector2f & getPosition();
 private:
 	sf::CircleShape triangle;
 	sf::Vector2<float> pos;
 	float angle;
-
 }; 
 #endif
