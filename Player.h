@@ -15,6 +15,8 @@ enum Action {
 	Shield,
 	LimitBreak,
 	SuperBoost,
+	StrafeLeft,
+	StrafeRight,
 };
 
 class Player{
