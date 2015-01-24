@@ -20,4 +20,6 @@ Robot Design:
 
 Wiring Design:	
 	X screens
+	.... lock input keys?
+
 

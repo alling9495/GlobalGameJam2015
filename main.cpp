@@ -1,8 +1,14 @@
 #include <SFML/Graphics.hpp>
 #include "Player.h"
 #include "Tile.h"
-void update(sf::Time elapsed);
+
+void closeWindowEvent(sf::RenderWindow & window, sf::Event event);
+void startGameLoop();
 void handleInput();
+void update(sf::Time elapsed);
+void startGraphicsLoops();
+void pollInput();
+
 Player player;
 
 int main()
@@ -12,13 +18,14 @@ int main()
     Tile test2 = Tile(0,1,2);
     Tile test3 = Tile(0,2,1);
     Tile test4 = Tile(0,2,2);
+
     sf::RenderWindow window(sf::VideoMode(800, 600), "Main Window");
+    window.setFramerateLimit(60);
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
     sf::Clock clock;
 
-    while (window.isOpen())
-    {
+    while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
             closeWindowEvent(window, event);
@@ -40,7 +47,7 @@ int main()
     return 0;
 }
 
-void closeWindowEvent(sf::RenderWindow window, sf::Event event) {
+void closeWindowEvent(sf::RenderWindow & window, sf::Event event) {
     if (event.type == sf::Event::Closed) {
         window.close();
     }
@@ -50,15 +57,10 @@ void closeWindowEvent(sf::RenderWindow window, sf::Event event) {
     }
 }
 
-/*void startGameLoop() {
-
-
+void startGameLoop() {
 }
 
-void update(sf::Time elapsed){
-    handleInput();
-}
-void handleInput(){
+void handleInput() {
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::F)){
         player.move(player.forward() * 0.15f);
     }
@@ -73,12 +75,12 @@ void handleInput(){
     }
 }
 
+void update(sf::Time elapsed) {
+    handleInput();
+}
 
 void startGraphicsLoops() {
-
 }
 
 void pollInput() {
-
-}*/
-
+}
