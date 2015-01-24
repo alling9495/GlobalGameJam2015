@@ -1,6 +1,5 @@
 #include "Camera.h"
-#include <stdio.h>
-#include <math.h>
+
 
 Camera::Camera(){
 	width = 800;
@@ -12,6 +11,7 @@ Camera::Camera(){
 
 Camera::Camera(sf::Vector2<float> center): Camera() {
 	view.reset(panel);
+	previousLength = sqrt((center.x * center.x) + (center.y * center.y));
 	previous = center;
 };
 
@@ -22,10 +22,20 @@ Camera::~Camera(){
 void Camera::setCenter(const sf::Vector2<float> & center){
 	//sf::Vector2<float> direction = center;
 	float length = sqrt((center.x * center.x) + (center.y * center.y));
-	float centerX = center.x * 100;
-	float centerY = center.y * 100;
-	view.setCenter(center);
-	previous = center;
+	//float delta = previousLength - length;
+	float deltaX = (center.x - previous.x) / 10;
+	float deltaY = (center.y - previous.y) / 10;
+	if (abs(deltaX) < 0.5f) {
+		deltaX = 0;
+	}
+	if (abs(deltaY) < 0.1f) {
+		deltaY = 0;
+	}
+	sf::Vector2<float> updatedCenter (previous.x + deltaX, previous.y + deltaY);
+	std::cout << deltaX << std::endl << deltaY << std::endl;
+	view.setCenter(updatedCenter);
+	previous = updatedCenter;
+	previousLength = length;
 };
 
 void Camera::zoomOut(float percentIncrement) {

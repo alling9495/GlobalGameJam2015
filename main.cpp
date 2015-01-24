@@ -91,22 +91,22 @@ void startGameLoop() {
 
 void handleInput() {
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
-        // swap
+        world.getPlayer().doAction(sf::Keyboard::A);
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
         // swap
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
-        player.doAction(sf::Keyboard::D);
+        world.getPlayer().doAction(sf::Keyboard::D);
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::F)){
-        player.doAction(sf::Keyboard::F);
+        world.getPlayer().doAction(sf::Keyboard::F);
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::J)){
-        player.doAction(sf::Keyboard::J);
+        world.getPlayer().doAction(sf::Keyboard::J);
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::K)){
-        player.doAction(sf::Keyboard::K);
+        world.getPlayer().doAction(sf::Keyboard::K);
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::L)){
         // swap

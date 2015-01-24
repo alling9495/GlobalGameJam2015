@@ -12,6 +12,7 @@ Player::Player(){
 	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::F, Forward));
 	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::J, Backward));
 	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::K, TurnClockwise));
+	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::A, SuperBoost));
 }
 Player::~Player(){
 
@@ -68,6 +69,10 @@ void Player::doAction(sf::Keyboard::Key keyStroke) {
 			break;
 		case LimitBreak:
 			// TODO LIMIT BREAK
+		case SuperBoost:
+			move(forward() * 1.5f);
+			break;
+		default:
 			break;
 	}
 }

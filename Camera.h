@@ -1,5 +1,8 @@
 #ifndef _CAMERA_H__
 #define _CAMERA_H__
+#include <stdio.h>
+#include <math.h>
+#include <iostream>
 #include <SFML/Graphics.hpp>
 
 class Camera{
@@ -19,6 +22,7 @@ private:
 	float width;
 	float height;
 	float percent;
+	float previousLength;
 	//sf::Vector2f<float> center;
 };
 #endif

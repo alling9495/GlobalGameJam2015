@@ -14,6 +14,7 @@ enum Action {
 	Lazer,
 	Shield,
 	LimitBreak,
+	SuperBoost,
 };
 
 class Player{
