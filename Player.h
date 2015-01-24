@@ -13,9 +13,9 @@ public:
 	void turn(float angle);
 	const sf::Vector2<float> & getCenter();
 	sf::Vector2<float> forward();
+	sf::Keyboard::Key getKeyAt(int index);
 private:
 	sf::CircleShape triangle;
 	sf::Vector2<float> pos;
 	float angle;
-}; 
-#endif
+};
