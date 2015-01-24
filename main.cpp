@@ -104,9 +104,6 @@ void handleInput() {
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::J)){
         world.getPlayer().doAction(sf::Keyboard::J);
     }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::K)){
-        world.getPlayer().swapOrDoAction(sf::Keyboard::D);
-    }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::F)){
         world.getPlayer().swapOrDoAction(sf::Keyboard::F);
     }
