@@ -27,6 +27,17 @@ int main() {
         }
         sf::Time elapsed = clock.restart();
         update(elapsed);
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::O)){
+            camera.zoomOut(0.05f);
+        }
+
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::P)){
+            camera.zoomIn(0.05f);
+        }
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::I)){
+            camera.resetZoom();
+        }
+
         camera.setCenter(player.getCenter());
         window.setView(camera.getView());
         window.clear();
@@ -64,6 +75,7 @@ void handleInput() {
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::K)){
         player.turn(-3);
     }
+
 }
 
 void update(sf::Time elapsed) {

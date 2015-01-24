@@ -9,9 +9,16 @@ public:
 	~Camera();
 	void setCenter(const sf::Vector2<float> & center);
 	sf::View getView();
+	void zoomOut(float percentIncrement);
+	void zoomIn(float percentIncrement);
+	void resetZoom();
 private:
 	sf::View view;
 	sf::Vector2<float> previous;
+	sf::FloatRect panel;
+	float width;
+	float height;
+	float percent;
 	//sf::Vector2f<float> center;
 };
 #endif
