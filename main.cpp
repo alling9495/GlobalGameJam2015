@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "Player.h"
+#include "Camera.h"
 
 void closeWindowEvent(sf::RenderWindow & window, sf::Event event);
 void startGameLoop();
@@ -16,6 +17,8 @@ int main() {
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
     sf::Clock clock;
+    Camera camera;    
+
 
     while (window.isOpen()) {
         sf::Event event;
@@ -25,7 +28,8 @@ int main() {
 
         sf::Time elapsed = clock.restart();
         update(elapsed);
-
+        camera.setCenter(player.getCenter());
+        window.setView(camera.getView());
         window.clear();
         window.draw(shape);
         player.draw(window);
