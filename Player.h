@@ -2,7 +2,20 @@
 #define __PLAYER_H__
 #include <SFML/Graphics.hpp>
 #include <math.h>
+#include <map>
 #define RAD2DEGf (float)(180.0f/M_PI)
+// Indexes an array, do not touch
+enum Action {
+	TurnCounter = 0,
+	TurnClockwise,
+	Forward,
+	Backward,
+	Flamethrower,
+	Lazer,
+	Shield,
+	LimitBreak,
+};
+
 class Player{
 public:
 	Player();
@@ -13,11 +26,11 @@ public:
 	void turn(float angle);
 	const sf::Vector2<float> & getCenter();
 	sf::Vector2<float> forward();
-	void doAction(int index);
+	void doAction(sf::Keyboard::Key keyStroke);
 private:
 	sf::CircleShape triangle;
 	sf::Vector2<float> pos;
 	float angle;
-	int actions[4];
+	std::map<sf::Keyboard::Key, Action> map;
 };
 #endif

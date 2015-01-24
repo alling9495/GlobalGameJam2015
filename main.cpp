@@ -69,16 +69,16 @@ void handleInput() {
         // swap
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
-        player.doAction(0);
+        player.doAction(sf::Keyboard::D);
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::F)){
-        player.doAction(1);
+        player.doAction(sf::Keyboard::F);
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::J)){
-        player.doAction(2);
+        player.doAction(sf::Keyboard::J);
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::K)){
-        player.doAction(3);
+        player.doAction(sf::Keyboard::K);
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::L)){
         // swap
