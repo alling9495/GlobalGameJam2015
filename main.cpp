@@ -17,7 +17,7 @@ int main() {
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
     sf::Clock clock;
-    Camera camera;    
+    Camera camera (player.getCenter());
 
 
     while (window.isOpen()) {
@@ -25,7 +25,6 @@ int main() {
         while (window.pollEvent(event)) {
             closeWindowEvent(window, event);
         }
-
         sf::Time elapsed = clock.restart();
         update(elapsed);
         camera.setCenter(player.getCenter());
