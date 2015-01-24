@@ -16,5 +16,5 @@ class WiringScreen {
 		[]sf::Keyboard::key keys
 	private:
 		void getKey()
-
+		
 }
