@@ -1,12 +1,16 @@
 #include <SFML/Graphics.hpp>
+#include "Player.h"
 
-void closeWindowEvent(sf::RenderWindow, sf::Event);
-
+void update(sf::Time elapsed);
+void handleInput();
+Player player;
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(200, 200), "Main Window");
+
+    sf::RenderWindow window(sf::VideoMode(800, 600), "Main Window");
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
+    sf::Clock clock;
 
     while (window.isOpen())
     {
@@ -14,13 +18,13 @@ int main()
         while (window.pollEvent(event)) {
             closeWindowEvent(window, event)
         }
-        // The window was resized
-        /*if (event.type == sf::Event::Resized) {
-            doSomethingWithTheNewSize(event.size.width, event.size.height);
-        }*/
+
+        sf::Time elapsed = clock.restart();
+        update(elapsed);
 
         window.clear();
         window.draw(shape);
+        player.draw(window);
         window.display();
     }
 
@@ -39,7 +43,27 @@ void closeWindowEvent(sf::RenderWindow window, sf::Event event) {
 
 /*void startGameLoop() {
 
+
 }
+
+void update(sf::Time elapsed){
+    handleInput();
+}
+void handleInput(){
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::F)){
+        player.move(player.forward() * 0.15f);
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::J)){
+        player.move(player.forward() * -0.05f);
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
+        player.turn(3);
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::K)){
+        player.turn(-3);
+    }
+}
+
 
 void startGraphicsLoops() {
 
