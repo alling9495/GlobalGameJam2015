@@ -2,8 +2,8 @@
 #define __WORLD_CHUNK__
 #include "Tile.h"
 #include <SFML/Graphics.hpp>
-#define CHUNK_WIDTH 64
-#define CHUNK_HEIGHT 64
+#define CHUNK_WIDTH 32
+#define CHUNK_HEIGHT 32
 
 class WorldChunk{
 

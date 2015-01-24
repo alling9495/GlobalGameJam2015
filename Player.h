@@ -13,6 +13,7 @@ public:
 	void turn(float angle);
 	sf::Vector2<float> getCenter();
 	sf::Vector2<float> forward();
+	const sf::Vector2f & getPosition();
 private:
 	sf::CircleShape triangle;
 	sf::Vector2<float> pos;

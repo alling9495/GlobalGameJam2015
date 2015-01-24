@@ -29,3 +29,6 @@ sf::Vector2<float> Player::forward(){
 	return sf::Vector2<float>
 		((float)cos(angle*1/RAD2DEGf) * RAD2DEGf,(float)sin(angle*1/RAD2DEGf) * RAD2DEGf);
 }
+const sf::Vector2f & Player::getPosition(){
+	return pos;
+}

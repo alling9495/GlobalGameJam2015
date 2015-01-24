@@ -2,16 +2,21 @@
 #define __WORLD_H__
 #import "Player.h"
 #import "WorldChunk.h"
+#import "Tile.h"
 class World{
 public:
-	World(int xSize, int ySize, Seed s);
+	World(int seed);
 	~World();
 	void draw(sf::RenderWindow & window);
-
+	void update(int elapsed);
 private:
+	int seed;
 	Player player;
 	std::map<pair<int,int>, WorldChunk *> chunks;
-	void generate() //Generate tiles around when the player moves to a new chunk.
+	std::vector<WorldChunk * > loadedChunks;
+	pair<int,int> getPlayerChunk();
+	pair<int,int> lastPlayerChunk;
+	void generate(pair<int,int>); //Generate tiles around when the player moves to a new chunk.
 	
 
 };
