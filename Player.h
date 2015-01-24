@@ -13,9 +13,11 @@ public:
 	void turn(float angle);
 	const sf::Vector2<float> & getCenter();
 	sf::Vector2<float> forward();
+	void doAction(int index);
 private:
 	sf::CircleShape triangle;
 	sf::Vector2<float> pos;
 	float angle;
-}; 
+	int actions[4];
+};
 #endif

@@ -19,7 +19,6 @@ int main() {
     sf::Clock clock;
     Camera camera (player.getCenter());
 
-
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -63,17 +62,29 @@ void startGameLoop() {
 }
 
 void handleInput() {
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::F)){
-        player.move(player.forward() * 0.15f);
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
+        // swap
     }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::J)){
-        player.move(player.forward() * -0.05f);
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
+        // swap
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
-        player.turn(3);
+        player.doAction(0);
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::F)){
+        player.doAction(1);
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::J)){
+        player.doAction(2);
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::K)){
-        player.turn(-3);
+        player.doAction(3);
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::L)){
+        // swap
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::SemiColon)){
+        // swap
     }
 
 }
