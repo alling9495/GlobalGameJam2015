@@ -1,12 +1,17 @@
 #include <SFML/Graphics.hpp>
 #include "Player.h"
-
+#include "Tile.h"
 void update(sf::Time elapsed);
 void handleInput();
 Player player;
+
 int main()
 {
 
+    Tile test1 = Tile(0,1,1);
+    Tile test2 = Tile(0,1,2);
+    Tile test3 = Tile(0,2,1);
+    Tile test4 = Tile(0,2,2);
     sf::RenderWindow window(sf::VideoMode(800, 600), "Main Window");
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
@@ -16,7 +21,7 @@ int main()
     {
         sf::Event event;
         while (window.pollEvent(event)) {
-            closeWindowEvent(window, event)
+            closeWindowEvent(window, event);
         }
 
         sf::Time elapsed = clock.restart();
@@ -25,6 +30,10 @@ int main()
         window.clear();
         window.draw(shape);
         player.draw(window);
+        test1.draw(window);
+        test2.draw(window);
+        test3.draw(window);
+        test4.draw(window);
         window.display();
     }
 
