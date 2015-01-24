@@ -7,7 +7,7 @@
 class WorldChunk{
 
 public:
-	WorldChunk(int seed, int x, int y);
+	WorldChunk(bool wall, int x, int y);
 	~WorldChunk();
 	void draw(sf::RenderWindow & window);
 	int x;

@@ -1,13 +1,13 @@
 #include "WorldChunk.h"
 
-WorldChunk::WorldChunk(int seed, int x, int y):
+WorldChunk::WorldChunk(bool wall, int x, int y):
 x(x),
 y(y)
 {
 
 	for(int i = 0; i < CHUNK_SIZE; i++){
 		for(int j = 0; j < CHUNK_SIZE; j++){
-			tiles[i][j] = Tile(0,i+x*CHUNK_SIZE,j+y*CHUNK_SIZE);
+			tiles[i][j] = Tile(wall,i+x*CHUNK_SIZE,j+y*CHUNK_SIZE);
 		}
 	}
 }
