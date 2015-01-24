@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "Player.h"
+
 void update(sf::Time elapsed);
 void handleInput();
 Player player;
@@ -15,24 +16,11 @@ int main()
     {
         sf::Event event;
         while (window.pollEvent(event)) {
-            // Request for closing the window
-
-            if (event.type == sf::Event::Closed) {
-                window.close();
-            }
-            // The escape key was pressed
-            if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape)) {
-                window.close();
-            }
+            closeWindowEvent(window, event)
         }
 
         sf::Time elapsed = clock.restart();
         update(elapsed);
-
-    // The window was resized
-    /*if (event.type == sf::Event::Resized) {
-        doSomethingWithTheNewSize(event.size.width, event.size.height);
-    }*/
 
         window.clear();
         window.draw(shape);
@@ -43,7 +31,17 @@ int main()
     return 0;
 }
 
-void startGameLoop() {
+void closeWindowEvent(sf::RenderWindow window, sf::Event event) {
+    if (event.type == sf::Event::Closed) {
+        window.close();
+    }
+    // The escape key was pressed
+    if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape)) {
+        window.close();
+    }
+}
+
+/*void startGameLoop() {
 
 
 }
@@ -66,4 +64,12 @@ void handleInput(){
     }
 }
 
+
+void startGraphicsLoops() {
+
+}
+
+void pollInput() {
+
+}*/
 
