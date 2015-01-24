@@ -28,6 +28,9 @@ public:
 	const sf::Vector2<float> & getCenter();
 	sf::Vector2<float> forward();
 	void doAction(sf::Keyboard::Key keyStroke);
+	sf::Keyboard::Key keyToSwapIn;
+	void swapKey(sf::Keyboard::Key keyToSwapOut);
+	void swapOrDoAction(sf::Keyboard::Key keyStroke);
 private:
 	sf::CircleShape triangle;
 	sf::Vector2<float> pos;

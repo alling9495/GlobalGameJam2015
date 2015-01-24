@@ -25,8 +25,7 @@ int main()
 
     //HUD stuff
     sf::Font font;
-    if(!font.loadFromFile("font/FreeMono.ttf"));
-    {
+    if(!font.loadFromFile("font/FreeMono.ttf")) {
         std::cout << "Fail Whale!" << std::endl;
         //exit(1);
     }
@@ -91,10 +90,10 @@ void startGameLoop() {
 
 void handleInput() {
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
-        world.getPlayer().doAction(sf::Keyboard::A);
+        world.getPlayer().keyToSwapIn = sf::Keyboard::A;
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
-        // swap
+        world.getPlayer().keyToSwapIn = sf::Keyboard::S;
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
         world.getPlayer().doAction(sf::Keyboard::D);
@@ -106,13 +105,25 @@ void handleInput() {
         world.getPlayer().doAction(sf::Keyboard::J);
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::K)){
-        world.getPlayer().doAction(sf::Keyboard::K);
+        world.getPlayer().swapOrDoAction(sf::Keyboard::D);
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::F)){
+        world.getPlayer().swapOrDoAction(sf::Keyboard::F);
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::J)){
+        world.getPlayer().swapOrDoAction(sf::Keyboard::J);
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::K)){
+        world.getPlayer().swapOrDoAction(sf::Keyboard::K);
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::L)){
-        // swap
+        world.getPlayer().keyToSwapIn = sf::Keyboard::L;
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::SemiColon)){
-        // swap
+        world.getPlayer().keyToSwapIn = sf::Keyboard::SemiColon;
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::G)){
+        world.getPlayer().doAction(sf::Keyboard::G);
     }
 
 }

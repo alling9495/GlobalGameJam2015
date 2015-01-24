@@ -12,7 +12,14 @@ Player::Player(){
 	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::F, Forward));
 	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::J, Backward));
 	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::K, TurnClockwise));
-	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::A, SuperBoost));
+	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::G, SuperBoost));
+	// Keys to swap
+	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::A, Flamethrower));
+	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::S, Lazer));
+	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::L, Shield));
+	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::SemiColon, LimitBreak));
+
+	keyToSwapIn = sf::Keyboard::Unknown;
 }
 Player::~Player(){
 
@@ -75,4 +82,21 @@ void Player::doAction(sf::Keyboard::Key keyStroke) {
 		default:
 			break;
 	}
+}
+
+void Player::swapKey(sf::Keyboard::Key keyToSwapOut) {
+	Action actionToSwapOut = map[keyToSwapOut];
+
+	map[keyToSwapOut] = map[keyToSwapIn];
+	map[keyToSwapIn] = actionToSwapOut;
+
+	keyToSwapIn = sf::Keyboard::Unknown;
+}
+
+void Player::swapOrDoAction(sf::Keyboard::Key keyStroke) {
+    if (keyToSwapIn == sf::Keyboard::Unknown) {
+        doAction(keyStroke);
+    } else {
+        swapKey(keyStroke);
+    }
 }
