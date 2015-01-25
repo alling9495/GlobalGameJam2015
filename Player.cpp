@@ -4,15 +4,20 @@ using namespace std;
 
 Player::Player(){
 
-	triangle = sf::CircleShape(80.0f,3);
-	triangle.setOrigin(80.0f,80.0f);
-	triangle.setScale(0.5,0.75);
+	if (!texture.loadFromFile("player.png")) {
+		// error!
+		std::cout << "unable to load player sprite" << std::endl;
+	}
+	texture.setSmooth(true);
+	sprite.setTexture(texture);
+	sf::Vector2u textureSize = texture.getSize();
+	sprite.setOrigin(textureSize.x / 2, textureSize.y / 2);
 
 	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::A, TurnCounter));
 	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::W, Forward));
 	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::S, Backward));
 	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::D, TurnClockwise));
-	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::G, SuperBoost));
+	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::I, SuperBoost));
 	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::J, StrafeLeft));
 	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::L, StrafeRight));
 
@@ -30,15 +35,15 @@ Player::~Player(){
 
 void Player::move(const sf::Vector2<float>& dir){
 	pos += dir;
-
-	triangle.setPosition(pos.x,pos.y);
+	sprite.setPosition(pos.x, pos.y);
 }
+
 void Player::draw(sf::RenderWindow & window, sf::Shader* shader){
-	window.draw(triangle,shader);
+	window.draw(sprite,shader);
 }
 void Player::turn(float deg){
 	angle += deg;
-	triangle.setRotation(angle+90);
+	sprite.setRotation(angle+90);
 }
 
 const sf::Vector2<float> & Player::getCenter(){
@@ -46,20 +51,27 @@ const sf::Vector2<float> & Player::getCenter(){
 }
 
 sf::Vector2f Player::forward(){
-	triangle.setRotation(angle+90);	
+	//moving = false;	
+	//dashing = false;
+	sprite.setRotation(angle+90);
 	return sf::Vector2f
-		((float)cos(angle*1/RAD2DEGf) * RAD2DEGf,(float)sin(angle*1/RAD2DEGf) * RAD2DEGf);
+		((float)cos(angle*1.0/RAD2DEGf) * RAD2DEGf,(float)sin(angle*1.0/RAD2DEGf) * RAD2DEGf);
 }
 
+void Player::setSpeedMultiplier(float multiplier){
+	this->speedMult = multiplier;
+}
 void Player::doAction(sf::Keyboard::Key keyStroke) {
 	switch(map[keyStroke]) {
+		
 		case TurnCounter:
 			// turn counter-clockwise
             turn(-7);
 			break;
 		case Forward:
 			// move forward
-            move(forward() * 0.35f);
+            move(forward() * speedMult);
+            moving = true;
 			break;
 		case Backward:
 			// move backwards
@@ -80,7 +92,9 @@ void Player::doAction(sf::Keyboard::Key keyStroke) {
 			break;
 		case LimitBreak:
 			// TODO LIMIT BREAK
+			break;
 		case SuperBoost:
+			dashing=true;
 			move(forward() * 1.5f);
 			break;
 		case StrafeLeft:
@@ -119,4 +133,23 @@ sf::Vector2f Player::left(){
 		(cos(M_PI/2)*fwd.x + sin(M_PI/2)*fwd.y),
 		(-sin(M_PI/2)*fwd.x + cos(M_PI/2)*fwd.y));
 	return left;
+}
+
+float Player::getAngle() {
+	return angle;
+}
+
+bool Player::isMoving(){
+	return moving;
+}
+bool Player::isDashing(){
+	return dashing;
+}
+
+void Player::resetMoveState(){
+	moving = false;
+	dashing = false;
+}
+void Player::setColor(sf::Color c){
+	sprite.setColor(c);
 }

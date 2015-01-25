@@ -28,16 +28,27 @@ public:
 	void draw(sf::RenderWindow & window, sf::Shader* shader = NULL);
 	void turn(float angle);
 	const sf::Vector2<float> & getCenter();
+	float getAngle();
 	sf::Vector2f forward();
 	void doAction(sf::Keyboard::Key keyStroke);
 	sf::Keyboard::Key keyToSwapIn;
 	void swapKey(sf::Keyboard::Key keyToSwapOut);
 	void swapOrDoAction(sf::Keyboard::Key keyStroke);
 	sf::Vector2<float> left();
+	void setSpeedMultiplier(float mul);
+	bool isMoving();
+	bool isDashing();
+	void resetMoveState();
+	void setColor(sf::Color c);
 private:
+	float speedMult = 0.35f;
 	sf::CircleShape triangle;
+	sf::Texture texture;
+	sf::Sprite sprite;
 	sf::Vector2<float> pos;
 	float angle;
+	bool moving = false;
+	bool dashing = false;
 	std::map<sf::Keyboard::Key, Action> map;
 };
 #endif

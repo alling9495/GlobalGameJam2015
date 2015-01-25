@@ -5,8 +5,10 @@
 #include "World.h"
 #include "LinearBullet.h"
 #include "VectorUtil.h"
+#include "Particle.h"
 #include <iostream>
 #include <deque>
+#include <ctime>
 #define KEY_S(keyStroke) sf::Keyboard::Key::keyStroke
 
 void closeWindowEvent(sf::RenderWindow & window, sf::Event event);
@@ -17,12 +19,17 @@ void startGraphicsLoops();
 void pollInput();
 
 std::deque<Bullet *> bullets;
+std::deque<Particle *> particles;
 sf::CircleShape bulletImage(10.0f);
+int frames = 0;
 
+World world = World(time(0));
 
-World world = World(0);
 int main()
 {
+    for(int i = 0; i < 250; i++){
+        particles.push_back(new Particle()); //Static particle array
+    }
     float particleCenterX = 200, particleCenterY = 200;
 
     sf::RenderWindow window(sf::VideoMode(800, 600), "Main Window");
@@ -39,6 +46,23 @@ int main()
         std::cout << "Fail Whale!" << std::endl;
         //exit(1);
     }
+    sf::Texture texture;
+    if (!texture.loadFromFile("winner2.png")) {
+        // error!
+        std::cout << "You're (not) winner" << std::endl;
+    }
+    texture.setSmooth(true);
+    sf::Sprite sprite;
+    sprite.setTexture(texture);
+    sprite.move(
+        (window.getSize().x - texture.getSize().x) / 2,
+        (window.getSize().y - texture.getSize().y) / 2);
+
+    sf::Font cmdFont;
+    if(!cmdFont.loadFromFile("font/FreeMonoBold.ttf")) {
+        std::cout << "couldn't load cmd prompt font" << std::endl;
+        //exit(1);
+    }
 
     sf::Text coordinates;
     coordinates.setFont(font);
@@ -50,6 +74,7 @@ int main()
     /*SHADER MAGIC! Setup...*/
     sf::VertexArray m_points;
     m_points.setPrimitiveType(sf::Points);
+    /*
     for (int i = 0; i < 40000; ++i)
     {
         float x = static_cast<float>(std::rand() % 800);
@@ -59,6 +84,7 @@ int main()
         sf::Uint8 b = std::rand() % 255;
         m_points.append(sf::Vertex(sf::Vector2f(x, y), sf::Color(r, g, b)));
     }
+    */
     /*giggity*/
     // Load the shader
     sf::Shader m_shader, m_light;
@@ -67,8 +93,10 @@ int main()
 
     while (window.isOpen()) {
         if (!world.isPlayerAlive()) {
+            //world.loseGame();
             //window.close();
             //std::cout << "Player died" << std::endl;
+            //window.close();
         }
 
         sf::Event event;
@@ -81,14 +109,30 @@ int main()
         sf::Time elapsed = clock.restart(), totalTime = totalClock.getElapsedTime();
         world.update(elapsed);
         update(elapsed);
-        camera.setCenter(VectorUtil::offset(world.getPlayer().getCenter(), world.getPlayer().forward()*4.0f));
+        
+        if(!particles.back()->isAlive && world.getPlayer().isDashing() && frames>1)
+        {
+            particles.push_front(particles.back());
+            particles.pop_back();
+            particles[0]->init(world.getPlayer().getCenter().x, world.getPlayer().getCenter().y, world.getPlayer().getAngle());
+            frames = 0;
+        }
+
+        frames++;
+
+        
+
+        camera.setCenter(VectorUtil::offset(world.getPlayer().getCenter(), world.getPlayer().forward()*12.0f));
         std::string location = "(" + std::to_string((int)(world.getPlayer().getCenter().x)) + ", " 
             + std::to_string((int)(world.getPlayer().getCenter().y)) + ")\n" + "Number of Bullets" + 
-            std::to_string(bullets.size());
+            std::to_string(particles.size());
         
         coordinates.setString(location);
 
        // std::cout << location << std::endl;
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::I)){
+            world.getPlayer().draw(window);
+        }
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::R)){
             camera.zoomOut(0.05f);
         }
@@ -104,25 +148,25 @@ int main()
         window.clear();
 
         /*ANND the update!*/
-        float radius = 350 /*std::cos(totalTime.asSeconds()) * 300*/;
+        float radius = 150 /*std::cos(totalTime.asSeconds()) * 300*/;
         m_shader.setParameter("storm_position", playerCenter.x , playerCenter.y);
         m_shader.setParameter("storm_inner_radius", radius / 3);
         m_shader.setParameter("storm_total_radius", radius);
         m_shader.setParameter("blink_alpha", 1.0f /**std::cos(totalTime.asSeconds() * 3) * 0.25f*/);
 
-        m_light.setParameter("time",totalTime.asSeconds());
-        m_light.setParameter("surfacePosition",playerCenter);
+       // m_light.setParameter("time",totalTime.asSeconds());
+        //m_light.setParameter("surfacePosition",playerCenter);
         //come on...
         window.draw(m_points,&m_shader);
         window.draw(shape);
 
-        world.draw(window,&m_shader,&m_light);
+        world.draw(window,&m_shader);
 
         //BULLETZ
-         
+        /*
         for(int i = 0; i < bullets.size(); i++)
         {
-            if(bullets[i]->move())
+            if(bullets[i]->move(player))
             {
                 std::cout << "rendering" << std::endl;
                 bullets[i]->render(window);
@@ -131,16 +175,42 @@ int main()
             else
             {
                 std::cout << "erasing" << std::endl;
-                delete bullets[i];
-                 bullets.erase(bullets.begin() + i);
-                 std::cout << "DONE!" << std::endl;
+                bullet toBack = bullets[i];
+                bullets.erase(bullets.begin() + i);
+                bullets.push_back()
+                std::cout << "DONE!" << std::endl;
             }
         }
-        
+        */
+        // Intro command prompt spawn point
+        sf::Text cmdPrompt;
+        cmdPrompt.setFont(cmdFont);
+        cmdPrompt.setCharacterSize(130);
+        cmdPrompt.setPosition(-480, 420);
+        cmdPrompt.setString("admin@GGJ:~$");
+        window.draw(cmdPrompt);
 
+        for(int i = 0; i < particles.size() && particles[i]->isAlive; i++)
+        {
+            if(particles[i]->move(world.getPlayer().getCenter()))
+            {
+                particles[i]->draw(window);
+            }
+            else
+            {
+                Particle* p = particles[i];
+                particles.erase(particles.begin() + i);
+                particles.push_back(p);
+            }
+        }
+
+        world.getPlayer().resetMoveState();
         //HUD VIEW
         window.setView(window.getDefaultView());
-        window.draw(coordinates);
+        //window.draw(coordinates);
+        if (world.state == GAMESTATE::WON) {
+            window.draw(sprite);
+        }
         window.display();
     }
     return 0;
@@ -161,15 +231,17 @@ void startGameLoop() {
 };
 
 void handleInput() {
-    sf::Keyboard::Key keySet[] = {KEY_S(W), KEY_S(S), KEY_S(A), KEY_S(D), KEY_S(I), KEY_S(K), KEY_S(L), KEY_S(J)};
-    
-    bulletImage.setFillColor(sf::Color::Green);
+    if(world.state != GAMESTATE::WON){
+        sf::Keyboard::Key keySet[] = {KEY_S(W), KEY_S(S), KEY_S(A), KEY_S(D), KEY_S(I), KEY_S(K), KEY_S(L), KEY_S(J)};
+        
+        bulletImage.setFillColor(sf::Color::Green);
 
-    for (int i = 0; i < 8; i++) {
-        if (sf::Keyboard::isKeyPressed(keySet[i])) {
-            world.getPlayer().doAction(keySet[i]);
-        }
-    };
+        for (int i = 0; i < 8; i++) {
+            if (sf::Keyboard::isKeyPressed(keySet[i])) {
+                world.getPlayer().doAction(keySet[i]);
+            }
+        };
+    }
 /*    if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
         world.getPlayer().doAction(sf::Keyboard::A);
     }
@@ -219,3 +291,5 @@ void startGraphicsLoops() {
 
 void pollInput() {
 };
+
+

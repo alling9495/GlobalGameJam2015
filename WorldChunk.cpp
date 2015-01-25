@@ -2,14 +2,30 @@
 #include <iostream>
 #include <math.h>
 using namespace std;
-WorldChunk::WorldChunk(bool wall, int x, int y):
+WorldChunk::WorldChunk(TYPE tileType, int x, int y):
 x(x),
-y(y)
+y(y),
+myType(tileType),
+isWall(tileType == TYPE::WALL)
 {
 
 	for(int i = 0; i < CHUNK_SIZE; i++){
 		for(int j = 0; j < CHUNK_SIZE; j++){
-			tiles[i][j] = Tile(wall,i+x*CHUNK_SIZE,j+y*CHUNK_SIZE);
+			tiles[i][j] = Tile(tileType,i+x*CHUNK_SIZE,j+y*CHUNK_SIZE);
+		}
+	}
+}
+
+WorldChunk::WorldChunk(TYPE tileType, int x, int y,sf::Color color):
+x(x),
+y(y),
+myType(tileType),
+isWall(tileType == TYPE::WALL)
+{
+
+	for(int i = 0; i < CHUNK_SIZE; i++){
+		for(int j = 0; j < CHUNK_SIZE; j++){
+			tiles[i][j] = Tile(tileType,i+x*CHUNK_SIZE,j+y*CHUNK_SIZE, color);
 		}
 	}
 }
@@ -28,13 +44,13 @@ void WorldChunk::draw(sf::RenderWindow & window, sf::Shader* shader){
 	}
 }
 void WorldChunk::update(sf::Time elapsed){
-	if(isBeingDestroyed){
-		for(int i = 0; i < CHUNK_SIZE; i++){
-			for(int j = 0; j < CHUNK_SIZE; j++){
-				tiles[i][j].update(elapsed);
-			}
-		}	
-	}
+
+	for(int i = 0; i < CHUNK_SIZE; i++){
+		for(int j = 0; j < CHUNK_SIZE; j++){
+			tiles[i][j].update(elapsed);
+		}
+	}	
+
 }
 
 void WorldChunk::startDeallocationAnimation(){
@@ -46,18 +62,49 @@ void WorldChunk::startDeallocationAnimation(){
 	}
 }
 
-void WorldChunk::startDeallocationAnimation(sf::Vector2f startingPosition){
+
+
+void WorldChunk::startDeallocationAnimation(sf::Vector2f startingPosition, float speed){
+	if(!isBeingDestroyed){
 	isBeingDestroyed=true;
-	for(int i = 0; i < CHUNK_SIZE; i++){
-		for(int j = 0; j < CHUNK_SIZE; j++){
-			float dist = getDist(startingPosition,tiles[i][j].getPosition());
-			cout << "dist" <<  dist << endl;
-			tiles[i][j].startDestoryAnimation(dist + 100);
+		for(int i = 0; i < CHUNK_SIZE; i++){
+			for(int j = 0; j < CHUNK_SIZE; j++){
+				float dist = getDist(startingPosition,tiles[i][j].getPosition());
+				tiles[i][j].startDestoryAnimation((dist + 100) * (1.0f/speed));
+			}
 		}
 	}
 }
 
 
+void WorldChunk::colorTiles(sf::Vector2f startingPosition, float speed,sf::Color color){
+	for(int i = 0; i < CHUNK_SIZE; i++){
+		for(int j = 0; j < CHUNK_SIZE; j++){
+			float dist = getDist(startingPosition,tiles[i][j].getPosition());
+			tiles[i][j].updateColorWithDelay((dist + 100) * (1.0f/speed),color);
+		}
+	}
+}
+
+void WorldChunk::forceColorTiles(sf::Vector2f startingPosition, float speed,sf::Color color){
+	for(int i = 0; i < CHUNK_SIZE; i++){
+		for(int j = 0; j < CHUNK_SIZE; j++){
+			float dist = getDist(startingPosition,tiles[i][j].getPosition());
+			tiles[i][j].forceUpdateColorWithDelay((dist + 100) * (1.0f/speed),color);
+		}
+	}
+}
+
 Tile & WorldChunk::getTile(int i, int j) {
 	return tiles[i][j];
+}
+
+bool WorldChunk::isSafe(){
+	return !(isWall||isBeingDestroyed);
+}
+bool WorldChunk::isNewLevel(){
+	if(myType==TYPE::GOAL){
+		cout<<"!!!!!!!!!!!!!!!!!!!!!"<<endl;
+	}
+	return myType==TYPE::GOAL;
 }
