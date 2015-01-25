@@ -8,10 +8,10 @@ Player::Player(){
 	triangle.setOrigin(80.0f,80.0f);
 	triangle.setScale(0.5,0.75);
 
-	actions[0] = 0;
-	actions[1] = 1;
-	actions[2] = 2;
-	actions[3] = 3;
+	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::D, TurnCounter));
+	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::F, Forward));
+	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::J, Backward));
+	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::K, TurnClockwise));
 }
 Player::~Player(){
 
@@ -39,34 +39,34 @@ sf::Vector2<float> Player::forward(){
 		((float)cos(angle*1/RAD2DEGf) * RAD2DEGf,(float)sin(angle*1/RAD2DEGf) * RAD2DEGf);
 }
 
-void Player::doAction(int index) {
-	switch(actions[index]) {
-		case 0:
+void Player::doAction(sf::Keyboard::Key keyStroke) {
+	switch(map[keyStroke]) {
+		case TurnCounter:
 			// turn counter-clockwise
             turn(-3);
 			break;
-		case 1:
+		case Forward:
 			// move forward
             move(forward() * 0.15f);
 			break;
-		case 2:
+		case Backward:
 			// move backwards
             move(forward() * -0.05f);
 			break;
-		case 3:
+		case TurnClockwise:
 			// turn clockwise
             turn(3);
 			break;
-		case 4:
+		case Flamethrower:
 			// TODO flamethrower
 			break;
-		case 5:
+		case Lazer:
 			// TODO lazer
 			break;
-		case 6:
+		case Shield:
 			// TODO shield
 			break;
-		case 7:
+		case LimitBreak:
 			// TODO LIMIT BREAK
 			break;
 	}
