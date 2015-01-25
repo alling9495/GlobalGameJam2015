@@ -1,6 +1,6 @@
 #include "Bullet.h"
 
-class LinearBullet: protected Bullet
+class LinearBullet: public Bullet
 {
 public:
 	LinearBullet(sf::Shape& shape, int lifeCycle, float startX = 0, float startY = 0, 
