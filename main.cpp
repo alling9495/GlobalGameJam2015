@@ -41,6 +41,8 @@ int main()
     sf::Text coordinates;
     coordinates.setFont(font);
     coordinates.setCharacterSize(30);
+    
+    camera.resetZoom();
 
 
     while (window.isOpen()) {
