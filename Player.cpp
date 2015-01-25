@@ -128,3 +128,7 @@ sf::Vector2f Player::left(){
 		(-sin(M_PI/2)*fwd.x + cos(M_PI/2)*fwd.y));
 	return left;
 }
+
+float Player::getAngle() {
+	return angle;
+}

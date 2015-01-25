@@ -31,7 +31,6 @@ int main()
     window.setFramerateLimit(60);
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
-    int frames = 0;
 
     sf::Clock clock, totalClock;
     Camera camera (world.getPlayer().getCenter());
@@ -94,8 +93,9 @@ int main()
         update(elapsed);
         if (frames == 5) {
            frames = 0;
-           particles.push_front(new Particle(world.getPlayer().getCenter().x, world.getPlayer().getCenter().y));
         }
+           particles.push_front(new Particle(world.getPlayer().getCenter().x, world.getPlayer().getCenter().y, world.getPlayer().getAngle()));
+        
 
         camera.setCenter(VectorUtil::offset(world.getPlayer().getCenter(), world.getPlayer().forward()*4.0f));
         std::string location = "(" + std::to_string((int)(world.getPlayer().getCenter().x)) + ", " 

@@ -28,6 +28,7 @@ public:
 	void draw(sf::RenderWindow & window);
 	void turn(float angle);
 	const sf::Vector2<float> & getCenter();
+	float getAngle();
 	sf::Vector2f forward();
 	void doAction(sf::Keyboard::Key keyStroke);
 	sf::Keyboard::Key keyToSwapIn;
