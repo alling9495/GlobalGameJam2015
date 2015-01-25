@@ -5,14 +5,10 @@ Player::Player(){
 	triangle.setOrigin(80.0f,80.0f);
 	triangle.setScale(0.5,0.75);
 
-	keys[0] = sf::Keyboard::A; // shield?
-	keys[1] = sf::Keyboard::S; // flamethrower?
-	keys[2] = sf::Keyboard::D; // turn counter-clockwise
-	keys[3] = sf::Keyboard::F; // forward
-	keys[4] = sf::Keyboard::J; // back
-	keys[5] = sf::Keyboard::K; // turn clockwise
-	keys[6] = sf::Keyboard::L; // lazer?
-	keys[7] = sf::Keyboard::SemiColon; // LIMIT BREEEEEEEEAK!!!!
+	actions[0] = 0;
+	actions[1] = 1;
+	actions[2] = 2;
+	actions[3] = 3;
 }
 Player::~Player(){
 
@@ -40,6 +36,35 @@ sf::Vector2<float> Player::forward(){
 		((float)cos(angle*1/RAD2DEGf) * RAD2DEGf,(float)sin(angle*1/RAD2DEGf) * RAD2DEGf);
 }
 
-sf::Keyboard::Key Player::getKeyAt(int index) {
-	return keys[index];
+void Player::doAction(int index) {
+	switch(actions[index]) {
+		case 0:
+			// turn counter-clockwise
+            turn(-3);
+			break;
+		case 1:
+			// move forward
+            move(forward() * 0.15f);
+			break;
+		case 2:
+			// move backwards
+            move(forward() * -0.05f);
+			break;
+		case 3:
+			// turn clockwise
+            turn(3);
+			break;
+		case 4:
+			// TODO flamethrower
+			break;
+		case 5:
+			// TODO lazer
+			break;
+		case 6:
+			// TODO shield
+			break;
+		case 7:
+			// TODO LIMIT BREAK
+			break;
+	}
 }

@@ -51,35 +51,29 @@ void startGameLoop() {
 }
 
 void handleInput() {
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)
-        || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift)) {
-        // TODO Swap keys
-    } else {
-        // Do action
-        if(sf::Keyboard::isKeyPressed(player.getKeyAt(0))){
-            // TODO shield
-        }
-        if(sf::Keyboard::isKeyPressed(player.getKeyAt(1))){
-            // TODO flamethrower
-        }
-        if(sf::Keyboard::isKeyPressed(player.getKeyAt(2))){
-            player.turn(-3);
-        }
-        if(sf::Keyboard::isKeyPressed(player.getKeyAt(3))){
-            player.move(player.forward() * 0.15f);
-        }
-        if(sf::Keyboard::isKeyPressed(player.getKeyAt(4))){
-            player.move(player.forward() * -0.05f);
-        }
-        if(sf::Keyboard::isKeyPressed(player.getKeyAt(5))){
-            player.turn(3);
-        }
-        if(sf::Keyboard::isKeyPressed(player.getKeyAt(6))){
-            // TODO lazar
-        }
-        if(sf::Keyboard::isKeyPressed(player.getKeyAt(7))){
-            // TODO LIMIT BREEEEEEEEEEAK!!!!!!
-        }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
+        // swap
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
+        // swap
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
+        player.doAction(0);
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::F)){
+        player.doAction(1);
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::J)){
+        player.doAction(2);
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::K)){
+        player.doAction(3);
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::L)){
+        // swap
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::SemiColon)){
+        // swap
     }
 }
 
