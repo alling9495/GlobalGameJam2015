@@ -28,7 +28,7 @@ int main()
     }
     float particleCenterX = 200, particleCenterY = 200;
 
-    sf::RenderWindow window(sf::VideoMode(800, 800), "Main Window");
+    sf::RenderWindow window(sf::VideoMode(800, 600), "Main Window");
     window.setFramerateLimit(60);
 
     sf::Clock clock, totalClock;
@@ -40,6 +40,17 @@ int main()
         std::cout << "Fail Whale!" << std::endl;
         //exit(1);
     }
+    sf::Texture texture;
+    if (!texture.loadFromFile("winner2.png")) {
+        // error!
+        std::cout << "You're (not) winner" << std::endl;
+    }
+    texture.setSmooth(true);
+    sf::Sprite sprite;
+    sprite.setTexture(texture);
+    sprite.move(
+        (window.getSize().x - texture.getSize().x) / 2,
+        (window.getSize().y - texture.getSize().y) / 2);
 
     sf::Font cmdFont;
     if(!cmdFont.loadFromFile("font/FreeMonoBold.ttf")) {
@@ -75,7 +86,7 @@ int main()
 
     while (window.isOpen()) {
         if (!world.isPlayerAlive()) {
-            world.loseGame();
+            //world.loseGame();
             //window.close();
             //std::cout << "Player died" << std::endl;
             //window.close();
@@ -181,11 +192,14 @@ int main()
                 particles.push_back(p);
             }
         }
-          
+
         world.getPlayer().resetMoveState();
         //HUD VIEW
         window.setView(window.getDefaultView());
         //window.draw(coordinates);
+        if (world.state == GAMESTATE::WON) {
+            window.draw(sprite);
+        }
         window.display();
     }
     return 0;
