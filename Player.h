@@ -26,12 +26,12 @@ public:
 	void draw(sf::RenderWindow & window);
 	void turn(float angle);
 	const sf::Vector2<float> & getCenter();
-	sf::Vector2<float> forward();
+	sf::Vector2f forward();
 	void doAction(sf::Keyboard::Key keyStroke);
 	sf::Keyboard::Key keyToSwapIn;
 	void swapKey(sf::Keyboard::Key keyToSwapOut);
 	void swapOrDoAction(sf::Keyboard::Key keyStroke);
-	st::Vector2<float> left();
+	sf::Vector2<float> left();
 private:
 	sf::CircleShape triangle;
 	sf::Vector2<float> pos;

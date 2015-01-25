@@ -42,9 +42,9 @@ const sf::Vector2<float> & Player::getCenter(){
 	return pos;
 }
 
-sf::Vector2<float> Player::forward(){
+sf::Vector2f Player::forward(){
 	triangle.setRotation(angle+90);	
-	return sf::Vector2<float>
+	return sf::Vector2f
 		((float)cos(angle*1/RAD2DEGf) * RAD2DEGf,(float)sin(angle*1/RAD2DEGf) * RAD2DEGf);
 }
 
@@ -105,9 +105,9 @@ void Player::swapOrDoAction(sf::Keyboard::Key keyStroke) {
     */
 }
 sf::Vector2f Player::left(){
-	sf::Vector2 fwd = forward();
-	sf::Vector2 left = sf::Vector2(
-		(cos(-M_PI/2)*forward.x + sin(-M_PI/2)*forward.y),
-		(-sin(-M_PI/2)*forward.x,cos(-M_PI/2)*forward.y));
+	sf::Vector2f fwd = forward();
+	sf::Vector2f left = sf::Vector2f(
+		(cos(-M_PI/2)*fwd.x + sin(-M_PI/2)*fwd.y),
+		(-sin(-M_PI/2)*fwd.x,cos(-M_PI/2)*fwd.y));
 	return left;
 }
