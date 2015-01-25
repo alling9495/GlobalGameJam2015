@@ -16,9 +16,9 @@ public:
 	void loseGame();
 	void startGame();
 	GAMESTATE state;
+	int level = 0;
 
 private:
-	int level = 0;
 	float levelTime;
 	int seed;
 	Player player;
