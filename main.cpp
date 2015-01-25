@@ -232,7 +232,7 @@ int main()
         cmdPrompt.setPosition(-480, 420);
 
         cmdPrompt.setString("user@GGJ:~$ ./attack_vector\
-            \n@controls\n\tWASD / Arrows: move\n\tM: mute\n\tR: reset\n\tSpace: boost\
+            \n@controls\n\tWASD / Arrows: move\n\tM: mute\n\tR: reset\n\tSpace / I: boost\
             \n@author\n\tChris Williams\n\tAlex Ling,\n\tLejon McGowan\n\tKyle Piddington\
             \n@story\
             \n\tYou're a loose pointer\
@@ -289,7 +289,7 @@ void startGameLoop() {
 
 void handleInput() {
     if(world.state != GAMESTATE::WON){
-        sf::Keyboard::Key keySet[] = {KEY_S(W), KEY_S(A), KEY_S(D), KEY_S(Space), KEY_S(Left), KEY_S(Right), KEY_S(Up)};
+        sf::Keyboard::Key keySet[] = {KEY_S(W), KEY_S(A), KEY_S(D), KEY_S(Space), KEY_S(Left), KEY_S(Right), KEY_S(Up), KEY_S(I)};
 
         for (int i = 0; i < (sizeof(keySet) / sizeof(keySet[0])); i++) {
             if (sf::Keyboard::isKeyPressed(keySet[i])) {
