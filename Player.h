@@ -38,6 +38,8 @@ public:
 private:
 	float speedMult = 0.35f;
 	sf::CircleShape triangle;
+	sf::Texture texture;
+	sf::Sprite sprite;
 	sf::Vector2<float> pos;
 	float angle;
 	std::map<sf::Keyboard::Key, Action> map;
