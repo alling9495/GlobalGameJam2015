@@ -18,7 +18,7 @@ int main()
 
     //WorldChunk* wc = new WorldChunk(0,0,0);
     sf::RenderWindow window(sf::VideoMode(800, 600), "Main Window");
-    window.setFramerateLimit(60);
+    //window.setFramerateLimit(30);
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
     sf::Clock clock;
@@ -98,16 +98,16 @@ void handleInput() {
         // swap
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
-        player.doAction(0);
+        world.getPlayer().doAction(0);
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::F)){
-        player.doAction(1);
+        world.getPlayer().doAction(1);
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::J)){
-        player.doAction(2);
+        world.getPlayer().doAction(2);
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::K)){
-        player.doAction(3);
+        world.getPlayer().doAction(3);
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::L)){
         // swap

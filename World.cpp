@@ -51,34 +51,14 @@ void World::draw(sf::RenderWindow & window){
 	bool left = isPlayerNearLeft();
 	bool bottom = isPlayerNearBottom();
 	bool right = isPlayerNearRight();
+	std::vector<WorldChunk *>::iterator it = loadedChunks.begin();
+	while(it != loadedChunks.end()){
+
+		(*it)->draw(window);
+		it++;
+	}
 	
-	chunks[lastPlayerChunk]->draw(window);
-
-	if(top){
-		getChunkWithOffset(0,-1)->draw(window);
-	}
-	if(left){
-		getChunkWithOffset(-1,0)->draw(window);
-	}
-	if(bottom){
-		getChunkWithOffset(0,1)->draw(window);
-	}
-	if(right){
-		getChunkWithOffset(1,0)->draw(window);
-	}
-	if(top && left){
-		getChunkWithOffset(-1,-1)->draw(window);
-	}
-	if(top && right){
-		getChunkWithOffset(1,-1) -> draw(window);
-	}
-	if(bottom && left){
-		getChunkWithOffset(-1,1)->draw(window);
-	}
-	if(bottom && right){
-		getChunkWithOffset(1,1)->draw(window);
-	}
-
+	
 	player.draw(window);
 }
 
@@ -140,8 +120,9 @@ Player & World::getPlayer(){
 void World::unloadChunks(std::pair<int,int> next){
 	std::vector<WorldChunk *>::iterator it = loadedChunks.begin();
 	while(it != loadedChunks.end()){
-		if(abs((*it)->x - next.first) > 2 || abs((*it)->y - next.second) > 2)
+		if(abs((*it)->x - next.first) > 1 || abs((*it)->y - next.second) > 1)
 		{
+			cout << "Free : "  << (*it)->x << " ," << (*it)->y << endl;
 			freeChunk(std::pair<int,int>((*it)->x,(*it)->y));
 			it=loadedChunks.erase(it);
 
