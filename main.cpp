@@ -21,7 +21,7 @@ std::deque<Particle *> particles;
 int frames = 0;
 
 World world = World(time(0));
-StartPoint* point;
+StartPoint* startPoint;
 int main()
 {
     for(int i = 0; i < 250; i++){
@@ -64,7 +64,7 @@ int main()
     sf::Text level;
     level.setFont(font);
     level.setCharacterSize(30);
-    point = new StartPoint(sf::Vector2f(-1,-1));
+    startPoint = new StartPoint(sf::Vector2f(-1,-1));
     camera.resetZoom();
         // Create the points
         // 
@@ -91,6 +91,9 @@ int main()
     while (window.isOpen()) {
         if (!world.isPlayerAlive()) {
             world.loseGame();
+            std::pair<int,int> playerChunk = world.getPlayerChunk();
+            startPoint->setChunk(sf::Vector2f(playerChunk.first,playerChunk.second));
+            startPoint->fadeIn();
             //window.close();
             //std::cout << "Player died" << std::endl;
             //window.close();
@@ -185,10 +188,12 @@ int main()
        // m_light.setParameter("time",totalTime.asSeconds());
         //m_light.setParameter("surfacePosition",playerCenter);
         //come on...
-        window.draw(m_points,&m_shader);
 
+
+
+        window.draw(m_points,&m_shader);
         world.draw(window,&m_shader);
-        point->draw(window);
+        startPoint->draw(window);
 
         //BULLETZ
         /*
@@ -313,7 +318,11 @@ void handleInput() {
 
 void update(sf::Time elapsed) {
     handleInput();
-    point->update(elapsed);
+    startPoint->update(elapsed);
+    if(startPoint->isActive() && startPoint->pointIn(world.getPlayer().getCenter())){
+        world.startGame();
+        startPoint->fadeOut();
+    }
 };
 
 

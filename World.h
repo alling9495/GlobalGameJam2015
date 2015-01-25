@@ -9,22 +9,23 @@ class World{
 public:
 	World(int seed);
 	~World();
-	void draw(sf::RenderWindow & window, sf::Shader* shader = NULL, sf::Shader* playerShader = NULL);
-	void startGame();
+	void draw(sf::RenderWindow & window, sf::Shader *);
 	void update(sf::Time elapsed);
 	Player & getPlayer();
 	bool isPlayerAlive();
 	void loseGame();
+	void startGame();
 	GAMESTATE state;
-	int level = -2;
-
+	std::pair<int,int> getPlayerChunk();
+	int level = 0;
+	
 private:
 	float levelTime;
 	int seed;
 	Player player;
 	std::map<std::pair<int,int>, WorldChunk *> chunks;
 	std::vector<WorldChunk *> loadedChunks;
-	std::pair<int,int> getPlayerChunk();
+
 	std::pair<int,int> lastPlayerChunk;
 
 	bool generateChunk(std::pair<int,int> key, TYPE wall, sf::Color color); //Generate tiles around when the player moves to a new chunk.

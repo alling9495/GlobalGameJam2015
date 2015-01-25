@@ -10,10 +10,12 @@ public:
 	void fadeOut();
 	void update(sf::Time elapsed);
 	void draw(sf::RenderWindow & window);
+	void setChunk(sf::Vector2f chunk);
 	bool pointIn(sf::Vector2f point);
+	bool isActive();
 private:
 	bool fadeDir;
-	float alpha;
+	int alpha;
 	sf::RectangleShape square1;
 	sf::RectangleShape square2;
 	sf::Vector2f position;
