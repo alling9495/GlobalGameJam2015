@@ -140,7 +140,6 @@ int main()
         m_shader.setParameter("storm_position", playerCenter.x , playerCenter.y);
         m_shader.setParameter("storm_inner_radius", radius / 3);
         m_shader.setParameter("storm_total_radius", radius);
-        m_shader.setParameter("blink_alpha", 1.0f /**std::cos(totalTime.asSeconds() * 3) * 0.25f*/);
 
         //come on...
         window.draw(m_points,&m_shader);
