@@ -11,6 +11,7 @@
 #include <deque>
 #include <ctime>
 #include "StartPoint.h"
+#include "ArrowIndicator.h"
 #define KEY_S(keyStroke) sf::Keyboard::Key::keyStroke
 
 void closeWindowEvent(sf::RenderWindow & window, sf::Event event);
@@ -24,7 +25,7 @@ int frames = 0;
 World world = World(time(0));
 bool playDown = false;
 StartPoint* startPoint;
-
+ArrowIndicator * indicator;
 sf::Music music;
 int main()
 {
@@ -71,6 +72,8 @@ int main()
     level.setFont(font);
     level.setCharacterSize(30);
     startPoint = new StartPoint(sf::Vector2f(0,0));
+    indicator = new ArrowIndicator();
+
     camera.resetZoom();
         // Create the points
         // 
@@ -204,7 +207,11 @@ int main()
         window.draw(m_points,&m_shader);
         world.draw(window,&m_shader);
         startPoint->draw(window);
-
+        if(startPoint->isActive() &&
+         (abs((startPoint->x != world.getPlayerChunk().first))) > 1 || (abs(startPoint->y - world.getPlayerChunk().second)) > 1) {
+            indicator->point(world.getPlayer().getCenter(), startPoint->position);
+            indicator->draw(window);
+        }
         //BULLETZ
         /*
         for(int i = 0; i < bullets.size(); i++)
@@ -347,14 +354,19 @@ void handleInput() {
 
 };
 
+
+
 void update(sf::Time elapsed) {
     handleInput();
     startPoint->update(elapsed);
     if(startPoint->isActive() && startPoint->pointIn(world.getPlayer().getCenter())){
         world.startGame();
         startPoint->fadeOut();
+
     }
+
 };
+
 
 
 

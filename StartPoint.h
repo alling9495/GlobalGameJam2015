@@ -13,12 +13,15 @@ public:
 	void setChunk(sf::Vector2f chunk);
 	bool pointIn(sf::Vector2f point);
 	bool isActive();
+	int x, y;
+	sf::Vector2f position;
+
 private:
+
 	bool fadeDir;
 	int alpha;
 	sf::RectangleShape square1;
 	sf::RectangleShape square2;
-	sf::Vector2f position;
 	float angle;
 
 };
