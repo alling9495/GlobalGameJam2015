@@ -16,7 +16,7 @@ public:
 	bool isPlayerAlive();
 	void loseGame();
 	GAMESTATE state;
-	int level = 0;
+	int level = -2;
 
 private:
 	float levelTime;
