@@ -289,10 +289,14 @@ void startGameLoop() {
 
 void handleInput() {
     if(world.state != GAMESTATE::WON){
-        sf::Keyboard::Key keySet[] = {KEY_S(W), KEY_S(A), KEY_S(D), KEY_S(Space), KEY_S(Left), KEY_S(Right), KEY_S(Up), KEY_S(I)};
+        sf::Keyboard::Key keySet[] = {KEY_S(W), KEY_S(Up), KEY_S(A), KEY_S(Left), KEY_S(D), KEY_S(Right), KEY_S(Space), KEY_S(I)};
 
         for (int i = 0; i < (sizeof(keySet) / sizeof(keySet[0])); i++) {
             if (sf::Keyboard::isKeyPressed(keySet[i])) {
+                // No double up/right/left/boost
+                if (i%2 == 1 && sf::Keyboard::isKeyPressed(keySet[i-1])) {
+                    continue;
+                }
                 world.getPlayer().doAction(keySet[i]);
             }
         };
