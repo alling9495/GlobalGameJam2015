@@ -15,11 +15,17 @@ Player::Player(){
 
 	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::A, TurnCounter));
 	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::W, Forward));
-	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::S, Backward));
 	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::D, TurnClockwise));
-	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::I, SuperBoost));
+	//map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::S, Backward));
+	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::Left, TurnCounter));
+	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::Up, Forward));
+	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::Right, TurnClockwise));
+	//map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::S, Backward));
+	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::Space, SuperBoost));
+	/*
 	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::J, StrafeLeft));
 	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::L, StrafeRight));
+	*/
 	
 
 	// Keys to swap

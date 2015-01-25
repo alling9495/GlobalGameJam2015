@@ -168,6 +168,8 @@ int main()
        level.setString(buf);
 
        // std::cout << location << std::endl;
+       // Debug controls
+       /*
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::P)){
             world.startGame();
         }
@@ -182,6 +184,7 @@ int main()
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::T)){
             camera.resetZoom();
         }
+        */
 
         window.setView(camera.getView());
         window.clear();
@@ -229,10 +232,17 @@ int main()
         cmdPrompt.setPosition(-480, 420);
 
         cmdPrompt.setString("user@GGJ:~$ ./attack_vector\
-            \n@controls\n\tWASD: move\n\tSpace: mute\n\tR: reset\n\tIJKL: boost move\
+            \n@controls\n\tWASD / Arrows: move\n\tM: mute\n\tR: reset\n\tSpace: boost\
             \n@author\n\tChris Williams\n\tAlex Ling,\n\tLejon McGowan\n\tKyle Piddington\
-            \n@story\n\tTODO: write story\
-            \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n... why are you here? go up and play the goddam game!");
+            \n@story\
+            \n\tYou're a loose pointer\
+            \n\trunning away from the\
+            \n\tgarbage collector as you\
+            \n\tare trying to gain greater\
+            \n\taccess to the system.\
+            \n\tAchieve root access to\
+            \n\tbeat the system!\
+            \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTODO easter egg");
         if(world.state == GAMESTATE::TUTORIAL){
             window.draw(cmdPrompt);
         }
@@ -279,20 +289,20 @@ void startGameLoop() {
 
 void handleInput() {
     if(world.state != GAMESTATE::WON){
-        sf::Keyboard::Key keySet[] = {KEY_S(W), KEY_S(S), KEY_S(A), KEY_S(D), KEY_S(I), KEY_S(K), KEY_S(L), KEY_S(J)};
+        sf::Keyboard::Key keySet[] = {KEY_S(W), KEY_S(A), KEY_S(D), KEY_S(Space), KEY_S(Left), KEY_S(Right), KEY_S(Up)};
 
         for (int i = 0; i < (sizeof(keySet) / sizeof(keySet[0])); i++) {
             if (sf::Keyboard::isKeyPressed(keySet[i])) {
                 world.getPlayer().doAction(keySet[i]);
             }
         };
-        if(sf::Keyboard::isKeyPressed(KEY_S(Space)) && !playDown)
+        if(sf::Keyboard::isKeyPressed(KEY_S(M)) && !playDown)
         {
             music.getStatus() == sf::SoundSource::Playing?music.pause():music.play();
             world.getPlayer().toggleSound();
             playDown = true;
         }
-        else if(!sf::Keyboard::isKeyPressed(KEY_S(Space)))
+        else if(!sf::Keyboard::isKeyPressed(KEY_S(M)))
         {
             playDown = false;
         }
