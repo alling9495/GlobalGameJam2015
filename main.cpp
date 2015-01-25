@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "Player.h"
 #include "WorldChunk.h"
 #include "Camera.h"
@@ -21,6 +22,7 @@ int frames = 0;
 
 World world = World(time(0));
 
+sf::Music music;
 int main()
 {
     for(int i = 0; i < 250; i++){
@@ -36,7 +38,8 @@ int main()
 
     //HUD stuff
     sf::Font font;
-    if(!font.loadFromFile("font/FreeMonoBold.ttf")) {
+    if(!font.loadFromFile("font/FreeMonoBold.ttf") || 
+        !music.openFromFile("derezzed8bit.ogg")) {
         std::cout << "Fail Whale!" << std::endl;
         //exit(1);
     }
@@ -84,7 +87,8 @@ int main()
     sf::Shader m_shader, m_light;
     m_light.loadFromFile("simpleLight.glsl",sf::Shader::Fragment);
     m_shader.loadFromFile("storm.vert", "blink.frag");
-
+    music.setLoop(true);
+    music.play();
     while (window.isOpen()) {
         if (!world.isPlayerAlive()) {
             world.loseGame();
@@ -249,11 +253,13 @@ void handleInput() {
     if(world.state != GAMESTATE::WON){
         sf::Keyboard::Key keySet[] = {KEY_S(W), KEY_S(S), KEY_S(A), KEY_S(D), KEY_S(I), KEY_S(K), KEY_S(L), KEY_S(J)};
 
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < sizeof(keySet); i++) {
             if (sf::Keyboard::isKeyPressed(keySet[i])) {
                 world.getPlayer().doAction(keySet[i]);
             }
         };
+        if(sf::Keyboard::isKeyPressed(KEY_S(Space)))
+            music.getStatus() == sf::SoundSource::Playing?music.pause():music.play();
     }
 /*    if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
         world.getPlayer().doAction(sf::Keyboard::A);
