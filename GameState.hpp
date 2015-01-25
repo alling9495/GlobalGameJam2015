@@ -3,6 +3,7 @@
 enum class GAMESTATE{
 	LOST,
 	PLAYING,
-	WON
+	WON,
+	TUTORIAL
 };
 #endif

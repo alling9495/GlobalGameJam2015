@@ -1,0 +1,6 @@
+unauthorized = purple
+user = green
+priveleged = yellow
+admin = dark red
+su = bright red
+root = bright green

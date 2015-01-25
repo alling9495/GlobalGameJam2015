@@ -15,12 +15,8 @@ void closeWindowEvent(sf::RenderWindow & window, sf::Event event);
 void startGameLoop();
 void handleInput();
 void update(sf::Time elapsed);
-void startGraphicsLoops();
-void pollInput();
 
-std::deque<Bullet *> bullets;
 std::deque<Particle *> particles;
-sf::CircleShape bulletImage(10.0f);
 int frames = 0;
 
 World world = World(time(0));
@@ -34,15 +30,13 @@ int main()
 
     sf::RenderWindow window(sf::VideoMode(800, 600), "Main Window");
     window.setFramerateLimit(60);
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
 
     sf::Clock clock, totalClock;
     Camera camera (world.getPlayer().getCenter());
 
     //HUD stuff
     sf::Font font;
-    if(!font.loadFromFile("font/FreeSansBold.ttf")) {
+    if(!font.loadFromFile("font/FreeMonoBold.ttf")) {
         std::cout << "Fail Whale!" << std::endl;
         //exit(1);
     }
@@ -64,9 +58,9 @@ int main()
         //exit(1);
     }
 
-    sf::Text coordinates;
-    coordinates.setFont(font);
-    coordinates.setCharacterSize(30);
+    sf::Text level;
+    level.setFont(font);
+    level.setCharacterSize(30);
     
     camera.resetZoom();
         // Create the points
@@ -119,20 +113,43 @@ int main()
         }
 
         frames++;
-
-        
-
+    
         camera.setCenter(VectorUtil::offset(world.getPlayer().getCenter(), world.getPlayer().forward()*12.0f));
+        /*
         std::string location = "(" + std::to_string((int)(world.getPlayer().getCenter().x)) + ", " 
-            + std::to_string((int)(world.getPlayer().getCenter().y)) + ")\n" + "Number of Bullets" + 
+            + std::to_string((int)(world.getPlayer().getCenter().y)) + ")\n" + "Number of Particles" + 
             std::to_string(particles.size());
-        
-        coordinates.setString(location);
+        */
+       std::string curLevel;
+       switch(world.level) {
+          case 0:
+            curLevel = "unauthorized";
+             break;
+          case 1:
+            curLevel = "user";
+             break;
+          case 2:
+            curLevel = "priveleged";
+             break;
+          case 3:
+            curLevel = "admin";
+             break;
+          case 4:
+            curLevel = "su";
+             break;
+          case 5:
+            curLevel = "root";
+             break;
+       }
+       char buf[100];
+       std::sprintf(buf, "Accessing '%s'...", curLevel.c_str());
+       level.setString(buf);
 
        // std::cout << location << std::endl;
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::I)){
-            world.getPlayer().draw(window);
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::P)){
+            world.startGame();
         }
+
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::R)){
             camera.zoomOut(0.05f);
         }
@@ -158,7 +175,6 @@ int main()
         //m_light.setParameter("surfacePosition",playerCenter);
         //come on...
         window.draw(m_points,&m_shader);
-        window.draw(shape);
 
         world.draw(window,&m_shader);
 
@@ -207,7 +223,7 @@ int main()
         world.getPlayer().resetMoveState();
         //HUD VIEW
         window.setView(window.getDefaultView());
-        //window.draw(coordinates);
+        window.draw(level);
         if (world.state == GAMESTATE::WON) {
             window.draw(sprite);
         }
@@ -233,8 +249,6 @@ void startGameLoop() {
 void handleInput() {
     if(world.state != GAMESTATE::WON){
         sf::Keyboard::Key keySet[] = {KEY_S(W), KEY_S(S), KEY_S(A), KEY_S(D), KEY_S(I), KEY_S(K), KEY_S(L), KEY_S(J)};
-        
-        bulletImage.setFillColor(sf::Color::Green);
 
         for (int i = 0; i < 8; i++) {
             if (sf::Keyboard::isKeyPressed(keySet[i])) {
@@ -286,10 +300,5 @@ void update(sf::Time elapsed) {
     handleInput();
 };
 
-void startGraphicsLoops() {
-};
-
-void pollInput() {
-};
 
 
