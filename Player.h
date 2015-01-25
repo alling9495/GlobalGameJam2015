@@ -11,6 +11,7 @@ public:
 	void rotate(float dir);
 	void draw(sf::RenderWindow & window);
 	void turn(float angle);
+	sf::Vector2<float> getPosition();
 	sf::Vector2<float> getCenter();
 	sf::Vector2<float> forward();
 private:
