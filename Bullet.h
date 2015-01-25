@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 class Bullet
 {
@@ -21,6 +22,7 @@ public:
 
 	void render(sf::RenderWindow& window)
 	{
+		std::cout << usingSprite<< std::endl;
 		if(usingSprite)
 			window.draw(sprite);
 		else

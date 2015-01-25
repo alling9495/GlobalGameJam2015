@@ -15,6 +15,7 @@ void startGraphicsLoops();
 void pollInput();
 
 std::deque<Bullet *> bullets;
+sf::CircleShape bulletImage(10.0f);
 
 World world = World(0);
 int main()
@@ -24,9 +25,6 @@ int main()
     window.setFramerateLimit(60);
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
-
-    sf::CircleShape bulletImage(10.0f);
-    bulletImage.setFillColor(sf::Color::Green);
 
     sf::Clock clock;
     Camera camera (world.getPlayer().getCenter());
@@ -41,6 +39,8 @@ int main()
     sf::Text coordinates;
     coordinates.setFont(font);
     coordinates.setCharacterSize(30);
+    
+    camera.resetZoom();
 
 
     while (window.isOpen()) {
@@ -79,20 +79,21 @@ int main()
         world.draw(window);
 
         //BULLETZ
-        //
-         bullets.push_front(new LinearBullet(bulletImage,1000,world.getPlayer().getCenter().x,world.getPlayer().getCenter().y,
-            world.getPlayer().forward().x * 0.5,world.getPlayer().forward().y * 0.5));
          
         for(int i = 0; i < bullets.size(); i++)
         {
             if(bullets[i]->move())
             {
+                std::cout << "rendering" << std::endl;
                 bullets[i]->render(window);
+                std::cout << "DONE!" << std::endl;
             }
             else
             {
-                 delete bullets[i];
+                std::cout << "erasing" << std::endl;
+                delete bullets[i];
                  bullets.erase(bullets.begin() + i);
+                 std::cout << "DONE!" << std::endl;
             }
         }
         
@@ -103,7 +104,7 @@ int main()
         window.display();
     }
     return 0;
-}
+};
 
 
 void closeWindowEvent(sf::RenderWindow & window, sf::Event event) {
@@ -114,12 +115,15 @@ void closeWindowEvent(sf::RenderWindow & window, sf::Event event) {
     if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape)) {
         window.close();
     }
-}
+};
 
 void startGameLoop() {
-}
+};
 
 void handleInput() {
+
+    bulletImage.setFillColor(sf::Color::Green);
+
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
         world.getPlayer().doAction(sf::Keyboard::A);
     }
@@ -153,15 +157,20 @@ void handleInput() {
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::G)){
         world.getPlayer().doAction(sf::Keyboard::G);
     }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+    {
+        bullets.push_front(new LinearBullet(bulletImage,1000,world.getPlayer().getCenter().x,world.getPlayer().getCenter().y,
+            world.getPlayer().forward().x * 0.5,world.getPlayer().forward().y * 0.5));
+    }
 
-}
+};
 
 void update(sf::Time elapsed) {
     handleInput();
-}
+};
 
 void startGraphicsLoops() {
-}
+};
 
 void pollInput() {
-}
+};

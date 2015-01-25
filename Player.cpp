@@ -43,6 +43,7 @@ const sf::Vector2<float> & Player::getCenter(){
 }
 
 sf::Vector2<float> Player::forward(){
+	triangle.setRotation(angle+90);	
 	return sf::Vector2<float>
 		((float)cos(angle*1/RAD2DEGf) * RAD2DEGf,(float)sin(angle*1/RAD2DEGf) * RAD2DEGf);
 }
@@ -94,9 +95,12 @@ void Player::swapKey(sf::Keyboard::Key keyToSwapOut) {
 }
 
 void Player::swapOrDoAction(sf::Keyboard::Key keyStroke) {
+	doAction(keyStroke);
+    /*
     if (keyToSwapIn == sf::Keyboard::Unknown) {
         doAction(keyStroke);
     } else {
         swapKey(keyStroke);
     }
+    */
 }
