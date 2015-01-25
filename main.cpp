@@ -211,7 +211,9 @@ int main()
         cmdPrompt.setPosition(-480, 420);
 
         cmdPrompt.setString("user@GGJ:~$ ./attack_vector");
-        window.draw(cmdPrompt);
+        if(world.state == GAMESTATE::TUTORIAL){
+            window.draw(cmdPrompt);
+        }
 
         for(int i = 0; i < particles.size() && particles[i]->isAlive; i++)
         {
