@@ -40,6 +40,12 @@ int main()
         //exit(1);
     }
 
+    sf::Font cmdFont;
+    if(!cmdFont.loadFromFile("font/FreeMonoBold.ttf")) {
+        std::cout << "couldn't load cmd prompt font" << std::endl;
+        //exit(1);
+    }
+
     sf::Text coordinates;
     coordinates.setFont(font);
     coordinates.setCharacterSize(30);
@@ -50,6 +56,7 @@ int main()
     /*SHADER MAGIC! Setup...*/
     sf::VertexArray m_points;
     m_points.setPrimitiveType(sf::Points);
+    /*
     for (int i = 0; i < 40000; ++i)
     {
         float x = static_cast<float>(std::rand() % 800);
@@ -59,6 +66,7 @@ int main()
         sf::Uint8 b = std::rand() % 255;
         m_points.append(sf::Vertex(sf::Vector2f(x, y), sf::Color(r, g, b)));
     }
+    */
     /*giggity*/
     // Load the shader
     sf::Shader m_shader;
@@ -67,7 +75,7 @@ int main()
     while (window.isOpen()) {
         if (!world.isPlayerAlive()) {
             //window.close();
-            //std::cout << "Player died" << std::endl;
+            std::cout << "Player died" << std::endl;
         }
 
         sf::Event event;
@@ -134,6 +142,13 @@ int main()
             }
         }
         
+        // Intro command prompt spawn point
+        sf::Text cmdPrompt;
+        cmdPrompt.setFont(cmdFont);
+        cmdPrompt.setCharacterSize(130);
+        cmdPrompt.setPosition(-480, 420);
+        cmdPrompt.setString("admin@GGJ:~$");
+        window.draw(cmdPrompt);
 
         //HUD VIEW
         window.setView(window.getDefaultView());

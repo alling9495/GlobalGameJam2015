@@ -23,7 +23,7 @@ World::World(int seed):
 	generateChunk(origin,1,-1,true);
 
 	player.move(sf::Vector2f(TILE_SIZE*CHUNK_SIZE / 2, TILE_SIZE*CHUNK_SIZE / 2));
-	player.turn(-90);
+	//player.turn(-90);
 }
 
 void World::update(sf::Time elapsed){
