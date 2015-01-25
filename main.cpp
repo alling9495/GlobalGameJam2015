@@ -91,10 +91,8 @@ int main()
         sf::Time elapsed = clock.restart(), totalTime = totalClock.getElapsedTime();
         world.update(elapsed);
         update(elapsed);
-        if (frames == 5) {
-           frames = 0;
-        }
-           particles.push_front(new Particle(world.getPlayer().getCenter().x, world.getPlayer().getCenter().y, world.getPlayer().getAngle()));
+        particles.push_front(new Particle(world.getPlayer().getCenter().x, world.getPlayer().getCenter().y, world.getPlayer().getAngle()));
+
         
 
         camera.setCenter(VectorUtil::offset(world.getPlayer().getCenter(), world.getPlayer().forward()*4.0f));
@@ -105,6 +103,9 @@ int main()
         coordinates.setString(location);
 
        // std::cout << location << std::endl;
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::I)){
+            world.getPlayer().draw(window);
+        }
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::R)){
             camera.zoomOut(0.05f);
         }
@@ -175,8 +176,8 @@ int main()
                  std::cout << "DONE!" << std::endl;
             }
         }
-        frames++;  
-        std::cout << frames << std::endl;
+          
+    
         //HUD VIEW
         window.setView(window.getDefaultView());
         window.draw(coordinates);
