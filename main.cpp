@@ -36,7 +36,7 @@ int main()
 
     //HUD stuff
     sf::Font font;
-    if(!font.loadFromFile("font/FreeSansBold.ttf")) {
+    if(!font.loadFromFile("font/FreeMonoBold.ttf")) {
         std::cout << "Fail Whale!" << std::endl;
         //exit(1);
     }
@@ -58,9 +58,9 @@ int main()
         //exit(1);
     }
 
-    sf::Text coordinates;
-    coordinates.setFont(font);
-    coordinates.setCharacterSize(30);
+    sf::Text level;
+    level.setFont(font);
+    level.setCharacterSize(30);
     
     camera.resetZoom();
         // Create the points
@@ -114,11 +114,35 @@ int main()
         frames++;
     
         camera.setCenter(VectorUtil::offset(world.getPlayer().getCenter(), world.getPlayer().forward()*12.0f));
+        /*
         std::string location = "(" + std::to_string((int)(world.getPlayer().getCenter().x)) + ", " 
             + std::to_string((int)(world.getPlayer().getCenter().y)) + ")\n" + "Number of Particles" + 
             std::to_string(particles.size());
-        
-        coordinates.setString(location);
+        */
+       std::string curLevel;
+       switch(world.level) {
+          case 0:
+            curLevel = "unauthorized";
+             break;
+          case 1:
+            curLevel = "user";
+             break;
+          case 2:
+            curLevel = "priveleged";
+             break;
+          case 3:
+            curLevel = "admin";
+             break;
+          case 4:
+            curLevel = "su";
+             break;
+          case 5:
+            curLevel = "root";
+             break;
+       }
+       char buf[100];
+       std::sprintf(buf, "Accessing '%s'...", curLevel.c_str());
+       level.setString(buf);
 
        // std::cout << location << std::endl;
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::P)){
@@ -196,7 +220,7 @@ int main()
         world.getPlayer().resetMoveState();
         //HUD VIEW
         window.setView(window.getDefaultView());
-        //window.draw(coordinates);
+        window.draw(level);
         if (world.state == GAMESTATE::WON) {
             window.draw(sprite);
         }

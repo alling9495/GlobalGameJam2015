@@ -16,9 +16,9 @@ public:
 	bool isPlayerAlive();
 	void loseGame();
 	GAMESTATE state;
+	int level = 0;
 
 private:
-	int level = 0;
 	float levelTime;
 	int seed;
 	Player player;
