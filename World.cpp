@@ -13,7 +13,7 @@ float dissolveSpeedValues[] = {1.0f,1.32f,1.4f,1.6f,1.7f,1.8f};
 sf::Color tileColors[] = {
 	sf::Color(125,25,125),
 	sf::Color(25,125,25),
-	sf::Color(225,225,125),
+	sf::Color(200,200,25),
 	sf::Color(125,25,60),
 	sf::Color(200,25,25),
 	sf::Color(0,255,0),
@@ -50,6 +50,7 @@ void World::startGame() {
 	clearChunks();
 
 	state = GAMESTATE::PLAYING;
+	seed = time(0);
 	srand(seed);
 	sf::Color startColor = sf::Color(125,25,125);
 	levelTime = levelTimes[0];
