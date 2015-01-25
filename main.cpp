@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "Player.h"
 #include "Camera.h"
+#include <iostream>
 
 void closeWindowEvent(sf::RenderWindow & window, sf::Event event);
 void startGameLoop();
@@ -17,7 +18,19 @@ int main() {
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
     sf::Clock clock;
-    Camera camera;    
+    Camera camera;   
+
+    //HUD stuff
+    sf::Font font;
+    if(!font.loadFromFile("font/FreeMono.ttf"));
+    {
+        std::cout << "Fail Whale!" << std::endl;
+        //exit(1);
+    }
+
+    sf::Text coordinates;
+    coordinates.setFont(font);
+    coordinates.setCharacterSize(30);
 
 
     while (window.isOpen()) {
@@ -28,11 +41,21 @@ int main() {
 
         sf::Time elapsed = clock.restart();
         update(elapsed);
+        std::string location = "(" + std::to_string((int)(player.getPosition().x)) + ", " 
+            + std::to_string((int)(player.getPosition().y)) + ")";
+        
+        coordinates.setString(location);
+
+       // std::cout << location << std::endl;
+
         camera.setCenter(player.getCenter());
         window.setView(camera.getView());
         window.clear();
         window.draw(shape);
         player.draw(window);
+
+        window.setView(window.getDefaultView());
+        window.draw(coordinates);
         window.display();
     }
 
