@@ -15,7 +15,6 @@ public:
 	Player & getPlayer();
 	bool isPlayerAlive();
 	void loseGame();
-	void startGame();
 	GAMESTATE state;
 	int level = -2;
 
