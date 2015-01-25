@@ -3,28 +3,53 @@
 #include "Tile.h"
 #include <iostream>
 #include "VectorUtil.h"
+#define LEVELS 5
 using namespace std;
 
+float levelTimes[] = {35.0,40.0,50.0,60.0,70.0,70.0f};
+float speedValues[] = {0.35f, 0.45f, 0.5f, 0.5f, 0.65f, 0.75f};
+float dissolveSpeedValues[] = {1.15f,1.32f,1.4f,1.6f,1.8f,2.0f};
 
+sf::Color tileColors[] = {
+	sf::Color(125,25,125),
+	sf::Color(25,125,25),
+	sf::Color(125,25,125),
+	sf::Color(125,25,60),
+	sf::Color(200,25,25),
+	sf::Color(0,255,0)
+};
 
 
 World::World(int seed):
 	seed(seed)
 {
+	sf::Color startColor = sf::Color(125,25,125);
+	levelTime = levelTimes[0];
 	std::pair<int,int> origin = std::pair<int,int>(0,0);
-	generateChunk(std::pair<int,int>(0,0),false);
-	generateChunk(origin,1,0,true);
-	generateChunk(origin,1,1,true);
-	generateChunk(origin,0,1,true);
-	generateChunk(origin,-1,1,true);
-	generateChunk(origin,-1,0,true);
-	generateChunk(origin,-1,-1,true);
-	generateChunk(origin,0,-1,false);
-	generateChunk(origin,1,-1,true);
+	generateChunk(std::pair<int,int>(0,0),false, startColor);
+	generateChunk(origin,1,0,true,tileColors[0]);
+	generateChunk(origin,1,1,true,tileColors[0]);
+	generateChunk(origin,0,1,true,tileColors[0]);
+	generateChunk(origin,-1,1,true,tileColors[0]);
+	generateChunk(origin,-1,0,true,tileColors[0]);
+	generateChunk(origin,-1,-1,true,tileColors[0]);
+	generateChunk(origin,0,-1,false,startColor);
+	generateChunk(origin,1,-1,true,tileColors[0]); 	
+
+	player.move(sf::Vector2f(TILE_SIZE*CHUNK_SIZE / 2, TILE_SIZE*CHUNK_SIZE / 2));
+	//player.turn(-90);
 }
 
 void World::update(sf::Time elapsed){
-	
+	levelTime -= elapsed.asSeconds()*5;
+	if(levelTime < 0){
+		if(level < LEVELS){
+			levelTime=levelTimes[++level];
+			player.setSpeedMultiplier(speedValues[level]);
+			colorTiles(tileColors[level]);
+			cout<<"LEVEL UP"<<endl;
+		}
+	}
 	std::pair<int,int> chunk = getPlayerChunk();
 	if(chunk != lastPlayerChunk){
 		std::cout << "Player entered " << chunk.first << "," << chunk.second << endl;
@@ -33,25 +58,25 @@ void World::update(sf::Time elapsed){
 	
 		lastPlayerChunk = chunk;
 		getChunkWithOffset(0,0)->startDeallocationAnimation(
-			VectorUtil::offset(player.getCenter(),player.forward()*-3.0f));
+			VectorUtil::offset(player.getCenter(),player.forward()*-3.0f),dissolveSpeedValues[level]);
 
 		//Generate the square chunk around the player
 
 		generateChunks();
-
-		
 	}
 
 	for(std::vector<WorldChunk *>::iterator it = loadedChunks.begin(); it != loadedChunks.end(); it++){
 		(*it)->update(elapsed);
 	}
-
+		
+	
+	
 
 }
 World::~World(){
 	//Clear map
 }
-void World::draw(sf::RenderWindow & window){
+void World::draw(sf::RenderWindow & window, sf::Shader* shader){
 	bool top = isPlayerNearTop();
 	bool left = isPlayerNearLeft();
 	bool bottom = isPlayerNearBottom();
@@ -59,9 +84,11 @@ void World::draw(sf::RenderWindow & window){
 	std::vector<WorldChunk *>::iterator it = loadedChunks.begin();
 	while(it != loadedChunks.end()){
 
-		(*it)->draw(window);
+		(*it)->draw(window,shader);
 		it++;
 	}
+
+	
 	
 	
 	player.draw(window);
@@ -103,24 +130,30 @@ void World::freeChunk(std::pair<int,int> key){
 	}
 }
 
-bool World::generateChunk(std::pair<int,int> pos, bool wall){
-	if(!chunks.count(pos) != 0){
+bool World::generateChunk(std::pair<int,int> pos, bool wall, sf::Color c){
+	if(chunks.count(pos) == 0){
 
-		chunks[pos] = new WorldChunk(wall,pos.first,pos.second);
+		chunks[pos] = new WorldChunk(wall,pos.first,pos.second,c);
 		loadedChunks.push_back(chunks[pos]);
 		return true;
 	}
 	return false;
 }
 
-bool World::generateChunk(std::pair<int,int> root, int x, int y, bool wall){
-	cout<<"Wall is " << wall << endl;
-	return generateChunk(std::pair<int,int>(root.first + x, root.second + y),wall);
+bool World::generateChunk(std::pair<int,int> root, int x, int y, bool wall, sf::Color c){
+	return generateChunk(std::pair<int,int>(root.first + x, root.second + y),wall,c);
 }
 
 WorldChunk * World::getChunkWithOffset(int x, int y){
 	return chunks[std::pair<int,int>(lastPlayerChunk.first + x, lastPlayerChunk.second + y)];
 }
+
+bool World::hasChunkWithOffset(int x, int y){
+	cout << "Checking " << lastPlayerChunk.first + x << "," << lastPlayerChunk.second + y <<endl;
+	return chunks.count(
+		std::pair<int,int>(lastPlayerChunk.first + x, lastPlayerChunk.second + y)) > 0;
+}
+
 
 Player & World::getPlayer(){
 	return player;
@@ -147,35 +180,73 @@ void World::generateChunks(){
 
 	//Pick one non'generated chunk and make it not a wall.
 	int x, y;
-	do{
-		x = y = 0;
-		if(rand()%2 > 0){
-			x = round(rand()%3 -1);
-		}
-		else{
-			y = round(rand()%3 -1);
-		}
+	//Initial scan, guarentee at least 2 walls are open. (enterance and one exit)
+	int openCount = 0;
+	if(hasChunkWithOffset(-1,0) && !getChunkWithOffset(-1,0)->isWall){
+		openCount++;
+	}
+	if(hasChunkWithOffset(1,0)&&!getChunkWithOffset(1,0)->isWall){
+		openCount++;
+	}
+	if(hasChunkWithOffset(0,-1)&&!getChunkWithOffset(0,-1)->isWall){
+		openCount++;
+	}
+	if(hasChunkWithOffset(0,1)&&!getChunkWithOffset(0,1)->isWall){
+		openCount++;
+	}
+	cout << "OPEN COUNT: " <<openCount << endl;
+	if(openCount < 2){
+		do{
+			x = y = 0;
+			if(rand()%2 > 0){
+				x = round(rand()%3 -1);
+			}
+			else{
+				y = round(rand()%3 -1);
+			}
 
-	}while(!generateChunk(lastPlayerChunk,x,y,false));
+		}while(!generateChunk(lastPlayerChunk,x,y,false,tileColors[level]));
+	}
 
 
 	for(x = -1; x < 2; x++){
 		for(y = -1; y < 2; y++){
 			if(rand()%4 == 0){
-				if(generateChunk(lastPlayerChunk,x,y,false)){
+				if(generateChunk(lastPlayerChunk,x,y,false,tileColors[level])){
 					if(rand()%4 == 0){
 						getChunkWithOffset(x,y)->startDeallocationAnimation();
+						getChunkWithOffset(x,y)->isWall=true;//Sorry
 					}
 				}
 			}
 			else{
 		
-				if(generateChunk(lastPlayerChunk,x,y,true)){
+				if(generateChunk(lastPlayerChunk,x,y,true,tileColors[level])){
 					if(rand()%4 == 0){
 						getChunkWithOffset(x,y)->startDeallocationAnimation();
+
 					}
 				}
 			}
 		}
 	}
+}
+
+void World::colorTiles(sf::Color color){
+	for(std::vector<WorldChunk *>::iterator it = loadedChunks.begin(); it != loadedChunks.end(); it++){
+		(*it)->colorTiles(player.getCenter(),8,color);
+	}
+
+	
+}
+
+bool World::isPlayerAlive() {
+	WorldChunk chunk = * chunks[getPlayerChunk()];
+	const sf::Vector2f pos = player.getCenter();
+
+	int i = (pos.x - (chunk.x * CHUNK_SIZE*TILE_SIZE)) / TILE_SIZE;
+	int j = (pos.y - (chunk.y * CHUNK_SIZE*TILE_SIZE)) / TILE_SIZE;
+
+	Tile tile = chunk.getTile(i, j);
+	return tile.isSafe();
 }

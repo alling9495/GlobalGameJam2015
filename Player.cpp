@@ -4,9 +4,14 @@ using namespace std;
 
 Player::Player(){
 
-	triangle = sf::CircleShape(80.0f,3);
-	triangle.setOrigin(80.0f,80.0f);
-	triangle.setScale(0.5,0.75);
+	if (!texture.loadFromFile("player.png")) {
+		// error!
+		std::cout << "unable to load player sprite" << std::endl;
+	}
+	texture.setSmooth(true);
+	sprite.setTexture(texture);
+	sf::Vector2u textureSize = texture.getSize();
+	sprite.setOrigin(textureSize.x / 2, textureSize.y / 2);
 
 	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::A, TurnCounter));
 	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::W, Forward));
@@ -31,14 +36,14 @@ Player::~Player(){
 void Player::move(const sf::Vector2<float>& dir){
 	pos += dir;
 
-	triangle.setPosition(pos.x,pos.y);
+	sprite.setPosition(pos.x, pos.y);
 }
 void Player::draw(sf::RenderWindow & window){
-	window.draw(triangle);
+	window.draw(sprite);
 }
 void Player::turn(float deg){
 	angle += deg;
-	triangle.setRotation(angle+90);
+	sprite.setRotation(angle+90);
 }
 
 const sf::Vector2<float> & Player::getCenter(){
@@ -46,11 +51,14 @@ const sf::Vector2<float> & Player::getCenter(){
 }
 
 sf::Vector2f Player::forward(){
-	triangle.setRotation(angle+90);	
+	sprite.setRotation(angle+90);
 	return sf::Vector2f
-		((float)cos(angle*1/RAD2DEGf) * RAD2DEGf,(float)sin(angle*1/RAD2DEGf) * RAD2DEGf);
+		((float)cos(angle*1.0/RAD2DEGf) * RAD2DEGf,(float)sin(angle*1.0/RAD2DEGf) * RAD2DEGf);
 }
 
+void Player::setSpeedMultiplier(float multiplier){
+	this->speedMult = multiplier;
+}
 void Player::doAction(sf::Keyboard::Key keyStroke) {
 	switch(map[keyStroke]) {
 		case TurnCounter:
@@ -59,7 +67,7 @@ void Player::doAction(sf::Keyboard::Key keyStroke) {
 			break;
 		case Forward:
 			// move forward
-            move(forward() * 0.35f);
+            move(forward() * speedMult);
 			break;
 		case Backward:
 			// move backwards

@@ -7,14 +7,24 @@ class Tile{
 public:
 	Tile(){};
 	Tile(bool wall, int x, int y);
+	Tile(bool wall, int x, int y, sf::Color color);
 	~Tile();
 	const sf::Vector2f & getPosition();
 	void update(sf::Time elapsed);
-	void draw(sf::RenderWindow & window);
+	void draw(sf::RenderWindow & window, sf::Shader* shader = NULL);
 	void startDestoryAnimation(float delay);
+	void updateColor(sf::Color color);
+	void updateColorWithDelay(float delay, sf::Color newCol);	
+	bool isSafe();
 private:
+	int x;
+	int y;
 	sf::RectangleShape renderTile;
-	bool isBeingDestoryed;
+	bool isBeingDestoryed=false;
+	bool isBeingColored=false;
 	float destroyDelay;
+	float colorDelay;
+	sf::Color nextColor;
+	bool isWall = false;
 };
 #endif

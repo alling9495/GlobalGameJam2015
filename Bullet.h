@@ -20,13 +20,13 @@ public:
 
 	virtual bool move(float x = 0, float y = 0) = 0;
 
-	void render(sf::RenderWindow& window)
+	void render(sf::RenderWindow& window, sf::Shader* shader = NULL)
 	{
 		std::cout << usingSprite<< std::endl;
 		if(usingSprite)
-			window.draw(sprite);
+			window.draw(sprite,shader);
 		else
-			window.draw(shape);
+			window.draw(shape,shader);
 	}
 	~Bullet(){};
 

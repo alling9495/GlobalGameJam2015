@@ -1,6 +1,6 @@
 #include "Camera.h"
 
-#define DEFAULTPERCENT 02.5f
+#define DEFAULTPERCENT 03.0f
 Camera::Camera(){
 	width = 800;
 	height = 600;
