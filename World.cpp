@@ -34,7 +34,7 @@ World::World(int seed):
 	generateChunk(origin,-1,-1,true,tileColors[0]);
 	generateChunk(origin,0,-1,false,tileColors[0]);
 	generateChunk(origin,1,-1,true,tileColors[0]);
-   
+	colorTiles(tileColors[0]);   	
 
 	player.move(sf::Vector2f(TILE_SIZE*CHUNK_SIZE / 2, TILE_SIZE*CHUNK_SIZE / 2));
 	player.turn(-90);
