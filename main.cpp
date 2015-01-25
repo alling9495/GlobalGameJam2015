@@ -3,6 +3,7 @@
 #include "WorldChunk.h"
 #include "Camera.h"
 #include "World.h"
+#include <iostream>
 
 void closeWindowEvent(sf::RenderWindow & window, sf::Event event);
 void startGameLoop();
@@ -23,6 +24,18 @@ int main()
     sf::Clock clock;
     Camera camera (world.getPlayer().getCenter());
 
+    //HUD stuff
+    sf::Font font;
+    if(!font.loadFromFile("font/FreeMono.ttf"));
+    {
+        std::cout << "Fail Whale!" << std::endl;
+        //exit(1);
+    }
+
+    sf::Text coordinates;
+    coordinates.setFont(font);
+    coordinates.setCharacterSize(30);
+
 
     while (window.isOpen()) {
         sf::Event event;
@@ -33,12 +46,31 @@ int main()
         world.update(elapsed);
         update(elapsed);
         camera.setCenter(world.getPlayer().getCenter());
+        std::string location = "(" + std::to_string((int)(world.getPlayer().getCenter().x)) + ", " 
+            + std::to_string((int)(world.getPlayer().getCenter().y)) + ")";
+        
+        coordinates.setString(location);
+
+       // std::cout << location << std::endl;
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::O)){
+            camera.zoomOut(0.05f);
+        }
+
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::P)){
+            camera.zoomIn(0.05f);
+        }
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::I)){
+            camera.resetZoom();
+        }
+
         window.setView(camera.getView());
         window.clear();
         //wc->draw(window);
         window.draw(shape);
 
         world.draw(window);
+        window.setView(window.getDefaultView());
+        window.draw(coordinates);
         window.display();
     }
 
@@ -59,18 +91,31 @@ void startGameLoop() {
 }
 
 void handleInput() {
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::F)){
-        world.getPlayer().move(world.getPlayer().forward() * 0.15f);
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
+        // swap
     }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::J)){
-        world.getPlayer().move(world.getPlayer().forward() * -0.05f);
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
+        // swap
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
-        world.getPlayer().turn(3);
+        player.doAction(0);
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::F)){
+        player.doAction(1);
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::J)){
+        player.doAction(2);
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::K)){
-        world.getPlayer().turn(-3);
+        player.doAction(3);
     }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::L)){
+        // swap
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::SemiColon)){
+        // swap
+    }
+
 }
 
 void update(sf::Time elapsed) {
