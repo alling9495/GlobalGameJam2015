@@ -50,11 +50,11 @@ void Player::doAction(sf::Keyboard::Key keyStroke) {
 	switch(map[keyStroke]) {
 		case TurnCounter:
 			// turn counter-clockwise
-            turn(-3);
+            turn(-7);
 			break;
 		case Forward:
 			// move forward
-            move(forward() * 0.15f);
+            move(forward() * 2.15f);
 			break;
 		case Backward:
 			// move backwards
@@ -62,7 +62,7 @@ void Player::doAction(sf::Keyboard::Key keyStroke) {
 			break;
 		case TurnClockwise:
 			// turn clockwise
-            turn(3);
+            turn(7);
 			break;
 		case Flamethrower:
 			// TODO flamethrower

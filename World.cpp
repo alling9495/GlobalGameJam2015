@@ -7,15 +7,15 @@ World::World(int seed):
 	seed(seed)
 {
 	std::pair<int,int> origin = std::pair<int,int>(0,0);
-	generateChunk(std::pair<int,int>(0,0));
-	generateChunk(origin,1,0);
-	generateChunk(origin,1,1);
-	generateChunk(origin,0,1);
-	generateChunk(origin,-1,1);
-	generateChunk(origin,-1,0);
-	generateChunk(origin,-1,-1);
-	generateChunk(origin,0,-1);
-	generateChunk(origin,1,-1);
+	generateChunk(std::pair<int,int>(0,0),false);
+	generateChunk(origin,1,0,true);
+	generateChunk(origin,1,1,true);
+	generateChunk(origin,0,1,true);
+	generateChunk(origin,-1,1,true);
+	generateChunk(origin,-1,0,true);
+	generateChunk(origin,-1,-1,true);
+	generateChunk(origin,0,-1,false);
+	generateChunk(origin,1,-1,true);
 }
 
 void World::update(sf::Time elapsed){
@@ -28,16 +28,8 @@ void World::update(sf::Time elapsed){
 		lastPlayerChunk = chunk;
 		//Generate the square chunk around the player
 
-		generateChunk(lastPlayerChunk);
-		
-		generateChunk(lastPlayerChunk,1,0);
-		generateChunk(lastPlayerChunk,1,1);
-		generateChunk(lastPlayerChunk,0,1);
-		generateChunk(lastPlayerChunk,-1,1);
-		generateChunk(lastPlayerChunk,-1,0);
-		generateChunk(lastPlayerChunk,-1,-1);
-		generateChunk(lastPlayerChunk,0,-1);
-		generateChunk(lastPlayerChunk,1,-1);
+		generateChunks();
+
 		
 	}
 
@@ -98,15 +90,19 @@ void World::freeChunk(std::pair<int,int> key){
 	}
 }
 
-void World::generateChunk(std::pair<int,int> pos){
-	if(chunks[pos] == NULL){
-		chunks[pos] = new WorldChunk(seed,pos.first,pos.second);
+bool World::generateChunk(std::pair<int,int> pos, bool wall){
+	if(!chunks.count(pos) != 0){
+
+		chunks[pos] = new WorldChunk(wall,pos.first,pos.second);
 		loadedChunks.push_back(chunks[pos]);
+		return true;
 	}
+	return false;
 }
 
-void World::generateChunk(std::pair<int,int> root, int x, int y){
-	generateChunk(std::pair<int,int>(root.first + x, root.second + y));
+bool World::generateChunk(std::pair<int,int> root, int x, int y, bool wall){
+	cout<<"Wall is " << wall << endl;
+	return generateChunk(std::pair<int,int>(root.first + x, root.second + y),wall);
 }
 
 WorldChunk * World::getChunkWithOffset(int x, int y){
@@ -125,10 +121,38 @@ void World::unloadChunks(std::pair<int,int> next){
 			cout << "Free : "  << (*it)->x << " ," << (*it)->y << endl;
 			freeChunk(std::pair<int,int>((*it)->x,(*it)->y));
 			it=loadedChunks.erase(it);
-
+			
 		}
 		else{
 			++it;
 		}
 	}
+}
+
+
+void World::generateChunks(){
+
+	//Pick one non'generated chunk and make it not a wall.
+	int x, y;
+	do{
+		x = y = 0;
+		if(rand()%2 > 0){
+			x = round(rand()%3 -1);
+		}
+		else{
+			y = round(rand()%3 -1);
+		}
+		cout<<x<<','<<y<<endl;
+	}while(!generateChunk(lastPlayerChunk,x,y,false));
+
+
+	generateChunk(lastPlayerChunk,(bool)(rand()%2));
+	generateChunk(lastPlayerChunk,1,0,(bool)(rand()%2));
+	generateChunk(lastPlayerChunk,1,1,(bool)(rand()%2));
+	generateChunk(lastPlayerChunk,0,1,(bool)(rand()%2));
+	generateChunk(lastPlayerChunk,-1,1,(bool)(rand()%2));
+	generateChunk(lastPlayerChunk,-1,0,(bool)(rand()%2));
+	generateChunk(lastPlayerChunk,-1,-1,(bool)(rand()%2));
+	generateChunk(lastPlayerChunk,0,-1,(bool)(rand()%2));
+	generateChunk(lastPlayerChunk,1,-1,(bool)(rand()%2));
 }

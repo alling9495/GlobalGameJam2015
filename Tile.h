@@ -6,7 +6,7 @@
 class Tile{
 public:
 	Tile(){};
-	Tile(int type, int x, int y);
+	Tile(bool wall, int x, int y);
 	~Tile();
 	void draw(sf::RenderWindow & window);
 private:
