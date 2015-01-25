@@ -1,6 +1,7 @@
 #ifndef __PLAYER_H__
 #define __PLAYER_H__
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <math.h>
 #include <map>
 #define RAD2DEGf (float)(180.0f/M_PI)
@@ -40,7 +41,11 @@ public:
 	bool isDashing();
 	void resetMoveState();
 	void setColor(sf::Color c);
+	void toggleSound();
 private:
+	sf::SoundBuffer sfxBuffer;
+	bool mute;
+	sf::Sound sfx;
 	float speedMult = 0.35f;
 	sf::CircleShape triangle;
 	sf::Texture texture;

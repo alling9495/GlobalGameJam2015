@@ -29,6 +29,10 @@ Player::Player(){
 	//map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::SemiColon, LimitBreak));
 
 	keyToSwapIn = sf::Keyboard::Unknown;
+	sfxBuffer.loadFromFile("falco041.wav");
+	sfx.setBuffer(sfxBuffer);
+	sfx.setVolume(40);
+	mute = false;
 }
 Player::~Player(){
 
@@ -58,7 +62,10 @@ sf::Vector2f Player::forward(){
 	return sf::Vector2f
 		((float)cos(angle*1.0/RAD2DEGf) * RAD2DEGf,(float)sin(angle*1.0/RAD2DEGf) * RAD2DEGf);
 }
-
+void Player::toggleSound()
+{
+	mute = !mute;
+}
 void Player::setSpeedMultiplier(float multiplier){
 	this->speedMult = multiplier;
 }
@@ -97,6 +104,8 @@ void Player::doAction(sf::Keyboard::Key keyStroke) {
 		case SuperBoost:
 			dashing=true;
 			move(forward() * 1.0f);
+			if(!mute)
+				sfx.play();
 			break;
 		case StrafeLeft:
 			//move(left() * 0.3f);

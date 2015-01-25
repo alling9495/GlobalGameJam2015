@@ -39,7 +39,8 @@ int main()
 
     sf::Clock clock, totalClock;
     Camera camera (sf::Vector2f(VectorUtil::offset(world.getPlayer().getCenter(), world.getPlayer().forward()*12.0f)));
- 
+    
+
     
     //HUD stuff
     sf::Font font;
@@ -284,6 +285,7 @@ void handleInput() {
         if(sf::Keyboard::isKeyPressed(KEY_S(Space)) && !playDown)
         {
             music.getStatus() == sf::SoundSource::Playing?music.pause():music.play();
+            world.getPlayer().toggleSound();
             playDown = true;
         }
         else if(!sf::Keyboard::isKeyPressed(KEY_S(Space)))
