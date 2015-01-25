@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "WorldChunk.h"
 #include "Camera.h"
+#include "World.h"
 
 void closeWindowEvent(sf::RenderWindow & window, sf::Event event);
 void startGameLoop();
@@ -10,17 +11,17 @@ void update(sf::Time elapsed);
 void startGraphicsLoops();
 void pollInput();
 
-Player player;
-
+World world = World(0);
 int main()
 {
-    WorldChunk* wc = new WorldChunk(0,0,0);
+
+    //WorldChunk* wc = new WorldChunk(0,0,0);
     sf::RenderWindow window(sf::VideoMode(800, 600), "Main Window");
     window.setFramerateLimit(60);
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
     sf::Clock clock;
-    Camera camera (player.getCenter());
+    Camera camera (world.getPlayer().getCenter());
 
 
     while (window.isOpen()) {
@@ -29,13 +30,15 @@ int main()
             closeWindowEvent(window, event);
         }
         sf::Time elapsed = clock.restart();
+        world.update(elapsed);
         update(elapsed);
-        camera.setCenter(player.getCenter());
+        camera.setCenter(world.getPlayer().getCenter());
         window.setView(camera.getView());
         window.clear();
-        wc->draw(window);
+        //wc->draw(window);
         window.draw(shape);
-        player.draw(window);
+
+        world.draw(window);
         window.display();
     }
 
@@ -57,16 +60,16 @@ void startGameLoop() {
 
 void handleInput() {
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::F)){
-        player.move(player.forward() * 0.15f);
+        world.getPlayer().move(world.getPlayer().forward() * 0.15f);
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::J)){
-        player.move(player.forward() * -0.05f);
+        world.getPlayer().move(world.getPlayer().forward() * -0.05f);
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
-        player.turn(3);
+        world.getPlayer().turn(3);
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::K)){
-        player.turn(-3);
+        world.getPlayer().turn(-3);
     }
 }
 

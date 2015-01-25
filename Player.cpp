@@ -1,5 +1,8 @@
+#include <iostream>
 #include "Player.h"
+using namespace std;
 Player::Player(){
+
 	triangle = sf::CircleShape(80.0f,3);
 	triangle.setOrigin(80.0f,80.0f);
 	triangle.setScale(0.5,0.75);
@@ -28,7 +31,4 @@ const sf::Vector2<float> & Player::getCenter(){
 sf::Vector2<float> Player::forward(){
 	return sf::Vector2<float>
 		((float)cos(angle*1/RAD2DEGf) * RAD2DEGf,(float)sin(angle*1/RAD2DEGf) * RAD2DEGf);
-}
-const sf::Vector2f & Player::getPosition(){
-	return pos;
 }

@@ -1,10 +1,13 @@
 #include "WorldChunk.h"
 
-WorldChunk::WorldChunk(int seed, int x, int y){
+WorldChunk::WorldChunk(int seed, int x, int y):
+x(x),
+y(y)
+{
 
-	for(int i = 0; i < CHUNK_WIDTH; i++){
-		for(int j = 0; j < CHUNK_HEIGHT; j++){
-			tiles[i][j] = Tile(0,i+x*CHUNK_WIDTH,j+y*CHUNK_HEIGHT);
+	for(int i = 0; i < CHUNK_SIZE; i++){
+		for(int j = 0; j < CHUNK_SIZE; j++){
+			tiles[i][j] = Tile(0,i+x*CHUNK_SIZE,j+y*CHUNK_SIZE);
 		}
 	}
 }
@@ -12,8 +15,8 @@ WorldChunk::~WorldChunk(){
 
 }
 void WorldChunk::draw(sf::RenderWindow & window){
-	for(int i = 0; i < CHUNK_WIDTH; i++){
-		for(int j = 0; j < CHUNK_HEIGHT; j++){
+	for(int i = 0; i < CHUNK_SIZE; i++){
+		for(int j = 0; j < CHUNK_SIZE; j++){
 			tiles[i][j].draw(window);
 		}
 	}
