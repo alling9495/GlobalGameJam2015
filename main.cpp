@@ -9,6 +9,7 @@
 #include <iostream>
 #include <deque>
 #include <ctime>
+#include "StartPoint.h"
 #define KEY_S(keyStroke) sf::Keyboard::Key::keyStroke
 
 void closeWindowEvent(sf::RenderWindow & window, sf::Event event);
@@ -20,7 +21,7 @@ std::deque<Particle *> particles;
 int frames = 0;
 
 World world = World(time(0));
-
+StartPoint* point;
 int main()
 {
     for(int i = 0; i < 250; i++){
@@ -63,7 +64,7 @@ int main()
     sf::Text level;
     level.setFont(font);
     level.setCharacterSize(30);
-    
+    point = new StartPoint(sf::Vector2f(-1,-1));
     camera.resetZoom();
         // Create the points
         // 
@@ -105,6 +106,7 @@ int main()
         sf::Time elapsed = clock.restart(), totalTime = totalClock.getElapsedTime();
         world.update(elapsed);
         update(elapsed);
+
         
         if(!particles.back()->isAlive && world.getPlayer().isDashing() && frames>1)
         {
@@ -186,6 +188,7 @@ int main()
         window.draw(m_points,&m_shader);
 
         world.draw(window,&m_shader);
+        point->draw(window);
 
         //BULLETZ
         /*
@@ -213,7 +216,7 @@ int main()
         cmdPrompt.setCharacterSize(100);
         cmdPrompt.setPosition(-480, 420);
 
-        cmdPrompt.setString("user@GGJ:~$ ./attack_vector");
+        cmdPrompt.setString("user@GGJ:~$ ./attack_vector\nChris Williams\nAlex Ling,\nLejon McGowan\nKyle Piddington");
         if(world.state == GAMESTATE::TUTORIAL){
             window.draw(cmdPrompt);
         }
@@ -310,6 +313,7 @@ void handleInput() {
 
 void update(sf::Time elapsed) {
     handleInput();
+    point->update(elapsed);
 };
 
 
