@@ -207,8 +207,8 @@ int main()
         window.draw(m_points,&m_shader);
         world.draw(window,&m_shader);
         startPoint->draw(window);
-        if(startPoint->isActive() &&
-         (abs((startPoint->x != world.getPlayerChunk().first))) > 1 || (abs(startPoint->y - world.getPlayerChunk().second)) > 1) {
+        if(startPoint->isActive() && (
+         (abs((startPoint->x != world.getPlayerChunk().first))) > 1 || (abs(startPoint->y - world.getPlayerChunk().second)) > 1)) {
             indicator->point(world.getPlayer().getCenter(), startPoint->position);
             indicator->draw(window);
         }
