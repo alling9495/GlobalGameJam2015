@@ -19,6 +19,7 @@ public:
 	int x;
 	int y;
 	Tile & getTile(int i, int j);
+	bool isWall;
 private:
 	Tile tiles[CHUNK_SIZE][CHUNK_SIZE];
 	bool isBeingDestroyed = false;

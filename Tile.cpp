@@ -20,6 +20,22 @@ Tile::Tile(bool type, int x, int y):
 	}
 	destroyDelay = 0.0f;
 }
+Tile::Tile(bool type, int x, int y, sf::Color color):
+x(x),
+y(y),
+isWall(type){
+	renderTile.setSize(sf::Vector2f(TILE_SIZE,TILE_SIZE));
+	renderTile.setPosition(x*TILE_SIZE,y*TILE_SIZE);
+	if(type){
+		renderTile.setFillColor(sf::Color(abs(sin(x*y))*95,abs(sin(x*y))*95,abs(sin(x*y))*95));
+	}
+	else{
+		float intensity = (rand()%16) / 32.0f + 0.5f;
+		renderTile.setFillColor(
+			sf::Color(intensity*color.r,intensity*color.g,intensity*color.b));
+	}
+
+}
 Tile::~Tile(){
 	
 }
@@ -28,7 +44,12 @@ const sf::Vector2f & Tile::getPosition(){
 	return renderTile.getPosition();
 }
 void Tile::draw(sf::RenderWindow & window, sf::Shader* shader){
-	window.draw(renderTile, shader);
+	if(isWall){
+		window.draw(renderTile);
+	}
+	else{
+		window.draw(renderTile, shader);
+	}
 }
 
 void Tile::update(sf::Time elapsed){

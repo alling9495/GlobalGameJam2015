@@ -4,7 +4,8 @@
 using namespace std;
 WorldChunk::WorldChunk(bool wall, int x, int y):
 x(x),
-y(y)
+y(y),
+isWall(wall)
 {
 
 	for(int i = 0; i < CHUNK_SIZE; i++){
@@ -16,13 +17,13 @@ y(y)
 
 WorldChunk::WorldChunk(bool wall, int x, int y,sf::Color color):
 x(x),
-y(y)
+y(y),
+isWall(wall)
 {
 
 	for(int i = 0; i < CHUNK_SIZE; i++){
 		for(int j = 0; j < CHUNK_SIZE; j++){
-			tiles[i][j] = Tile(wall,i+x*CHUNK_SIZE,j+y*CHUNK_SIZE);
-			tiles[i][j].updateColor(color);
+			tiles[i][j] = Tile(wall,i+x*CHUNK_SIZE,j+y*CHUNK_SIZE, color);
 		}
 	}
 }

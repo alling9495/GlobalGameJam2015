@@ -7,6 +7,7 @@ class Tile{
 public:
 	Tile(){};
 	Tile(bool wall, int x, int y);
+	Tile(bool wall, int x, int y, sf::Color color);
 	~Tile();
 	const sf::Vector2f & getPosition();
 	void update(sf::Time elapsed);

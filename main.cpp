@@ -66,7 +66,7 @@ int main()
 
     while (window.isOpen()) {
         if (!world.isPlayerAlive()) {
-            //window.close();
+            window.close();
             //std::cout << "Player died" << std::endl;
         }
 
@@ -103,7 +103,7 @@ int main()
         window.clear();
 
         /*ANND the update!*/
-        float radius = 350 /*std::cos(totalTime.asSeconds()) * 300*/;
+        float radius = 150 /*std::cos(totalTime.asSeconds()) * 300*/;
         m_shader.setParameter("storm_position", playerCenter.x , playerCenter.y);
         m_shader.setParameter("storm_inner_radius", radius / 3);
         m_shader.setParameter("storm_total_radius", radius);

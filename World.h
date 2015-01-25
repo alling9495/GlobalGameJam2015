@@ -7,7 +7,7 @@ class World{
 public:
 	World(int seed);
 	~World();
-	void draw(sf::RenderWindow & window, sf::Shader* shader = NULL);
+	void draw(sf::RenderWindow & window, sf::Shader *);
 	void update(sf::Time elapsed);
 	Player & getPlayer();
 	bool isPlayerAlive();
@@ -21,8 +21,8 @@ private:
 	std::pair<int,int> getPlayerChunk();
 	std::pair<int,int> lastPlayerChunk;
 
-	bool generateChunk(std::pair<int,int> key, bool wall, sf::Color & color); //Generate tiles around when the player moves to a new chunk.
-	bool generateChunk(std::pair<int,int> root, int offsetx, int offsetY, bool wall, sf::Color& color);
+	bool generateChunk(std::pair<int,int> key, bool wall, sf::Color color); //Generate tiles around when the player moves to a new chunk.
+	bool generateChunk(std::pair<int,int> root, int offsetx, int offsetY, bool wall, sf::Color color);
 	WorldChunk *  getChunkWithOffset(int offsetX, int offsetY);
 	bool isPlayerNearTop();
 	bool isPlayerNearBottom();
@@ -31,6 +31,7 @@ private:
 	void unloadChunks(std::pair<int,int> newPos);
 	void freeChunk(std::pair<int,int> key);
 	void generateChunks();
+	bool hasChunkWithOffset(int x, int y);
 	void colorTiles(sf::Color color);
 
 };

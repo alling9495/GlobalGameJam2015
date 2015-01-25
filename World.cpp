@@ -6,10 +6,10 @@
 #define LEVELS 5
 using namespace std;
 
-
 float levelTimes[] = {35.0,40.0,50.0,60.0,70.0,70.0f};
-float speedValues[] = {0.35f, 0.4f, 0.45f, 0.5f, 0.65f, 0.75f};
-float dissolveSpeedValues[] = {1.15f,1.52f,1.6f,1.8f,2.0f,2.2f};
+float speedValues[] = {0.35f, 0.45f, 0.5f, 0.5f, 0.65f, 0.75f};
+float dissolveSpeedValues[] = {1.15f,1.32f,1.4f,1.6f,1.8f,2.0f};
+
 sf::Color tileColors[] = {
 	sf::Color(125,25,125),
 	sf::Color(25,125,25),
@@ -23,18 +23,18 @@ sf::Color tileColors[] = {
 World::World(int seed):
 	seed(seed)
 {
+	sf::Color startColor = sf::Color(125,25,125);
 	levelTime = levelTimes[0];
 	std::pair<int,int> origin = std::pair<int,int>(0,0);
-	generateChunk(std::pair<int,int>(0,0),false, tileColors[0]);
+	generateChunk(std::pair<int,int>(0,0),false, startColor);
 	generateChunk(origin,1,0,true,tileColors[0]);
 	generateChunk(origin,1,1,true,tileColors[0]);
 	generateChunk(origin,0,1,true,tileColors[0]);
 	generateChunk(origin,-1,1,true,tileColors[0]);
 	generateChunk(origin,-1,0,true,tileColors[0]);
 	generateChunk(origin,-1,-1,true,tileColors[0]);
-	generateChunk(origin,0,-1,false,tileColors[0]);
-	generateChunk(origin,1,-1,true,tileColors[0]);
-	colorTiles(tileColors[0]);   	
+	generateChunk(origin,0,-1,false,startColor);
+	generateChunk(origin,1,-1,true,tileColors[0]); 	
 
 	player.move(sf::Vector2f(TILE_SIZE*CHUNK_SIZE / 2, TILE_SIZE*CHUNK_SIZE / 2));
 	player.turn(-90);
@@ -130,8 +130,8 @@ void World::freeChunk(std::pair<int,int> key){
 	}
 }
 
-bool World::generateChunk(std::pair<int,int> pos, bool wall, sf::Color &c){
-	if(!chunks.count(pos) != 0){
+bool World::generateChunk(std::pair<int,int> pos, bool wall, sf::Color c){
+	if(chunks.count(pos) == 0){
 
 		chunks[pos] = new WorldChunk(wall,pos.first,pos.second,c);
 		loadedChunks.push_back(chunks[pos]);
@@ -140,13 +140,20 @@ bool World::generateChunk(std::pair<int,int> pos, bool wall, sf::Color &c){
 	return false;
 }
 
-bool World::generateChunk(std::pair<int,int> root, int x, int y, bool wall, sf::Color & c){
+bool World::generateChunk(std::pair<int,int> root, int x, int y, bool wall, sf::Color c){
 	return generateChunk(std::pair<int,int>(root.first + x, root.second + y),wall,c);
 }
 
 WorldChunk * World::getChunkWithOffset(int x, int y){
 	return chunks[std::pair<int,int>(lastPlayerChunk.first + x, lastPlayerChunk.second + y)];
 }
+
+bool World::hasChunkWithOffset(int x, int y){
+	cout << "Checking " << lastPlayerChunk.first + x << "," << lastPlayerChunk.second + y <<endl;
+	return chunks.count(
+		std::pair<int,int>(lastPlayerChunk.first + x, lastPlayerChunk.second + y)) > 0;
+}
+
 
 Player & World::getPlayer(){
 	return player;
@@ -173,18 +180,33 @@ void World::generateChunks(){
 
 	//Pick one non'generated chunk and make it not a wall.
 	int x, y;
-	do{
-		x = y = 0;
-		if(rand()%2 > 0){
-			x = round(rand()%3 -1);
-		}
-		else{
-			y = round(rand()%3 -1);
-		}
+	//Initial scan, guarentee at least 2 walls are open. (enterance and one exit)
+	int openCount = 0;
+	if(hasChunkWithOffset(-1,0) && !getChunkWithOffset(-1,0)->isWall){
+		openCount++;
+	}
+	if(hasChunkWithOffset(1,0)&&!getChunkWithOffset(1,0)->isWall){
+		openCount++;
+	}
+	if(hasChunkWithOffset(0,-1)&&!getChunkWithOffset(0,-1)->isWall){
+		openCount++;
+	}
+	if(hasChunkWithOffset(0,1)&&!getChunkWithOffset(0,1)->isWall){
+		openCount++;
+	}
+	cout << "OPEN COUNT: " <<openCount << endl;
+	if(openCount < 2){
+		do{
+			x = y = 0;
+			if(rand()%2 > 0){
+				x = round(rand()%3 -1);
+			}
+			else{
+				y = round(rand()%3 -1);
+			}
 
-	}while(!generateChunk(lastPlayerChunk,x,y,false,tileColors[level]));
-
-
+		}while(!generateChunk(lastPlayerChunk,x,y,false,tileColors[level]));
+	}
 
 
 	for(x = -1; x < 2; x++){
@@ -193,6 +215,7 @@ void World::generateChunks(){
 				if(generateChunk(lastPlayerChunk,x,y,false,tileColors[level])){
 					if(rand()%4 == 0){
 						getChunkWithOffset(x,y)->startDeallocationAnimation();
+						getChunkWithOffset(x,y)->isWall=true;//Sorry
 					}
 				}
 			}
@@ -201,6 +224,7 @@ void World::generateChunks(){
 				if(generateChunk(lastPlayerChunk,x,y,true,tileColors[level])){
 					if(rand()%4 == 0){
 						getChunkWithOffset(x,y)->startDeallocationAnimation();
+
 					}
 				}
 			}
