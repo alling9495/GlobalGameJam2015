@@ -20,6 +20,7 @@ Player::Player(){
 	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::I, SuperBoost));
 	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::J, StrafeLeft));
 	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::L, StrafeRight));
+	
 
 	// Keys to swap
 	//map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::A, Flamethrower));

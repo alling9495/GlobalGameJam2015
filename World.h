@@ -26,6 +26,8 @@ private:
 	std::vector<WorldChunk *> loadedChunks;
 	std::pair<int,int> getPlayerChunk();
 	std::pair<int,int> lastPlayerChunk;
+	//sf::SoundBuffer sfxBuffer;
+
 
 	bool generateChunk(std::pair<int,int> key, TYPE wall, sf::Color color); //Generate tiles around when the player moves to a new chunk.
 	bool generateChunk(std::pair<int,int> root, int offsetx, int offsetY, TYPE wall, sf::Color color);

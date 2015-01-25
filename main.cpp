@@ -21,6 +21,7 @@ std::deque<Particle *> particles;
 int frames = 0;
 
 World world = World(time(0));
+bool playDown = false;
 
 sf::Music music;
 int main()
@@ -271,8 +272,15 @@ void handleInput() {
                 world.getPlayer().doAction(keySet[i]);
             }
         };
-        if(sf::Keyboard::isKeyPressed(KEY_S(Space)))
+        if(sf::Keyboard::isKeyPressed(KEY_S(Space)) && !playDown)
+        {
             music.getStatus() == sf::SoundSource::Playing?music.pause():music.play();
+            playDown = true;
+        }
+        else if(!sf::Keyboard::isKeyPressed(KEY_S(Space)))
+        {
+            playDown = false;
+        }
     }
 /*    if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
         world.getPlayer().doAction(sf::Keyboard::A);
