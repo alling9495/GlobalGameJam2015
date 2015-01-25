@@ -13,6 +13,9 @@ Player::Player(){
 	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::S, Backward));
 	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::D, TurnClockwise));
 	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::G, SuperBoost));
+	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::J, StrafeLeft));
+	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::L, StrafeRight));
+
 	// Keys to swap
 	//map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::A, Flamethrower));
 	//map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::S, Lazer));
@@ -42,9 +45,9 @@ const sf::Vector2<float> & Player::getCenter(){
 	return pos;
 }
 
-sf::Vector2<float> Player::forward(){
+sf::Vector2f Player::forward(){
 	triangle.setRotation(angle+90);	
-	return sf::Vector2<float>
+	return sf::Vector2f
 		((float)cos(angle*1/RAD2DEGf) * RAD2DEGf,(float)sin(angle*1/RAD2DEGf) * RAD2DEGf);
 }
 
@@ -80,6 +83,12 @@ void Player::doAction(sf::Keyboard::Key keyStroke) {
 		case SuperBoost:
 			move(forward() * 1.5f);
 			break;
+		case StrafeLeft:
+			move(left() * 0.3f);
+			break;
+		case StrafeRight:
+			move(left() * -0.3f);
+			break;
 		default:
 			break;
 	}
@@ -103,4 +112,11 @@ void Player::swapOrDoAction(sf::Keyboard::Key keyStroke) {
         swapKey(keyStroke);
     }
     */
+}
+sf::Vector2f Player::left(){
+	sf::Vector2f fwd = forward();
+	sf::Vector2f left = sf::Vector2f(
+		(cos(M_PI/2)*fwd.x + sin(M_PI/2)*fwd.y),
+		(-sin(M_PI/2)*fwd.x + cos(M_PI/2)*fwd.y));
+	return left;
 }

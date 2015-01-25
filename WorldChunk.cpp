@@ -1,5 +1,6 @@
 #include "WorldChunk.h"
 #include <iostream>
+#include <math.h>
 using namespace std;
 WorldChunk::WorldChunk(bool wall, int x, int y):
 x(x),
@@ -56,3 +57,7 @@ void WorldChunk::startDeallocationAnimation(sf::Vector2f startingPosition){
 	}
 }
 
+
+Tile & WorldChunk::getTile(int i, int j) {
+	return tiles[i][j];
+}

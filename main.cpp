@@ -4,8 +4,10 @@
 #include "Camera.h"
 #include "World.h"
 #include "LinearBullet.h"
+#include "VectorUtil.h"
 #include <iostream>
 #include <deque>
+#define KEY_S(keyStroke) sf::Keyboard::Key::keyStroke
 
 void closeWindowEvent(sf::RenderWindow & window, sf::Event event);
 void startGameLoop();
@@ -16,6 +18,7 @@ void pollInput();
 
 std::deque<Bullet *> bullets;
 sf::CircleShape bulletImage(10.0f);
+
 
 World world = World(0);
 int main()
@@ -62,6 +65,11 @@ int main()
     m_shader.loadFromFile("storm.vert", "blink.frag");
 
     while (window.isOpen()) {
+        if (!world.isPlayerAlive()) {
+            window.close();
+            //std::cout << "Player died" << std::endl;
+        }
+
         sf::Event event;
         while (window.pollEvent(event)) {
             closeWindowEvent(window, event);
@@ -72,7 +80,7 @@ int main()
         sf::Time elapsed = clock.restart(), totalTime = totalClock.getElapsedTime();
         world.update(elapsed);
         update(elapsed);
-        camera.setCenter(world.getPlayer().getCenter());
+        camera.setCenter(VectorUtil::offset(world.getPlayer().getCenter(), world.getPlayer().forward()*4.0f));
         std::string location = "(" + std::to_string((int)(world.getPlayer().getCenter().x)) + ", " 
             + std::to_string((int)(world.getPlayer().getCenter().y)) + ")\n" + "Number of Bullets" + 
             std::to_string(bullets.size());
@@ -80,14 +88,14 @@ int main()
         coordinates.setString(location);
 
        // std::cout << location << std::endl;
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::O)){
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::R)){
             camera.zoomOut(0.05f);
         }
 
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::P)){
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Y)){
             camera.zoomIn(0.05f);
         }
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::I)){
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::T)){
             camera.resetZoom();
         }
 
@@ -150,10 +158,16 @@ void startGameLoop() {
 };
 
 void handleInput() {
-
+    sf::Keyboard::Key keySet[] = {KEY_S(W), KEY_S(S), KEY_S(A), KEY_S(D), KEY_S(I), KEY_S(K), KEY_S(L), KEY_S(J)};
+    
     bulletImage.setFillColor(sf::Color::Green);
 
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
+    for (int i = 0; i < 8; i++) {
+        if (sf::Keyboard::isKeyPressed(keySet[i])) {
+            world.getPlayer().doAction(keySet[i]);
+        }
+    };
+/*    if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
         world.getPlayer().doAction(sf::Keyboard::A);
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
@@ -166,7 +180,6 @@ void handleInput() {
         world.getPlayer().doAction(sf::Keyboard::F);
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
-        world.getPlayer().doAction(sf::Keyboard::W);
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::F)){
         world.getPlayer().swapOrDoAction(sf::Keyboard::F);
@@ -190,7 +203,7 @@ void handleInput() {
     {
         bullets.push_front(new LinearBullet(bulletImage,1000,world.getPlayer().getCenter().x,world.getPlayer().getCenter().y,
             world.getPlayer().forward().x * 0.5,world.getPlayer().forward().y * 0.5));
-    }
+    }*/
 
 };
 
