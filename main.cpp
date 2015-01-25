@@ -10,6 +10,7 @@
 #include <iostream>
 #include <deque>
 #include <ctime>
+#include "StartPoint.h"
 #define KEY_S(keyStroke) sf::Keyboard::Key::keyStroke
 
 void closeWindowEvent(sf::RenderWindow & window, sf::Event event);
@@ -22,6 +23,7 @@ int frames = 0;
 
 World world = World(time(0));
 bool playDown = false;
+StartPoint* startPoint;
 
 sf::Music music;
 int main()
@@ -32,7 +34,7 @@ int main()
     world.getPlayer().move(sf::Vector2f(-565,495));
     float particleCenterX = 200, particleCenterY = 200;
 
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Main Window");
+    sf::RenderWindow window(sf::VideoMode(800, 600), "attack_vector");
     window.setFramerateLimit(60);
 
     sf::Clock clock, totalClock;
@@ -67,7 +69,7 @@ int main()
     sf::Text level;
     level.setFont(font);
     level.setCharacterSize(30);
-    
+    startPoint = new StartPoint(sf::Vector2f(-1,-1));
     camera.resetZoom();
         // Create the points
         // 
@@ -95,6 +97,9 @@ int main()
     while (window.isOpen()) {
         if (!world.isPlayerAlive()) {
             world.loseGame();
+            std::pair<int,int> playerChunk = world.getPlayerChunk();
+            startPoint->setChunk(sf::Vector2f(playerChunk.first,playerChunk.second));
+            startPoint->fadeIn();
             //window.close();
             //std::cout << "Player died" << std::endl;
             //window.close();
@@ -110,6 +115,7 @@ int main()
         sf::Time elapsed = clock.restart(), totalTime = totalClock.getElapsedTime();
         world.update(elapsed);
         update(elapsed);
+
         
         if(!particles.back()->isAlive && world.getPlayer().isDashing() && frames>1)
         {
@@ -188,9 +194,12 @@ int main()
        // m_light.setParameter("time",totalTime.asSeconds());
         //m_light.setParameter("surfacePosition",playerCenter);
         //come on...
-        window.draw(m_points,&m_shader);
 
+
+
+        window.draw(m_points,&m_shader);
         world.draw(window,&m_shader);
+        startPoint->draw(window);
 
         //BULLETZ
         /*
@@ -218,7 +227,7 @@ int main()
         cmdPrompt.setCharacterSize(100);
         cmdPrompt.setPosition(-480, 420);
 
-        cmdPrompt.setString("user@GGJ:~$ ./attack_vector");
+        cmdPrompt.setString("user@GGJ:~$ ./attack_vector\nChris Williams\nAlex Ling,\nLejon McGowan\nKyle Piddington");
         if(world.state == GAMESTATE::TUTORIAL){
             window.draw(cmdPrompt);
         }
@@ -267,7 +276,7 @@ void handleInput() {
     if(world.state != GAMESTATE::WON){
         sf::Keyboard::Key keySet[] = {KEY_S(W), KEY_S(S), KEY_S(A), KEY_S(D), KEY_S(I), KEY_S(K), KEY_S(L), KEY_S(J)};
 
-        for (int i = 0; i < sizeof(keySet); i++) {
+        for (int i = 0; i < (sizeof(keySet) / sizeof(keySet[0])); i++) {
             if (sf::Keyboard::isKeyPressed(keySet[i])) {
                 world.getPlayer().doAction(keySet[i]);
             }
@@ -324,6 +333,11 @@ void handleInput() {
 
 void update(sf::Time elapsed) {
     handleInput();
+    startPoint->update(elapsed);
+    if(startPoint->isActive() && startPoint->pointIn(world.getPlayer().getCenter())){
+        world.startGame();
+        startPoint->fadeOut();
+    }
 };
 
 
