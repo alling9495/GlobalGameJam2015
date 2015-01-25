@@ -57,3 +57,7 @@ void WorldChunk::startDeallocationAnimation(sf::Vector2f startingPosition){
 	}
 }
 
+
+Tile & WorldChunk::getTile(int i, int j) {
+	return tiles[i][j];
+}

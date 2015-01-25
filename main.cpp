@@ -46,6 +46,11 @@ int main()
 
 
     while (window.isOpen()) {
+        if (!world.isPlayerAlive()) {
+            window.close();
+            //std::cout << "Player died" << std::endl;
+        }
+
         sf::Event event;
         while (window.pollEvent(event)) {
             closeWindowEvent(window, event);

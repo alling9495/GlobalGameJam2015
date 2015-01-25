@@ -21,6 +21,9 @@ World::World(int seed):
 	generateChunk(origin,-1,-1,true);
 	generateChunk(origin,0,-1,false);
 	generateChunk(origin,1,-1,true);
+
+	player.move(sf::Vector2f(TILE_SIZE*CHUNK_SIZE / 2, TILE_SIZE*CHUNK_SIZE / 2));
+	player.turn(-90);
 }
 
 void World::update(sf::Time elapsed){
@@ -38,8 +41,6 @@ void World::update(sf::Time elapsed){
 		//Generate the square chunk around the player
 
 		generateChunks();
-
-		
 	}
 
 	for(std::vector<WorldChunk *>::iterator it = loadedChunks.begin(); it != loadedChunks.end(); it++){
@@ -178,4 +179,15 @@ void World::generateChunks(){
 			}
 		}
 	}
+}
+
+bool World::isPlayerAlive() {
+	WorldChunk chunk = * chunks[getPlayerChunk()];
+	const sf::Vector2f pos = player.getCenter();
+
+	int i = (pos.x - (chunk.x * CHUNK_SIZE*TILE_SIZE)) / TILE_SIZE;
+	int j = (pos.y - (chunk.y * CHUNK_SIZE*TILE_SIZE)) / TILE_SIZE;
+
+	Tile tile = chunk.getTile(i, j);
+	return tile.isSafe();
 }

@@ -12,9 +12,11 @@ public:
 	void update(sf::Time elapsed);
 	void draw(sf::RenderWindow & window);
 	void startDestoryAnimation(float delay);
+	bool isSafe();
 private:
 	sf::RectangleShape renderTile;
 	bool isBeingDestoryed;
 	float destroyDelay;
+	bool isWall;
 };
 #endif
