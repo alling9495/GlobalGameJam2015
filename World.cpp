@@ -2,11 +2,11 @@
 #include "WorldChunk.h"
 #include "Tile.h"
 #include <iostream>
+#include "VectorUtil.h"
 using namespace std;
 
-sf::Vector2f offset(const sf::Vector2f & a, const sf::Vector2f & off){
-	return sf::Vector2f(a.x+off.x,a.y+off.y);
-}
+
+
 
 World::World(int seed):
 	seed(seed)
@@ -32,7 +32,8 @@ void World::update(sf::Time elapsed){
 		unloadChunks(chunk);
 	
 		lastPlayerChunk = chunk;
-		getChunkWithOffset(0,0)->startDeallocationAnimation(offset(player.getCenter(),player.forward()*-3.0f));
+		getChunkWithOffset(0,0)->startDeallocationAnimation(
+			VectorUtil::offset(player.getCenter(),player.forward()*-3.0f));
 
 		//Generate the square chunk around the player
 

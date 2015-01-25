@@ -104,3 +104,10 @@ void Player::swapOrDoAction(sf::Keyboard::Key keyStroke) {
     }
     */
 }
+sf::Vector2f Player::left(){
+	sf::Vector2 fwd = forward();
+	sf::Vector2 left = sf::Vector2(
+		(cos(-M_PI/2)*forward.x + sin(-M_PI/2)*forward.y),
+		(-sin(-M_PI/2)*forward.x,cos(-M_PI/2)*forward.y));
+	return left;
+}
