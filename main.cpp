@@ -8,6 +8,7 @@
 #include "Particle.h"
 #include <iostream>
 #include <deque>
+#include <ctime>
 #define KEY_S(keyStroke) sf::Keyboard::Key::keyStroke
 
 void closeWindowEvent(sf::RenderWindow & window, sf::Event event);
@@ -22,7 +23,7 @@ std::deque<Particle *> particles;
 sf::CircleShape bulletImage(10.0f);
 int frames = 0;
 
-World world = World(0);
+World world = World(time(0));
 
 int main()
 {
@@ -31,7 +32,7 @@ int main()
     }
     float particleCenterX = 200, particleCenterY = 200;
 
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Main Window");
+    sf::RenderWindow window(sf::VideoMode(800, 800), "Main Window");
     window.setFramerateLimit(60);
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
@@ -192,7 +193,7 @@ int main()
         world.getPlayer().resetMoveState();
         //HUD VIEW
         window.setView(window.getDefaultView());
-        window.draw(coordinates);
+        //window.draw(coordinates);
         window.display();
     }
     return 0;
