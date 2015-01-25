@@ -109,7 +109,7 @@ int main()
 
         
 
-        camera.setCenter(VectorUtil::offset(world.getPlayer().getCenter(), world.getPlayer().forward()*4.0f));
+        camera.setCenter(VectorUtil::offset(world.getPlayer().getCenter(), world.getPlayer().forward()*12.0f));
         std::string location = "(" + std::to_string((int)(world.getPlayer().getCenter().x)) + ", " 
             + std::to_string((int)(world.getPlayer().getCenter().y)) + ")\n" + "Number of Bullets" + 
             std::to_string(particles.size());

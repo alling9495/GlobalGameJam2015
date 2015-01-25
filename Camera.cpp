@@ -23,8 +23,8 @@ void Camera::setCenter(const sf::Vector2<float> & center){
 	//sf::Vector2<float> direction = center;
 	//float length = sqrt((center.x * center.x) + (center.y * center.y));
 	//float delta = previousLength - length;
-	float deltaX = (center.x + 40 - previous.x) / 15;
-	float deltaY = (center.y + 40 - previous.y) / 15;
+	float deltaX = (center.x - previous.x) / 10;
+	float deltaY = (center.y - previous.y) / 10;
 	if (abs(deltaX) < 0.5f) {
 		deltaX = 0;
 	}
