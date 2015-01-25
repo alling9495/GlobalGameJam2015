@@ -92,7 +92,7 @@ int main()
 
     while (window.isOpen()) {
         if (!world.isPlayerAlive()) {
-            //world.loseGame();
+            world.loseGame();
             //window.close();
             //std::cout << "Player died" << std::endl;
             //window.close();

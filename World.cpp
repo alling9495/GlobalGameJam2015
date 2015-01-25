@@ -7,13 +7,13 @@
 using namespace std;
 
 float levelTimes[] = {35.0,40.0,50.0,60.0,50.0,50.0f};
-float speedValues[] = {0.35f, 0.45f, 0.5f, 0.5f, 0.65f, 0.75f,0.0};
-float dissolveSpeedValues[] = {1.0f,1.32f,1.4f,1.6f,1.8f,2.0f};
+float speedValues[] = {0.35f, 0.45f, 0.5f, 0.55f, 0.6f, 0.65f,0.0};
+float dissolveSpeedValues[] = {1.0f,1.32f,1.4f,1.6f,1.7f,1.8f};
 
 sf::Color tileColors[] = {
 	sf::Color(125,25,125),
 	sf::Color(25,125,25),
-	sf::Color(125,25,125),
+	sf::Color(125,125,25),
 	sf::Color(125,25,60),
 	sf::Color(200,25,25),
 	sf::Color(0,255,0),
