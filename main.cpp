@@ -61,7 +61,8 @@ int main()
     }
     /*giggity*/
     // Load the shader
-    sf::Shader m_shader;
+    sf::Shader m_shader, m_light;
+    m_light.loadFromFile("simpleLight.glsl",sf::Shader::Fragment);
     m_shader.loadFromFile("storm.vert", "blink.frag");
 
     while (window.isOpen()) {
@@ -109,11 +110,13 @@ int main()
         m_shader.setParameter("storm_total_radius", radius);
         m_shader.setParameter("blink_alpha", 1.0f /**std::cos(totalTime.asSeconds() * 3) * 0.25f*/);
 
+        m_light.setParameter("time",totalTime.asSeconds());
+        m_light.setParameter("surfacePosition",playerCenter);
         //come on...
         window.draw(m_points,&m_shader);
         window.draw(shape);
 
-        world.draw(window, &m_shader);
+        world.draw(window,&m_shader,&m_light);
 
         //BULLETZ
          

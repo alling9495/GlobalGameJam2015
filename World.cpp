@@ -52,7 +52,7 @@ void World::update(sf::Time elapsed){
 World::~World(){
 	//Clear map
 }
-void World::draw(sf::RenderWindow & window, sf::Shader* shader){
+void World::draw(sf::RenderWindow & window, sf::Shader* shader, sf::Shader* playerShader){
 	bool top = isPlayerNearTop();
 	bool left = isPlayerNearLeft();
 	bool bottom = isPlayerNearBottom();
@@ -65,7 +65,7 @@ void World::draw(sf::RenderWindow & window, sf::Shader* shader){
 	}
 	
 	
-	player.draw(window);
+	player.draw(window,playerShader);
 }
 
 bool World::isPlayerNearTop(){

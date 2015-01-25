@@ -7,7 +7,7 @@ class World{
 public:
 	World(int seed);
 	~World();
-	void draw(sf::RenderWindow & window, sf::Shader* shader = NULL);
+	void draw(sf::RenderWindow & window, sf::Shader* shader = NULL, sf::Shader* playerShader = NULL);
 	void update(sf::Time elapsed);
 	Player & getPlayer();
 	bool isPlayerAlive();

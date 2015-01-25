@@ -25,7 +25,7 @@ public:
 	~Player();
 	void move(const sf::Vector2<float>& dir);
 	void rotate(float dir);
-	void draw(sf::RenderWindow & window);
+	void draw(sf::RenderWindow & window, sf::Shader* shader = NULL);
 	void turn(float angle);
 	const sf::Vector2<float> & getCenter();
 	sf::Vector2f forward();

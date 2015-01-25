@@ -33,8 +33,8 @@ void Player::move(const sf::Vector2<float>& dir){
 
 	triangle.setPosition(pos.x,pos.y);
 }
-void Player::draw(sf::RenderWindow & window){
-	window.draw(triangle);
+void Player::draw(sf::RenderWindow & window, sf::Shader* shader){
+	window.draw(triangle,shader);
 }
 void Player::turn(float deg){
 	angle += deg;
