@@ -8,16 +8,16 @@ Player::Player(){
 	triangle.setOrigin(80.0f,80.0f);
 	triangle.setScale(0.5,0.75);
 
-	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::D, TurnCounter));
-	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::F, Forward));
-	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::J, Backward));
-	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::K, TurnClockwise));
+	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::A, TurnCounter));
+	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::W, Forward));
+	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::S, Backward));
+	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::D, TurnClockwise));
 	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::G, SuperBoost));
 	// Keys to swap
-	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::A, Flamethrower));
-	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::S, Lazer));
-	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::L, Shield));
-	map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::SemiColon, LimitBreak));
+	//map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::A, Flamethrower));
+	//map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::S, Lazer));
+	//map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::L, Shield));
+	//map.insert(std::pair<sf::Keyboard::Key, Action>(sf::Keyboard::SemiColon, LimitBreak));
 
 	keyToSwapIn = sf::Keyboard::Unknown;
 }
@@ -55,7 +55,7 @@ void Player::doAction(sf::Keyboard::Key keyStroke) {
 			break;
 		case Forward:
 			// move forward
-            move(forward() * 2.15f);
+            move(forward() * 0.35f);
 			break;
 		case Backward:
 			// move backwards

@@ -11,10 +11,12 @@ Tile::Tile(bool type, int x, int y){
 	}
 	else{
 		renderTile.setFillColor(
-			sf::Color((x*64)%256,(y*64)%256,256));
+			sf::Color((abs(x/4)+abs(y/4))%2 * 55,0,0));
 	}
 };
-Tile::~Tile(){}
+Tile::~Tile(){
+	
+}
 void Tile::draw(sf::RenderWindow & window){
 	window.draw(renderTile);
 }

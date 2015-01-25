@@ -9,6 +9,7 @@ public:
 	Tile(bool wall, int x, int y);
 	~Tile();
 	void draw(sf::RenderWindow & window);
+	void startDestoryAnimation(float delay);
 private:
 	sf::RectangleShape renderTile;
 };
