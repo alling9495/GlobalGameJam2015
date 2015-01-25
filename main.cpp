@@ -228,7 +228,11 @@ int main()
         cmdPrompt.setCharacterSize(100);
         cmdPrompt.setPosition(-480, 420);
 
-        cmdPrompt.setString("user@GGJ:~$ ./attack_vector\nChris Williams\nAlex Ling,\nLejon McGowan\nKyle Piddington");
+        cmdPrompt.setString("user@GGJ:~$ ./attack_vector\
+            \n@controls\n\tWASD: move\n\tSpace: mute\n\tR: reset\n\tIJKL: boost move\
+            \n@author\n\tChris Williams\n\tAlex Ling,\n\tLejon McGowan\n\tKyle Piddington\
+            \n@story\n\tTODO: write story\
+            \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n... why are you here? go up and play the goddam game!");
         if(world.state == GAMESTATE::TUTORIAL){
             window.draw(cmdPrompt);
         }
