@@ -35,7 +35,8 @@ public:
 	void swapOrDoAction(sf::Keyboard::Key keyStroke);
 	sf::Vector2<float> left();
 private:
-	sf::CircleShape triangle;
+	sf::Texture texture;
+	sf::Sprite sprite;
 	sf::Vector2<float> pos;
 	float angle;
 	std::map<sf::Keyboard::Key, Action> map;
