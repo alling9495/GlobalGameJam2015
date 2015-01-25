@@ -34,7 +34,9 @@ public:
 	void swapKey(sf::Keyboard::Key keyToSwapOut);
 	void swapOrDoAction(sf::Keyboard::Key keyStroke);
 	sf::Vector2<float> left();
+	void setSpeedMultiplier(float mul);
 private:
+	float speedMult = 0.35f;
 	sf::CircleShape triangle;
 	sf::Vector2<float> pos;
 	float angle;

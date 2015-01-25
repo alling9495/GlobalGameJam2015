@@ -12,9 +12,16 @@ public:
 	void update(sf::Time elapsed);
 	void draw(sf::RenderWindow & window);
 	void startDestoryAnimation(float delay);
+	void updateColor(sf::Color color);
+	void updateColorWithDelay(float delay, sf::Color newCol);	
 private:
+	int x;
+	int y;
 	sf::RectangleShape renderTile;
-	bool isBeingDestoryed;
+	bool isBeingDestoryed=false;
+	bool isBeingColored=false;
 	float destroyDelay;
+	float colorDelay;
+	sf::Color nextColor;
 };
 #endif

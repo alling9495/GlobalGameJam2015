@@ -8,9 +8,11 @@ class WorldChunk{
 
 public:
 	WorldChunk(bool wall, int x, int y);
+	WorldChunk(bool wall, int x, int y, sf::Color tileColor);
 	~WorldChunk();
 	void startDeallocationAnimation();
-	void startDeallocationAnimation(sf::Vector2f startingPosition);
+	void startDeallocationAnimation(sf::Vector2f startingPosition, float speed);
+	void colorTiles(sf::Vector2f startingPosition, float speed,sf::Color color);
 
 	void update(sf::Time elapsed);
 	void draw(sf::RenderWindow & window);

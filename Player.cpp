@@ -51,6 +51,9 @@ sf::Vector2f Player::forward(){
 		((float)cos(angle*1/RAD2DEGf) * RAD2DEGf,(float)sin(angle*1/RAD2DEGf) * RAD2DEGf);
 }
 
+void Player::setSpeedMultiplier(float multiplier){
+	this->speedMult = multiplier;
+}
 void Player::doAction(sf::Keyboard::Key keyStroke) {
 	switch(map[keyStroke]) {
 		case TurnCounter:
@@ -59,7 +62,7 @@ void Player::doAction(sf::Keyboard::Key keyStroke) {
 			break;
 		case Forward:
 			// move forward
-            move(forward() * 0.35f);
+            move(forward() * speedMult);
 			break;
 		case Backward:
 			// move backwards

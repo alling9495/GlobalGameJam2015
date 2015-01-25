@@ -1,18 +1,24 @@
 #include "Tile.h"
+#include "WorldChunk.h"
 #include <iostream>
 
 using namespace std;
 
-Tile::Tile(bool type, int x, int y){
+Tile::Tile(bool type, int x, int y):
+	x(x),
+	y(y)
+{
 	renderTile.setSize(sf::Vector2f(TILE_SIZE,TILE_SIZE));
 	renderTile.setPosition(x*TILE_SIZE,y*TILE_SIZE);
 	if(type){
-		renderTile.setFillColor(sf::Color(115,115,115));
+		renderTile.setFillColor(sf::Color(abs(sin(x*y))*100,abs(sin(x*y))*100,abs(sin(x*y))*100));
+		
 	}
 	else{
 		renderTile.setFillColor(
-			sf::Color((abs(x/4)+abs(y/4))%2 * 55,0,0));
+			sf::Color(abs(sin(x/64.0f))*125,abs(cos(y/64.0f))*125,abs(sin(x*y))*155));
 	}
+
 };
 Tile::~Tile(){
 	
@@ -33,8 +39,25 @@ void Tile::update(sf::Time elapsed){
 			renderTile.setRotation(renderTile.getRotation() + 3.0f);
 		}
 	}
+	if(isBeingColored){
+		colorDelay-=elapsed.asMilliseconds();
+		if(colorDelay < 0){
+			isBeingColored = false;
+			updateColor(nextColor);
+		}
+	}
 }
 void Tile::startDestoryAnimation(float delay){
 	isBeingDestoryed=true;
 	destroyDelay = delay;
+}
+
+void Tile::updateColor(sf::Color newColor){
+	renderTile.setFillColor(
+			sf::Color(abs(sin(x/64.0f))*newColor.r,abs(cos(y/64.0f))*newColor.g,abs(sin(x*y))*newColor.b));
+}
+void Tile::updateColorWithDelay(float delay, sf::Color c){
+	nextColor = c;
+	colorDelay = delay;
+	isBeingColored=true;
 }
