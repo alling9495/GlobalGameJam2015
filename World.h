@@ -9,6 +9,7 @@ class World{
 public:
 	World(int seed);
 	~World();
+	void startGame();
 	void draw(sf::RenderWindow & window, sf::Shader *);
 	void update(sf::Time elapsed);
 	Player & getPlayer();

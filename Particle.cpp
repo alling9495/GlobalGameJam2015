@@ -1,8 +1,7 @@
 #include "Particle.h"
 
 Particle::Particle() { 
-    shape = sf::RectangleShape (sf::Vector2f(25.f, 25.f));
-    lifeTime = sf::milliseconds(250);
+    //shape = sf::RectangleShape (sf::Vector2f(25.f, 25.f));
     isAlive=false;
     texture.loadFromFile("player.png");
         // error!
@@ -17,7 +16,7 @@ Particle::Particle() {
 
 Particle::Particle(float x, float y, float angle): Particle() {
    previous = sf::Vector2f(x, y);
-   shape.setRotation(angle);
+   //shape.setRotation(angle);
    sprite.setRotation(angle+90);
 };
 
