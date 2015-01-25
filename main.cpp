@@ -123,6 +123,9 @@ int main()
        std::string curLevel;
        char buf[100];
        switch(world.level) {
+          case -2:
+             sprintf(buf, "");
+             break;
           case -1:
              sprintf(buf, "Segmentation fault");
              break;
