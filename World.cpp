@@ -8,7 +8,7 @@ using namespace std;
 
 float levelTimes[] = {35.0,40.0,50.0,60.0,50.0,50.0f};
 float speedValues[] = {0.35f, 0.45f, 0.5f, 0.5f, 0.65f, 0.75f,0.0};
-float dissolveSpeedValues[] = {1.15f,1.32f,1.4f,1.6f,1.8f,2.0f};
+float dissolveSpeedValues[] = {1.0f,1.32f,1.4f,1.6f,1.8f,2.0f};
 
 sf::Color tileColors[] = {
 	sf::Color(125,25,125),
@@ -240,7 +240,7 @@ void World::generateChunks(){
 		openCount++;
 	}
 	cout << "OPEN COUNT: " <<openCount << endl;
-	if(openCount < 2){
+	if(openCount < 1){
 		bool didGen=false;
 		do{
 			x = y = 0;
@@ -262,7 +262,7 @@ void World::generateChunks(){
 
 	for(x = -1; x < 2; x++){
 		for(y = -1; y < 2; y++){
-			if(rand()%16 == 0){
+			if(rand()%4 == 0){
 				if(generateChunk(lastPlayerChunk,x,y,TYPE::FLOOR,tileColors[level])){
 					if(rand()%4 == 0){
 						getChunkWithOffset(x,y)->startDeallocationAnimation();
