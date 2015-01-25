@@ -70,7 +70,7 @@ int main()
     sf::Text level;
     level.setFont(font);
     level.setCharacterSize(30);
-    startPoint = new StartPoint(sf::Vector2f(-1,-1));
+    startPoint = new StartPoint(sf::Vector2f(0,0));
     camera.resetZoom();
         // Create the points
         // 
