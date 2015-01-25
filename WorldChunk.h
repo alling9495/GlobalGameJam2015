@@ -18,6 +18,7 @@ public:
 	void draw(sf::RenderWindow & window);
 	int x;
 	int y;
+	Tile & getTile(int i, int j);
 private:
 	Tile tiles[CHUNK_SIZE][CHUNK_SIZE];
 	bool isBeingDestroyed = false;

@@ -13,12 +13,14 @@ Tile::Tile(bool type, int x, int y):
 	if(type){
 		renderTile.setFillColor(sf::Color(abs(sin(x*y))*100,abs(sin(x*y))*100,abs(sin(x*y))*100));
 		
+		isWall = true;
+		renderTile.setFillColor(sf::Color(115,115,115));
 	}
 	else{
 		renderTile.setFillColor(
 			sf::Color(abs(sin(x/64.0f))*125,abs(cos(y/64.0f))*125,abs(sin(x*y))*155));
 	}
-
+	destroyDelay = 0.0f;
 };
 Tile::~Tile(){
 	
@@ -60,4 +62,7 @@ void Tile::updateColorWithDelay(float delay, sf::Color c){
 	nextColor = c;
 	colorDelay = delay;
 	isBeingColored=true;
+}
+bool Tile::isSafe() {
+	return !isWall && destroyDelay >= 0;
 }

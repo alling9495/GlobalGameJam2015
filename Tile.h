@@ -14,6 +14,7 @@ public:
 	void startDestoryAnimation(float delay);
 	void updateColor(sf::Color color);
 	void updateColorWithDelay(float delay, sf::Color newCol);	
+	bool isSafe();
 private:
 	int x;
 	int y;
@@ -23,5 +24,6 @@ private:
 	float destroyDelay;
 	float colorDelay;
 	sf::Color nextColor;
+	bool isWall;
 };
 #endif

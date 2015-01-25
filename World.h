@@ -10,6 +10,7 @@ public:
 	void draw(sf::RenderWindow & window);
 	void update(sf::Time elapsed);
 	Player & getPlayer();
+	bool isPlayerAlive();
 private:
 	int level = 0;
 	float levelTime;
