@@ -20,7 +20,7 @@ void pollInput();
 std::deque<Bullet *> bullets;
 std::deque<Particle *> particles;
 sf::CircleShape bulletImage(10.0f);
-
+int frames = 0;
 
 World world = World(0);
 int main()
@@ -91,7 +91,11 @@ int main()
         sf::Time elapsed = clock.restart(), totalTime = totalClock.getElapsedTime();
         world.update(elapsed);
         update(elapsed);
-        particles.push_front(new Particle(world.getPlayer().getCenter().x, world.getPlayer().getCenter().y, world.getPlayer().getAngle()));
+        if (frames == 5) {
+            frames = 0;
+            particles.push_front(new Particle(world.getPlayer().getCenter().x, world.getPlayer().getCenter().y, world.getPlayer().getAngle()));
+        }   
+        frames++;
 
         
 

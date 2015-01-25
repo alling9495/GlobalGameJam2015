@@ -2,6 +2,7 @@
 #define _PARTICLE_H
 #include <SFML/Graphics.hpp>
 #include <math.h>
+#include <iostream>
 class Particle{
 public:
     Particle();
@@ -12,6 +13,8 @@ public:
     bool stillAlive();
 private:
     sf::RectangleShape shape;
+    sf::Sprite sprite;
+    sf::Texture texture;
     sf::Clock timeAlive;
     sf::Time lifeTime;
     sf::Vector2f previous;
