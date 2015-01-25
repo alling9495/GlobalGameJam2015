@@ -20,7 +20,7 @@ void pollInput();
 std::deque<Bullet *> bullets;
 std::deque<Particle *> particles;
 sf::CircleShape bulletImage(10.0f);
-
+int frames = 0;
 
 World world = World(0);
 
@@ -96,12 +96,16 @@ int main()
         world.update(elapsed);
         update(elapsed);
         
-        if(!particles[particles.size()-1]->isAlive && world.getPlayer().isMoving())
+        if(!particles.back()->isAlive && world.getPlayer().isDashing() && frames>1)
         {
             particles.push_front(particles.back());
             particles.pop_back();
             particles[0]->init(world.getPlayer().getCenter().x, world.getPlayer().getCenter().y, world.getPlayer().getAngle());
+            frames = 0;
         }
+
+        frames++;
+
         
 
         camera.setCenter(VectorUtil::offset(world.getPlayer().getCenter(), world.getPlayer().forward()*4.0f));
@@ -184,7 +188,7 @@ int main()
             }
         }
           
-    
+        world.getPlayer().resetMoveState();
         //HUD VIEW
         window.setView(window.getDefaultView());
         window.draw(coordinates);

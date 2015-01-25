@@ -50,7 +50,8 @@ const sf::Vector2<float> & Player::getCenter(){
 }
 
 sf::Vector2f Player::forward(){
-	moving = false;	
+	//moving = false;	
+	//dashing = false;
 	sprite.setRotation(angle+90);
 	return sf::Vector2f
 		((float)cos(angle*1.0/RAD2DEGf) * RAD2DEGf,(float)sin(angle*1.0/RAD2DEGf) * RAD2DEGf);
@@ -90,7 +91,9 @@ void Player::doAction(sf::Keyboard::Key keyStroke) {
 			break;
 		case LimitBreak:
 			// TODO LIMIT BREAK
+			break;
 		case SuperBoost:
+			dashing=true;
 			move(forward() * 1.5f);
 			break;
 		case StrafeLeft:
@@ -137,4 +140,12 @@ float Player::getAngle() {
 
 bool Player::isMoving(){
 	return moving;
+}
+bool Player::isDashing(){
+	return dashing;
+}
+
+void Player::resetMoveState(){
+	moving = false;
+	dashing = false;
 }

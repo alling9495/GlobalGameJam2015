@@ -37,6 +37,8 @@ public:
 	sf::Vector2<float> left();
 	void setSpeedMultiplier(float mul);
 	bool isMoving();
+	bool isDashing();
+	void resetMoveState();
 private:
 	float speedMult = 0.35f;
 	sf::CircleShape triangle;
@@ -45,6 +47,7 @@ private:
 	sf::Vector2<float> pos;
 	float angle;
 	bool moving = false;
+	bool dashing = false;
 	std::map<sf::Keyboard::Key, Action> map;
 };
 #endif
