@@ -5,6 +5,7 @@
 #include "World.h"
 #include "LinearBullet.h"
 #include "VectorUtil.h"
+#include "Particle.h"
 #include <iostream>
 #include <deque>
 #define KEY_S(keyStroke) sf::Keyboard::Key::keyStroke
@@ -17,6 +18,7 @@ void startGraphicsLoops();
 void pollInput();
 
 std::deque<Bullet *> bullets;
+std::deque<Particle *> particles;
 sf::CircleShape bulletImage(10.0f);
 
 
@@ -27,7 +29,7 @@ int main()
     window.setFramerateLimit(60);
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
-
+    int frames = 0;
     sf::Clock clock;
     Camera camera (world.getPlayer().getCenter());
 
@@ -54,10 +56,15 @@ int main()
         sf::Time elapsed = clock.restart();
         world.update(elapsed);
         update(elapsed);
+        if (frames == 5) {
+           frames = 0;
+           particles.push_front(new Particle(world.getPlayer().getCenter().x, world.getPlayer().getCenter().y));
+        }
+
         camera.setCenter(VectorUtil::offset(world.getPlayer().getCenter(), world.getPlayer().forward()*4.0f));
         std::string location = "(" + std::to_string((int)(world.getPlayer().getCenter().x)) + ", " 
             + std::to_string((int)(world.getPlayer().getCenter().y)) + ")\n" + "Number of Bullets" + 
-            std::to_string(bullets.size());
+            std::to_string(particles.size());
         
         coordinates.setString(location);
 
@@ -98,8 +105,25 @@ int main()
                  std::cout << "DONE!" << std::endl;
             }
         }
-        
 
+        for(int i = 0; i < particles.size(); i++)
+        {
+            if(particles[i]->move(world.getPlayer().getCenter()))
+            {
+                std::cout << "Rendering Particles" << std::endl;
+                particles[i]->draw(window);
+                std::cout << "DONE!" << std::endl;
+            }
+            else
+            {
+                std::cout << "erasing" << std::endl;
+                delete particles[i];
+                 particles.erase(particles.begin() + i);
+                 std::cout << "DONE!" << std::endl;
+            }
+        }
+        frames++;  
+        std::cout << frames << std::endl;
         //HUD VIEW
         window.setView(window.getDefaultView());
         window.draw(coordinates);

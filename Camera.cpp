@@ -21,10 +21,10 @@ Camera::~Camera(){
 
 void Camera::setCenter(const sf::Vector2<float> & center){
 	//sf::Vector2<float> direction = center;
-	float length = sqrt((center.x * center.x) + (center.y * center.y));
+	//float length = sqrt((center.x * center.x) + (center.y * center.y));
 	//float delta = previousLength - length;
-	float deltaX = (center.x - previous.x) / 15;
-	float deltaY = (center.y - previous.y) / 15;
+	float deltaX = (center.x + 40 - previous.x) / 15;
+	float deltaY = (center.y + 40 - previous.y) / 15;
 	if (abs(deltaX) < 0.5f) {
 		deltaX = 0;
 	}
@@ -35,7 +35,7 @@ void Camera::setCenter(const sf::Vector2<float> & center){
 	sf::Vector2<float> updatedCenter (previous.x + deltaX, previous.y + deltaY);
 	view.setCenter(updatedCenter);
 	previous = updatedCenter;
-	previousLength = length;
+	//previousLength = length;
 };
 
 void Camera::zoomOut(float percentIncrement) {
