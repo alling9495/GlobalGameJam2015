@@ -83,7 +83,8 @@ int main()
     */
     /*giggity*/
     // Load the shader
-    sf::Shader m_shader;
+    sf::Shader m_shader, m_light;
+    m_light.loadFromFile("simpleLight.glsl",sf::Shader::Fragment);
     m_shader.loadFromFile("storm.vert", "blink.frag");
 
     while (window.isOpen()) {
@@ -122,7 +123,11 @@ int main()
             std::to_string(particles.size());
         */
        std::string curLevel;
+       char buf[100];
        switch(world.level) {
+          case -1:
+             sprintf(buf, "Segmentation fault");
+             break;
           case 0:
             curLevel = "unauthorized";
              break;
@@ -139,11 +144,12 @@ int main()
             curLevel = "su";
              break;
           case 5:
-            curLevel = "root";
+            curLevel = "/";
              break;
        }
-       char buf[100];
-       std::sprintf(buf, "Accessing '%s'...", curLevel.c_str());
+       if (world.level >= 0) {
+          std::sprintf(buf, "Accessing '%s'...", curLevel.c_str());
+       }
        level.setString(buf);
 
        // std::cout << location << std::endl;
@@ -171,10 +177,12 @@ int main()
         m_shader.setParameter("storm_inner_radius", radius / 3);
         m_shader.setParameter("storm_total_radius", radius);
 
+       // m_light.setParameter("time",totalTime.asSeconds());
+        //m_light.setParameter("surfacePosition",playerCenter);
         //come on...
         window.draw(m_points,&m_shader);
 
-        world.draw(window, &m_shader);
+        world.draw(window,&m_shader);
 
         //BULLETZ
         /*

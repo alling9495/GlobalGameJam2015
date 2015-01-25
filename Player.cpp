@@ -37,8 +37,9 @@ void Player::move(const sf::Vector2<float>& dir){
 	pos += dir;
 	sprite.setPosition(pos.x, pos.y);
 }
-void Player::draw(sf::RenderWindow & window){
-	window.draw(sprite);
+
+void Player::draw(sf::RenderWindow & window, sf::Shader* shader){
+	window.draw(sprite,shader);
 }
 void Player::turn(float deg){
 	angle += deg;

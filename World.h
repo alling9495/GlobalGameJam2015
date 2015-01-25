@@ -9,14 +9,14 @@ class World{
 public:
 	World(int seed);
 	~World();
-	void draw(sf::RenderWindow & window, sf::Shader *);
+	void draw(sf::RenderWindow & window, sf::Shader* shader = NULL, sf::Shader* playerShader = NULL);
+	void startGame();
 	void update(sf::Time elapsed);
 	Player & getPlayer();
 	bool isPlayerAlive();
 	void loseGame();
-	void startGame();
 	GAMESTATE state;
-	int level = 0;
+	int level = -2;
 
 private:
 	float levelTime;

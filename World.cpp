@@ -13,7 +13,7 @@ float dissolveSpeedValues[] = {1.0f,1.32f,1.4f,1.6f,1.7f,1.8f};
 sf::Color tileColors[] = {
 	sf::Color(125,25,125),
 	sf::Color(25,125,25),
-	sf::Color(125,125,25),
+	sf::Color(225,225,125),
 	sf::Color(125,25,60),
 	sf::Color(200,25,25),
 	sf::Color(0,255,0),
@@ -46,6 +46,7 @@ World::World(int seed):
 
 void World::startGame() {
 
+	level = 0;
 	clearChunks();
 
 	state = GAMESTATE::PLAYING;
@@ -130,7 +131,7 @@ void World::update(sf::Time elapsed){
 World::~World(){
 	//Clear map
 }
-void World::draw(sf::RenderWindow & window, sf::Shader* shader){
+void World::draw(sf::RenderWindow & window, sf::Shader* shader, sf::Shader* playerShader){
 	bool top = isPlayerNearTop();
 	bool left = isPlayerNearLeft();
 	bool bottom = isPlayerNearBottom();
@@ -145,7 +146,7 @@ void World::draw(sf::RenderWindow & window, sf::Shader* shader){
 	
 	
 	
-	player.draw(window);
+	player.draw(window,playerShader);
 }
 
 bool World::isPlayerNearTop(){
@@ -359,7 +360,7 @@ void World::loseGame()
 	player.setColor(sf::Color(255,0,0));
 	state= GAMESTATE::LOST;
 	player.setSpeedMultiplier(speedValues[0]);
-	level = 0;
+	level = -1;
 	forceColorTiles(sf::Color(0,0,0));
 }
 
