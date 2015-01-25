@@ -7,22 +7,18 @@
 class WorldChunk{
 
 public:
-	enum DEALLOCATE_DIRECTION{
-		UP,
-		DOWN,
-		RIGHT,
-		LEFT
-	}
 	WorldChunk(bool wall, int x, int y);
 	~WorldChunk();
-	void startDeallocatonAnimation();
+	void startDeallocationAnimation();
+	void startDeallocationAnimation(sf::Vector2f startingPosition);
+
 	void update(sf::Time elapsed);
 	void draw(sf::RenderWindow & window);
 	int x;
 	int y;
 private:
 	Tile tiles[CHUNK_SIZE][CHUNK_SIZE];
-	bool isBeingDestoryed = false;
+	bool isBeingDestroyed = false;
 
 
 

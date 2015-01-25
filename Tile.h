@@ -8,9 +8,13 @@ public:
 	Tile(){};
 	Tile(bool wall, int x, int y);
 	~Tile();
+	const sf::Vector2f & getPosition();
+	void update(sf::Time elapsed);
 	void draw(sf::RenderWindow & window);
 	void startDestoryAnimation(float delay);
 private:
 	sf::RectangleShape renderTile;
+	bool isBeingDestoryed;
+	float destroyDelay;
 };
 #endif

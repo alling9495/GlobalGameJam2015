@@ -1,25 +1,25 @@
-Tenative Name: Kinetikos
+Tenative Name: Attack Vector
 
 Gameplay Overview:
-	Hidden Information Game + Puzzle + Platformer.
+	"Infinite Runner" with an ending
+	Users control a pointer in a computer system as they outrun the garbage collector. This is the epitome of hollywood hacking.
+	Players use Up down left right, or WASD to move through a level
 
-	The game is split into three phases
+	The level is randomly generated in front of the player, with a few exceptions:
+		New blocks are created on the fly in front of the player
+		Old blocks are eaten by the garbage collector. The player could create an unwinnable situation by backing themselves into a corner. Sad life for them, shouldn'tve done that.
+		Each 16x16 room can have a few obsticals in them to make them more exciting. Gaps and pits litter the rooms, forcing the player to use their ships's weapon to fill them.
 
 
+	Winning:
+		Players survive a set amount of time running through the maze. There's no additional action besides moving forward and avoiding the GC
+		After players survive a set amount of time, the game attempts to spawn a goal tile. Stepping on this goal tile advances the player to the next level.
 
-Robot Design:
-	Hover Robot (Super fast):
-		Four directional basic motion:
-			Forward, Up, Down, Back.
-		Two directional dash:
-			Forward, Back
-		Two stage gun:
-			Load, fire
-		Vertical Thruster:
-			Double jump
+		Players progress through a series of levels starting from Guest to Root.
 
-Wiring Design:	
-	X screens
-	.... lock input keys?
+		Each time the player advances a level, the background shifts, starting from purple to red
 
+		There's a bumpin ass soundtrack
+		it's good
+		
 

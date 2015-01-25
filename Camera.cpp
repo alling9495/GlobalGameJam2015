@@ -33,7 +33,6 @@ void Camera::setCenter(const sf::Vector2<float> & center){
 	}
 	
 	sf::Vector2<float> updatedCenter (previous.x + deltaX, previous.y + deltaY);
-	std::cout << deltaX << std::endl << deltaY << std::endl;
 	view.setCenter(updatedCenter);
 	previous = updatedCenter;
 	previousLength = length;
