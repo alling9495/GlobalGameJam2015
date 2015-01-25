@@ -15,8 +15,6 @@ void closeWindowEvent(sf::RenderWindow & window, sf::Event event);
 void startGameLoop();
 void handleInput();
 void update(sf::Time elapsed);
-void startGraphicsLoops();
-void pollInput();
 
 std::deque<Particle *> particles;
 int frames = 0;
@@ -103,9 +101,7 @@ int main()
         }
 
         frames++;
-
-        
-
+    
         camera.setCenter(VectorUtil::offset(world.getPlayer().getCenter(), world.getPlayer().forward()*12.0f));
         std::string location = "(" + std::to_string((int)(world.getPlayer().getCenter().x)) + ", " 
             + std::to_string((int)(world.getPlayer().getCenter().y)) + ")\n" + "Number of Particles" + 
@@ -114,9 +110,10 @@ int main()
         coordinates.setString(location);
 
        // std::cout << location << std::endl;
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::I)){
-            world.getPlayer().draw(window);
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::P)){
+            world.startGame();
         }
+
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::R)){
             camera.zoomOut(0.05f);
         }
@@ -140,7 +137,6 @@ int main()
 
         //come on...
         window.draw(m_points,&m_shader);
-        window.draw(shape);
 
         world.draw(window, &m_shader);
 
@@ -212,8 +208,6 @@ void startGameLoop() {
 void handleInput() {
     if(world.state != GAMESTATE::WON){
         sf::Keyboard::Key keySet[] = {KEY_S(W), KEY_S(S), KEY_S(A), KEY_S(D), KEY_S(I), KEY_S(K), KEY_S(L), KEY_S(J)};
-        
-        bulletImage.setFillColor(sf::Color::Green);
 
         for (int i = 0; i < 8; i++) {
             if (sf::Keyboard::isKeyPressed(keySet[i])) {
@@ -265,10 +259,5 @@ void update(sf::Time elapsed) {
     handleInput();
 };
 
-void startGraphicsLoops() {
-};
-
-void pollInput() {
-};
 
 

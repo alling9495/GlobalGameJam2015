@@ -23,9 +23,10 @@ sf::Color tileColors[] = {
 
 World::World(int seed):
 	seed(seed),
-	state(GAMESTATE::PLAYING)
+	state(GAMESTATE::TUTORIAL)
 {
-	srand(seed);
+	
+	/*srand(seed);
 	sf::Color startColor = sf::Color(125,25,125);
 	levelTime = levelTimes[0];
 	std::pair<int,int> origin = std::pair<int,int>(0,0);
@@ -40,7 +41,28 @@ World::World(int seed):
 	generateChunk(origin,1,-1,TYPE::WALL,tileColors[0]); 	
 
 	player.move(sf::Vector2f(TILE_SIZE*CHUNK_SIZE / 2, TILE_SIZE*CHUNK_SIZE / 2));
-	//player.turn(-90);
+	//player.turn(-90);*/
+}
+
+void World::startGame() {
+	state = GAMESTATE::PLAYING;
+	srand(seed);
+	sf::Color startColor = sf::Color(125,25,125);
+	levelTime = levelTimes[0];
+	// std::pair<int,int> origin = std::pair<int,int>(0,0);
+	std::pair<int,int> origin = getPlayerChunk();
+	generateChunk(std::pair<int,int>(0,0),TYPE::FLOOR, startColor);
+	generateChunk(origin,1,0,TYPE::WALL,tileColors[0]);
+	generateChunk(origin,1,1,TYPE::WALL,tileColors[0]);
+	generateChunk(origin,0,1,TYPE::WALL,tileColors[0]);
+	generateChunk(origin,-1,1,TYPE::WALL,tileColors[0]);
+	generateChunk(origin,-1,0,TYPE::WALL,tileColors[0]);
+	generateChunk(origin,-1,-1,TYPE::WALL,tileColors[0]);
+	generateChunk(origin,0,-1,TYPE::FLOOR,startColor);
+	generateChunk(origin,1,-1,TYPE::WALL,tileColors[0]); 	
+
+	player.move(sf::Vector2f(TILE_SIZE*CHUNK_SIZE / 2, TILE_SIZE*CHUNK_SIZE / 2));
+	
 }
 
 void World::update(sf::Time elapsed){
@@ -299,7 +321,7 @@ void World::colorTiles(sf::Color color){
 }
 
 bool World::isPlayerAlive() {
-	if(state == GAMESTATE::LOST){
+	if(state == GAMESTATE::LOST || state == GAMESTATE::TUTORIAL){
 		return true;
 	}
 	WorldChunk chunk = * chunks[getPlayerChunk()];
