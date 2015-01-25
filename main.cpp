@@ -33,7 +33,7 @@ int main()
     world.getPlayer().move(sf::Vector2f(-565,495));
     float particleCenterX = 200, particleCenterY = 200;
 
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Main Window");
+    sf::RenderWindow window(sf::VideoMode(800, 600), "attack_vector");
     window.setFramerateLimit(60);
 
     sf::Clock clock, totalClock;
