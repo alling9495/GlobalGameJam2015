@@ -142,7 +142,7 @@ int main()
             curLevel = "user";
              break;
           case 2:
-            curLevel = "priveleged";
+            curLevel = "privileged";
              break;
           case 3:
             curLevel = "admin";
