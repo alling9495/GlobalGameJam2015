@@ -80,7 +80,8 @@ int main()
 
     while (window.isOpen()) {
         if (!world.isPlayerAlive()) {
-            window.close();
+            world.loseGame();
+            //window.close();
             //std::cout << "Player died" << std::endl;
             //window.close();
         }
@@ -174,7 +175,7 @@ int main()
         cmdPrompt.setString("admin@GGJ:~$");
         window.draw(cmdPrompt);
 
-        for(int i = 0; i < particles.size(); i++)
+        for(int i = 0; i < particles.size() && particles[i]->isAlive; i++)
         {
             if(particles[i]->move(world.getPlayer().getCenter()))
             {
@@ -212,15 +213,17 @@ void startGameLoop() {
 };
 
 void handleInput() {
-    sf::Keyboard::Key keySet[] = {KEY_S(W), KEY_S(S), KEY_S(A), KEY_S(D), KEY_S(I), KEY_S(K), KEY_S(L), KEY_S(J)};
-    
-    bulletImage.setFillColor(sf::Color::Green);
+    if(world.state != GAMESTATE::WON){
+        sf::Keyboard::Key keySet[] = {KEY_S(W), KEY_S(S), KEY_S(A), KEY_S(D), KEY_S(I), KEY_S(K), KEY_S(L), KEY_S(J)};
+        
+        bulletImage.setFillColor(sf::Color::Green);
 
-    for (int i = 0; i < 8; i++) {
-        if (sf::Keyboard::isKeyPressed(keySet[i])) {
-            world.getPlayer().doAction(keySet[i]);
-        }
-    };
+        for (int i = 0; i < 8; i++) {
+            if (sf::Keyboard::isKeyPressed(keySet[i])) {
+                world.getPlayer().doAction(keySet[i]);
+            }
+        };
+    }
 /*    if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
         world.getPlayer().doAction(sf::Keyboard::A);
     }
@@ -270,3 +273,5 @@ void startGraphicsLoops() {
 
 void pollInput() {
 };
+
+

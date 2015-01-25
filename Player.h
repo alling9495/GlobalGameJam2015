@@ -39,6 +39,7 @@ public:
 	bool isMoving();
 	bool isDashing();
 	void resetMoveState();
+	void setColor(sf::Color c);
 private:
 	float speedMult = 0.35f;
 	sf::CircleShape triangle;

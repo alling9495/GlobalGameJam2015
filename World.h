@@ -3,6 +3,8 @@
 #include "Player.h"
 #include "WorldChunk.h"
 #include "Tile.h"
+#include "ChunkType.h"
+#include "GameState.hpp"
 class World{
 public:
 	World(int seed);
@@ -11,6 +13,9 @@ public:
 	void update(sf::Time elapsed);
 	Player & getPlayer();
 	bool isPlayerAlive();
+	void loseGame();
+	GAMESTATE state;
+
 private:
 	int level = 0;
 	float levelTime;
@@ -21,8 +26,8 @@ private:
 	std::pair<int,int> getPlayerChunk();
 	std::pair<int,int> lastPlayerChunk;
 
-	bool generateChunk(std::pair<int,int> key, bool wall, sf::Color color); //Generate tiles around when the player moves to a new chunk.
-	bool generateChunk(std::pair<int,int> root, int offsetx, int offsetY, bool wall, sf::Color color);
+	bool generateChunk(std::pair<int,int> key, TYPE wall, sf::Color color); //Generate tiles around when the player moves to a new chunk.
+	bool generateChunk(std::pair<int,int> root, int offsetx, int offsetY, TYPE wall, sf::Color color);
 	WorldChunk *  getChunkWithOffset(int offsetX, int offsetY);
 	bool isPlayerNearTop();
 	bool isPlayerNearBottom();
@@ -33,6 +38,10 @@ private:
 	void generateChunks();
 	bool hasChunkWithOffset(int x, int y);
 	void colorTiles(sf::Color color);
-
+	void forceColorTiles(sf::Color c);
+	void forceGenerateChunk(std::pair<int,int> pos, TYPE tileType, sf::Color c);
+	void forceGenerateChunk(std::pair<int,int> root, int offsetx, int offsetY, TYPE wall, sf::Color color);
+		
+	void endGame(std::pair<int,int> endingTile);
 };
 #endif

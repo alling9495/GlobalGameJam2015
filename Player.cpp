@@ -149,3 +149,6 @@ void Player::resetMoveState(){
 	moving = false;
 	dashing = false;
 }
+void Player::setColor(sf::Color c){
+	sprite.setColor(c);
+}

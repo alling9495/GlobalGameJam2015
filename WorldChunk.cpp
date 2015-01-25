@@ -2,28 +2,30 @@
 #include <iostream>
 #include <math.h>
 using namespace std;
-WorldChunk::WorldChunk(bool wall, int x, int y):
+WorldChunk::WorldChunk(TYPE tileType, int x, int y):
 x(x),
 y(y),
-isWall(wall)
+myType(tileType),
+isWall(tileType == TYPE::WALL)
 {
 
 	for(int i = 0; i < CHUNK_SIZE; i++){
 		for(int j = 0; j < CHUNK_SIZE; j++){
-			tiles[i][j] = Tile(wall,i+x*CHUNK_SIZE,j+y*CHUNK_SIZE);
+			tiles[i][j] = Tile(tileType,i+x*CHUNK_SIZE,j+y*CHUNK_SIZE);
 		}
 	}
 }
 
-WorldChunk::WorldChunk(bool wall, int x, int y,sf::Color color):
+WorldChunk::WorldChunk(TYPE tileType, int x, int y,sf::Color color):
 x(x),
 y(y),
-isWall(wall)
+myType(tileType),
+isWall(tileType == TYPE::WALL)
 {
 
 	for(int i = 0; i < CHUNK_SIZE; i++){
 		for(int j = 0; j < CHUNK_SIZE; j++){
-			tiles[i][j] = Tile(wall,i+x*CHUNK_SIZE,j+y*CHUNK_SIZE, color);
+			tiles[i][j] = Tile(tileType,i+x*CHUNK_SIZE,j+y*CHUNK_SIZE, color);
 		}
 	}
 }
@@ -60,6 +62,8 @@ void WorldChunk::startDeallocationAnimation(){
 	}
 }
 
+
+
 void WorldChunk::startDeallocationAnimation(sf::Vector2f startingPosition, float speed){
 	if(!isBeingDestroyed){
 	isBeingDestroyed=true;
@@ -82,7 +86,14 @@ void WorldChunk::colorTiles(sf::Vector2f startingPosition, float speed,sf::Color
 	}
 }
 
-
+void WorldChunk::forceColorTiles(sf::Vector2f startingPosition, float speed,sf::Color color){
+	for(int i = 0; i < CHUNK_SIZE; i++){
+		for(int j = 0; j < CHUNK_SIZE; j++){
+			float dist = getDist(startingPosition,tiles[i][j].getPosition());
+			tiles[i][j].forceUpdateColorWithDelay((dist + 100) * (1.0f/speed),color);
+		}
+	}
+}
 
 Tile & WorldChunk::getTile(int i, int j) {
 	return tiles[i][j];
@@ -90,4 +101,10 @@ Tile & WorldChunk::getTile(int i, int j) {
 
 bool WorldChunk::isSafe(){
 	return !(isWall||isBeingDestroyed);
+}
+bool WorldChunk::isNewLevel(){
+	if(myType==TYPE::GOAL){
+		cout<<"!!!!!!!!!!!!!!!!!!!!!"<<endl;
+	}
+	return myType==TYPE::GOAL;
 }

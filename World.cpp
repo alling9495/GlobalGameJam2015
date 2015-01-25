@@ -3,11 +3,11 @@
 #include "Tile.h"
 #include <iostream>
 #include "VectorUtil.h"
-#define LEVELS 5
+#define LEVELS 6
 using namespace std;
 
-float levelTimes[] = {35.0,40.0,50.0,60.0,70.0,70.0f};
-float speedValues[] = {0.35f, 0.45f, 0.5f, 0.5f, 0.65f, 0.75f};
+float levelTimes[] = {35.0,40.0,50.0,60.0,50.0,50.0f};
+float speedValues[] = {0.35f, 0.45f, 0.5f, 0.5f, 0.65f, 0.75f,0.0};
 float dissolveSpeedValues[] = {1.15f,1.32f,1.4f,1.6f,1.8f,2.0f};
 
 sf::Color tileColors[] = {
@@ -16,55 +16,82 @@ sf::Color tileColors[] = {
 	sf::Color(125,25,125),
 	sf::Color(125,25,60),
 	sf::Color(200,25,25),
-	sf::Color(0,255,0)
+	sf::Color(0,255,0),
+	sf::Color(255,255,255),
 };
 
 
 World::World(int seed):
-	seed(seed)
+	seed(seed),
+	state(GAMESTATE::PLAYING)
 {
+
 	sf::Color startColor = sf::Color(125,25,125);
 	levelTime = levelTimes[0];
 	std::pair<int,int> origin = std::pair<int,int>(0,0);
-	generateChunk(std::pair<int,int>(0,0),false, startColor);
-	generateChunk(origin,1,0,true,tileColors[0]);
-	generateChunk(origin,1,1,true,tileColors[0]);
-	generateChunk(origin,0,1,true,tileColors[0]);
-	generateChunk(origin,-1,1,true,tileColors[0]);
-	generateChunk(origin,-1,0,true,tileColors[0]);
-	generateChunk(origin,-1,-1,true,tileColors[0]);
-	generateChunk(origin,0,-1,false,startColor);
-	generateChunk(origin,1,-1,true,tileColors[0]); 	
+	generateChunk(std::pair<int,int>(0,0),TYPE::FLOOR, startColor);
+	generateChunk(origin,1,0,TYPE::WALL,tileColors[0]);
+	generateChunk(origin,1,1,TYPE::WALL,tileColors[0]);
+	generateChunk(origin,0,1,TYPE::WALL,tileColors[0]);
+	generateChunk(origin,-1,1,TYPE::WALL,tileColors[0]);
+	generateChunk(origin,-1,0,TYPE::WALL,tileColors[0]);
+	generateChunk(origin,-1,-1,TYPE::WALL,tileColors[0]);
+	generateChunk(origin,0,-1,TYPE::FLOOR,startColor);
+	generateChunk(origin,1,-1,TYPE::WALL,tileColors[0]); 	
 
 	player.move(sf::Vector2f(TILE_SIZE*CHUNK_SIZE / 2, TILE_SIZE*CHUNK_SIZE / 2));
 	//player.turn(-90);
 }
 
 void World::update(sf::Time elapsed){
-	levelTime -= elapsed.asSeconds()*5;
+	levelTime -= elapsed.asSeconds()*3;
 	if(levelTime < 0){
+		/*
 		if(level < LEVELS){
 			levelTime=levelTimes[++level];
 			player.setSpeedMultiplier(speedValues[level]);
 			colorTiles(tileColors[level]);
 			cout<<"LEVEL UP"<<endl;
 		}
+		*/
 	}
-	std::pair<int,int> chunk = getPlayerChunk();
-	if(chunk != lastPlayerChunk){
-		std::cout << "Player entered " << chunk.first << "," << chunk.second << endl;
-		std::cout << "Chunks loaded: " << chunks.size() << endl;
-		getChunkWithOffset(0,0)->startDeallocationAnimation(
-			VectorUtil::offset(player.getCenter(),player.forward()*-3.0f),dissolveSpeedValues[level]);
-		unloadChunks(chunk);
-	
-		lastPlayerChunk = chunk;
-		getChunkWithOffset(0,0)->startDeallocationAnimation(
-			VectorUtil::offset(player.getCenter(),player.forward()*-3.0f),dissolveSpeedValues[level]);
+	if(state == GAMESTATE::PLAYING){
+		std::pair<int,int> chunk = getPlayerChunk();
+		
+		if(chunk != lastPlayerChunk){
+			std::cout << "Player entered " << chunk.first << "," << chunk.second << endl;
+			std::cout << "Chunks loaded: " << chunks.size() << endl;
+			if(chunks[chunk]->isNewLevel()){
+				cout << "LEVEL " << level;
+				if(level+1 == LEVELS){
+					endGame(chunk);
+				}
+				else{
+					levelTime=levelTimes[++level];
+					player.setSpeedMultiplier(speedValues[level]);
+					player.setColor(sf::Color(0,0,0));
+					colorTiles(tileColors[level]);
+					cout<<"LEVEL UP"<<endl;	
+				}
+			}
+			else{
+				player.setColor(sf::Color(255,255,255));
+			}
+			//Second check if game is won.
+			if(state == GAMESTATE::PLAYING){
+				getChunkWithOffset(0,0)->startDeallocationAnimation(
+				VectorUtil::offset(player.getCenter(),player.forward()*-3.0f),dissolveSpeedValues[level]);
+				unloadChunks(chunk);
+				
+				lastPlayerChunk = chunk;
+				getChunkWithOffset(0,0)->startDeallocationAnimation(
+				VectorUtil::offset(player.getCenter(),player.forward()*-3.0f),dissolveSpeedValues[level]);
 
-		//Generate the square chunk around the player
+				//Generate the square chunk around the player
 
-		generateChunks();
+				generateChunks();
+			}
+		}
 	}
 
 	for(std::vector<WorldChunk *>::iterator it = loadedChunks.begin(); it != loadedChunks.end(); it++){
@@ -132,18 +159,34 @@ void World::freeChunk(std::pair<int,int> key){
 	}
 }
 
-bool World::generateChunk(std::pair<int,int> pos, bool wall, sf::Color c){
+bool World::generateChunk(std::pair<int,int> pos, TYPE tileType, sf::Color c){
 	if(chunks.count(pos) == 0){
 
-		chunks[pos] = new WorldChunk(wall,pos.first,pos.second,c);
+		chunks[pos] = new WorldChunk(tileType,pos.first,pos.second,c);
 		loadedChunks.push_back(chunks[pos]);
 		return true;
 	}
 	return false;
 }
 
-bool World::generateChunk(std::pair<int,int> root, int x, int y, bool wall, sf::Color c){
-	return generateChunk(std::pair<int,int>(root.first + x, root.second + y),wall,c);
+void World::forceGenerateChunk(std::pair<int,int> root, int x, int y, TYPE tileType, sf::Color color){
+	forceGenerateChunk(std::pair<int,int>(root.first + x, root.second + y),tileType,color);
+}
+void World::forceGenerateChunk(std::pair<int,int> pos, TYPE tileType, sf::Color c){
+	if(chunks.count(pos) != 0){
+		freeChunk(pos);
+	}
+
+	chunks[pos] = new WorldChunk(tileType,pos.first,pos.second,c);
+	loadedChunks.push_back(chunks[pos]);
+	
+	
+
+}
+
+
+bool World::generateChunk(std::pair<int,int> root, int x, int y, TYPE tileType, sf::Color c){
+	return generateChunk(std::pair<int,int>(root.first + x, root.second + y),tileType,c);
 }
 
 WorldChunk * World::getChunkWithOffset(int x, int y){
@@ -198,6 +241,7 @@ void World::generateChunks(){
 	}
 	cout << "OPEN COUNT: " <<openCount << endl;
 	if(openCount < 2){
+		bool didGen=false;
 		do{
 			x = y = 0;
 			if(rand()%2 > 0){
@@ -206,15 +250,20 @@ void World::generateChunks(){
 			else{
 				y = round(rand()%3 -1);
 			}
-
-		}while(!generateChunk(lastPlayerChunk,x,y,false,tileColors[level]));
+			if(levelTime < 0 && rand()%6 == 0){
+				didGen=generateChunk(lastPlayerChunk,x,y,TYPE::GOAL,tileColors[level+1]);
+			}
+			else{
+				didGen=generateChunk(lastPlayerChunk,x,y,TYPE::FLOOR,tileColors[level]);
+			}
+		}while(!didGen);
 	}
 
 
 	for(x = -1; x < 2; x++){
 		for(y = -1; y < 2; y++){
-			if(rand()%4 == 0){
-				if(generateChunk(lastPlayerChunk,x,y,false,tileColors[level])){
+			if(rand()%16 == 0){
+				if(generateChunk(lastPlayerChunk,x,y,TYPE::FLOOR,tileColors[level])){
 					if(rand()%4 == 0){
 						getChunkWithOffset(x,y)->startDeallocationAnimation();
 						getChunkWithOffset(x,y)->isWall=true;//Sorry
@@ -223,7 +272,7 @@ void World::generateChunks(){
 			}
 			else{
 		
-				if(generateChunk(lastPlayerChunk,x,y,true,tileColors[level])){
+				if(generateChunk(lastPlayerChunk,x,y,TYPE::WALL,tileColors[level])){
 					if(rand()%4 == 0){
 						getChunkWithOffset(x,y)->startDeallocationAnimation();
 
@@ -234,15 +283,24 @@ void World::generateChunks(){
 	}
 }
 
+void World::forceColorTiles(sf::Color color){
+	for(std::vector<WorldChunk *>::iterator it = loadedChunks.begin(); it != loadedChunks.end(); it++){
+		(*it)->forceColorTiles(player.getCenter(),4,color);
+	}
+}
+
 void World::colorTiles(sf::Color color){
 	for(std::vector<WorldChunk *>::iterator it = loadedChunks.begin(); it != loadedChunks.end(); it++){
-		(*it)->colorTiles(player.getCenter(),8,color);
+		(*it)->colorTiles(player.getCenter(),4,color);
 	}
 
 	
 }
 
 bool World::isPlayerAlive() {
+	if(state == GAMESTATE::LOST){
+		return true;
+	}
 	WorldChunk chunk = * chunks[getPlayerChunk()];
 	const sf::Vector2f pos = player.getCenter();
 
@@ -252,3 +310,31 @@ bool World::isPlayerAlive() {
 	Tile tile = chunk.getTile(i, j);
 	return tile.isSafe();
 }
+
+void World::endGame(std::pair<int,int> endingTile){
+	cout<<"GAME END"<<endl;
+	player.setColor(sf::Color(255,255,255,0));
+	player.setSpeedMultiplier(0);
+	state=GAMESTATE::WON;				
+	sf::Color c = sf::Color(0,0,0);
+	forceGenerateChunk(endingTile,TYPE::FLOOR, c);
+	forceGenerateChunk(endingTile,1,0,TYPE::FLOOR,c);
+	forceGenerateChunk(endingTile,1,1,TYPE::FLOOR,c);
+	forceGenerateChunk(endingTile,0,1,TYPE::FLOOR,c);
+	forceGenerateChunk(endingTile,-1,1,TYPE::FLOOR,c);
+	forceGenerateChunk(endingTile,-1,0,TYPE::FLOOR,c);
+	forceGenerateChunk(endingTile,-1,-1,TYPE::FLOOR,c);
+	forceGenerateChunk(endingTile,0,-1,TYPE::FLOOR,c);
+	forceGenerateChunk(endingTile,1,-1,TYPE::FLOOR,c);
+	forceColorTiles(sf::Color(255,255,255)); 	
+}
+
+void World::loseGame()
+{
+	player.setColor(sf::Color(255,0,0));
+	state= GAMESTATE::LOST;
+	player.setSpeedMultiplier(speedValues[0]);
+	level = 0;
+	forceColorTiles(sf::Color(0,0,0));
+}
+
