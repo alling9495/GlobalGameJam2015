@@ -41,10 +41,10 @@ void StartPoint::fadeOut(){
 }
 void StartPoint::update(sf::Time elapsed){
 	if(fadeDir){
-		alpha = (int)min(255,alpha+1);
+		alpha = (int)min(255,alpha+10);
 	}
 	else{
-		alpha = (int)max(0,alpha-1);
+		alpha = (int)max(0,alpha-10);
 	}
 	angle += elapsed.asSeconds()*6.28f;
 	square1.setRotation(3*angle);

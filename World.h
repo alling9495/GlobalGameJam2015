@@ -9,7 +9,7 @@ class World{
 public:
 	World(int seed);
 	~World();
-	void draw(sf::RenderWindow & window, sf::Shader *);
+	void draw(sf::RenderWindow & window, sf::Shader *, sf::Shader* playShader = NULL);
 	void update(sf::Time elapsed);
 	Player & getPlayer();
 	bool isPlayerAlive();
@@ -17,7 +17,7 @@ public:
 	void startGame();
 	GAMESTATE state;
 	std::pair<int,int> getPlayerChunk();
-	int level = 0;
+	int level = -2;
 	
 private:
 	float levelTime;
