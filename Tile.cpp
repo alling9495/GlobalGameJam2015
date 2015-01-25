@@ -23,8 +23,8 @@ Tile::~Tile(){
 const sf::Vector2f & Tile::getPosition(){
 	return renderTile.getPosition();
 }
-void Tile::draw(sf::RenderWindow & window){
-	window.draw(renderTile);
+void Tile::draw(sf::RenderWindow & window, sf::Shader* shader){
+	window.draw(renderTile, shader);
 }
 
 void Tile::update(sf::Time elapsed){

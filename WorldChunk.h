@@ -13,7 +13,7 @@ public:
 	void startDeallocationAnimation(sf::Vector2f startingPosition);
 
 	void update(sf::Time elapsed);
-	void draw(sf::RenderWindow & window);
+	void draw(sf::RenderWindow & window, sf::Shader* shader = NULL);
 	int x;
 	int y;
 	Tile & getTile(int i, int j);

@@ -52,7 +52,7 @@ void World::update(sf::Time elapsed){
 World::~World(){
 	//Clear map
 }
-void World::draw(sf::RenderWindow & window){
+void World::draw(sf::RenderWindow & window, sf::Shader* shader){
 	bool top = isPlayerNearTop();
 	bool left = isPlayerNearLeft();
 	bool bottom = isPlayerNearBottom();
@@ -60,7 +60,7 @@ void World::draw(sf::RenderWindow & window){
 	std::vector<WorldChunk *>::iterator it = loadedChunks.begin();
 	while(it != loadedChunks.end()){
 
-		(*it)->draw(window);
+		(*it)->draw(window,shader);
 		it++;
 	}
 	

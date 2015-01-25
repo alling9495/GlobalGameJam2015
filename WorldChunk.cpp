@@ -20,10 +20,10 @@ float getDist(const sf::Vector2f & a, const sf::Vector2f & b){
 WorldChunk::~WorldChunk(){
 	
 }
-void WorldChunk::draw(sf::RenderWindow & window){
+void WorldChunk::draw(sf::RenderWindow & window, sf::Shader* shader){
 	for(int i = 0; i < CHUNK_SIZE; i++){
 		for(int j = 0; j < CHUNK_SIZE; j++){
-			tiles[i][j].draw(window);
+			tiles[i][j].draw(window, shader);
 		}
 	}
 }
