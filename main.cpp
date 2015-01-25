@@ -18,7 +18,6 @@ int main() {
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
     sf::Clock clock;
-    Camera camera;   
 
     //HUD stuff
     sf::Font font;
@@ -31,6 +30,7 @@ int main() {
     sf::Text coordinates;
     coordinates.setFont(font);
     coordinates.setCharacterSize(30);
+    Camera camera (player.getCenter());
 
 
     while (window.isOpen()) {
@@ -38,11 +38,10 @@ int main() {
         while (window.pollEvent(event)) {
             closeWindowEvent(window, event);
         }
-
         sf::Time elapsed = clock.restart();
         update(elapsed);
-        std::string location = "(" + std::to_string((int)(player.getPosition().x)) + ", " 
-            + std::to_string((int)(player.getPosition().y)) + ")";
+        std::string location = "(" + std::to_string((int)(player.getCenter().x)) + ", " 
+            + std::to_string((int)(player.getCenter().y)) + ")";
         
         coordinates.setString(location);
 
