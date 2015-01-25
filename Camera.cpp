@@ -11,8 +11,10 @@ Camera::Camera(){
 
 Camera::Camera(sf::Vector2<float> center): Camera() {
 	view.reset(panel);
+	view.setCenter(center);
 	previousLength = sqrt((center.x * center.x) + (center.y * center.y));
 	previous = center;
+
 };
 
 Camera::~Camera(){

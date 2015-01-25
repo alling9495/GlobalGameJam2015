@@ -26,14 +26,16 @@ int main()
     for(int i = 0; i < 250; i++){
         particles.push_back(new Particle()); //Static particle array
     }
+    world.getPlayer().move(sf::Vector2f(-565,495));
     float particleCenterX = 200, particleCenterY = 200;
 
     sf::RenderWindow window(sf::VideoMode(800, 600), "Main Window");
     window.setFramerateLimit(60);
 
     sf::Clock clock, totalClock;
-    Camera camera (world.getPlayer().getCenter());
-
+    Camera camera (sf::Vector2f(VectorUtil::offset(world.getPlayer().getCenter(), world.getPlayer().forward()*12.0f)));
+ 
+    
     //HUD stuff
     sf::Font font;
     if(!font.loadFromFile("font/FreeMonoBold.ttf")) {
@@ -197,9 +199,10 @@ int main()
         // Intro command prompt spawn point
         sf::Text cmdPrompt;
         cmdPrompt.setFont(cmdFont);
-        cmdPrompt.setCharacterSize(130);
+        cmdPrompt.setCharacterSize(100);
         cmdPrompt.setPosition(-480, 420);
-        cmdPrompt.setString("admin@GGJ:~$");
+
+        cmdPrompt.setString("user@GGJ:~$ ./attack_vector");
         window.draw(cmdPrompt);
 
         for(int i = 0; i < particles.size() && particles[i]->isAlive; i++)
