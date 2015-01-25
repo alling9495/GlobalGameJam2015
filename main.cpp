@@ -20,13 +20,14 @@ sf::CircleShape bulletImage(10.0f);
 World world = World(0);
 int main()
 {
+    float particleCenterX = 200, particleCenterY = 200;
 
     sf::RenderWindow window(sf::VideoMode(800, 600), "Main Window");
     window.setFramerateLimit(60);
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
 
-    sf::Clock clock;
+    sf::Clock clock, totalClock;
     Camera camera (world.getPlayer().getCenter());
 
     //HUD stuff
@@ -41,15 +42,34 @@ int main()
     coordinates.setCharacterSize(30);
     
     camera.resetZoom();
-
+        // Create the points
+        // 
+    /*SHADER MAGIC! Setup...*/
+    sf::VertexArray m_points;
+    m_points.setPrimitiveType(sf::Points);
+    for (int i = 0; i < 40000; ++i)
+    {
+        float x = static_cast<float>(std::rand() % 800);
+        float y = static_cast<float>(std::rand() % 600);
+        sf::Uint8 r = std::rand() % 255;
+        sf::Uint8 g = std::rand() % 255;
+        sf::Uint8 b = std::rand() % 255;
+        m_points.append(sf::Vertex(sf::Vector2f(x, y), sf::Color(r, g, b)));
+    }
+    /*giggity*/
+    // Load the shader
+    sf::Shader m_shader;
+    m_shader.loadFromFile("storm.vert", "blink.frag");
 
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
             closeWindowEvent(window, event);
         }
+        
+        sf::Vector2f playerCenter = world.getPlayer().getCenter();
 
-        sf::Time elapsed = clock.restart();
+        sf::Time elapsed = clock.restart(), totalTime = totalClock.getElapsedTime();
         world.update(elapsed);
         update(elapsed);
         camera.setCenter(world.getPlayer().getCenter());
@@ -74,6 +94,15 @@ int main()
         window.setView(camera.getView());
         window.clear();
 
+        /*ANND the update!*/
+        float radius = 200 + std::cos(totalTime.asSeconds()) * 150;
+        m_shader.setParameter("storm_position", playerCenter.x , playerCenter.y);
+        m_shader.setParameter("storm_inner_radius", radius / 3);
+        m_shader.setParameter("storm_total_radius", radius);
+        m_shader.setParameter("blink_alpha", 0.5f + std::cos(totalTime.asSeconds() * 3) * 0.25f);
+
+        //come on...
+        window.draw(m_points,&m_shader);
         window.draw(shape);
 
         world.draw(window);
