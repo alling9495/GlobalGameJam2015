@@ -121,7 +121,11 @@ int main()
             std::to_string(particles.size());
         */
        std::string curLevel;
+       char buf[100];
        switch(world.level) {
+          case -1:
+             sprintf(buf, "Segmentation fault");
+             break;
           case 0:
             curLevel = "unauthorized";
              break;
@@ -138,11 +142,12 @@ int main()
             curLevel = "su";
              break;
           case 5:
-            curLevel = "root";
+            curLevel = "/";
              break;
        }
-       char buf[100];
-       std::sprintf(buf, "Accessing '%s'...", curLevel.c_str());
+       if (world.level >= 0) {
+          std::sprintf(buf, "Accessing '%s'...", curLevel.c_str());
+       }
        level.setString(buf);
 
        // std::cout << location << std::endl;

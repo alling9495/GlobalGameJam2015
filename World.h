@@ -17,7 +17,7 @@ public:
 	void loseGame();
 	void startGame();
 	GAMESTATE state;
-	int level = 0;
+	int level = -2;
 
 private:
 	float levelTime;
