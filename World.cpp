@@ -25,7 +25,7 @@ World::World(int seed):
 	seed(seed),
 	state(GAMESTATE::PLAYING)
 {
-
+	srand(seed);
 	sf::Color startColor = sf::Color(125,25,125);
 	levelTime = levelTimes[0];
 	std::pair<int,int> origin = std::pair<int,int>(0,0);
@@ -80,6 +80,7 @@ void World::update(sf::Time elapsed){
 			//Second check if game is won.
 			if(state == GAMESTATE::PLAYING){
 				getChunkWithOffset(0,0)->startDeallocationAnimation(
+			
 				VectorUtil::offset(player.getCenter(),player.forward()*-3.0f),dissolveSpeedValues[level]);
 				unloadChunks(chunk);
 				
