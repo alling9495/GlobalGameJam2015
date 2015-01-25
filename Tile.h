@@ -22,6 +22,7 @@ public:
 private:
 	int x;
 	int y;
+	int alpha = 0;
 	sf::RectangleShape renderTile;
 	bool isBeingDestoryed=false;
 	bool isBeingColored=false;

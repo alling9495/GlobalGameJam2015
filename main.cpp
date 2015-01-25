@@ -87,7 +87,7 @@ int main()
 
     while (window.isOpen()) {
         if (!world.isPlayerAlive()) {
-            //world.loseGame();
+            world.loseGame();
             //window.close();
             //std::cout << "Player died" << std::endl;
             //window.close();
@@ -169,7 +169,6 @@ int main()
         m_shader.setParameter("storm_position", playerCenter.x , playerCenter.y);
         m_shader.setParameter("storm_inner_radius", radius / 3);
         m_shader.setParameter("storm_total_radius", radius);
-        m_shader.setParameter("blink_alpha", 1.0f /**std::cos(totalTime.asSeconds() * 3) * 0.25f*/);
 
        // m_light.setParameter("time",totalTime.asSeconds());
         //m_light.setParameter("surfacePosition",playerCenter);

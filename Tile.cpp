@@ -23,6 +23,7 @@ Tile::Tile(TYPE tileType, int x, int y):
 		renderTile.setFillColor(
 			sf::Color(abs(sin(x/64.0f))*125,abs(cos(y/64.0f))*125,abs(sin(x*y))*155));
 	}
+	renderTile.setFillColor(sf::Color(renderTile.getFillColor().r,renderTile.getFillColor().b,renderTile.getFillColor().g,0));
 	destroyDelay = 0.0f;
 }
 Tile::Tile(TYPE tileType, int x, int y, sf::Color color):
@@ -33,7 +34,7 @@ isWall(tileType==TYPE::WALL){
 	renderTile.setSize(sf::Vector2f(TILE_SIZE,TILE_SIZE));
 	renderTile.setPosition(x*TILE_SIZE,y*TILE_SIZE);
 	if(tileType==TYPE::WALL){
-		renderTile.setFillColor(sf::Color(abs(sin(x*y))*95,abs(sin(x*y))*95,abs(sin(x*y))*95));
+		renderTile.setFillColor(sf::Color(abs(sin(x*y))*95,abs(sin(x*y))*95,abs(sin(x*y))*95,0));
 	}
 	else if(tileType == TYPE::GOAL){
 		renderTile.setFillColor(sf::Color(
@@ -44,8 +45,9 @@ isWall(tileType==TYPE::WALL){
 	else{
 		float intensity = (rand()%16) / 32.0f + 0.5f;
 		renderTile.setFillColor(
-			sf::Color(intensity*color.r,intensity*color.g,intensity*color.b));
+			sf::Color(intensity*color.r,intensity*color.g,intensity*color.b,0));
 	}
+	renderTile.setFillColor(sf::Color(renderTile.getFillColor().r,renderTile.getFillColor().g,renderTile.getFillColor().b,0));
 
 }
 Tile::~Tile(){
@@ -65,6 +67,7 @@ void Tile::draw(sf::RenderWindow & window, sf::Shader* shader){
 }
 
 void Tile::update(sf::Time elapsed){
+
 	if(isBeingDestoryed){
 		destroyDelay-=elapsed.asMilliseconds();
 		if(destroyDelay < 0){
@@ -80,6 +83,8 @@ void Tile::update(sf::Time elapsed){
 			updateColor(nextColor);
 		}
 	}
+	renderTile.setFillColor(sf::Color(renderTile.getFillColor().r,renderTile.getFillColor().g,renderTile.getFillColor().b,min(255,alpha)));
+	alpha +=20;
 }
 void Tile::startDestoryAnimation(float delay){
 	isBeingDestoryed=true;
@@ -98,7 +103,7 @@ void Tile::updateColor(sf::Color newColor){
 			else{
 				float intensity = (rand()%16) / 32.0f + 0.5f;
 				renderTile.setFillColor(
-					sf::Color(intensity*newColor.r,intensity*newColor.g,intensity*newColor.b));
+					sf::Color(intensity*newColor.r,intensity*newColor.g,intensity*newColor.b,renderTile.getFillColor().a));
 			}
 		}
 	}

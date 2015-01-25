@@ -7,13 +7,13 @@
 using namespace std;
 
 float levelTimes[] = {35.0,40.0,50.0,60.0,50.0,50.0f};
-float speedValues[] = {0.35f, 0.45f, 0.5f, 0.5f, 0.65f, 0.75f,0.0};
-float dissolveSpeedValues[] = {1.0f,1.32f,1.4f,1.6f,1.8f,2.0f};
+float speedValues[] = {0.35f, 0.45f, 0.5f, 0.55f, 0.6f, 0.65f,0.0};
+float dissolveSpeedValues[] = {1.0f,1.32f,1.4f,1.6f,1.7f,1.8f};
 
 sf::Color tileColors[] = {
 	sf::Color(125,25,125),
 	sf::Color(25,125,25),
-	sf::Color(125,25,125),
+	sf::Color(125,125,25),
 	sf::Color(125,25,60),
 	sf::Color(200,25,25),
 	sf::Color(0,255,0),
@@ -45,13 +45,16 @@ World::World(int seed):
 }
 
 void World::startGame() {
+
+	clearChunks();
+
 	state = GAMESTATE::PLAYING;
 	srand(seed);
 	sf::Color startColor = sf::Color(125,25,125);
 	levelTime = levelTimes[0];
 	// std::pair<int,int> origin = std::pair<int,int>(0,0);
 	std::pair<int,int> origin = getPlayerChunk();
-	generateChunk(std::pair<int,int>(0,0),TYPE::FLOOR, startColor);
+	generateChunk(origin,TYPE::FLOOR, startColor);
 	generateChunk(origin,1,0,TYPE::WALL,tileColors[0]);
 	generateChunk(origin,1,1,TYPE::WALL,tileColors[0]);
 	generateChunk(origin,0,1,TYPE::WALL,tileColors[0]);
@@ -60,8 +63,8 @@ void World::startGame() {
 	generateChunk(origin,-1,-1,TYPE::WALL,tileColors[0]);
 	generateChunk(origin,0,-1,TYPE::FLOOR,startColor);
 	generateChunk(origin,1,-1,TYPE::WALL,tileColors[0]); 	
-
-	player.move(sf::Vector2f(TILE_SIZE*CHUNK_SIZE / 2, TILE_SIZE*CHUNK_SIZE / 2));
+	lastPlayerChunk = getPlayerChunk();
+	//player.move(sf::Vector2f(TILE_SIZE*CHUNK_SIZE / 2, TILE_SIZE*CHUNK_SIZE / 2));
 	
 }
 
@@ -102,7 +105,6 @@ void World::update(sf::Time elapsed){
 			//Second check if game is won.
 			if(state == GAMESTATE::PLAYING){
 				getChunkWithOffset(0,0)->startDeallocationAnimation(
-			
 				VectorUtil::offset(player.getCenter(),player.forward()*-3.0f),dissolveSpeedValues[level]);
 				unloadChunks(chunk);
 				
@@ -177,7 +179,7 @@ std::pair<int,int> World::getPlayerChunk(){
 
 void World::freeChunk(std::pair<int,int> key){
 	if(chunks[key] != NULL){
-		free(chunks[key]);
+		delete chunks[key];
 		chunks.erase(key);
 	}
 }
@@ -361,3 +363,15 @@ void World::loseGame()
 	forceColorTiles(sf::Color(0,0,0));
 }
 
+void World::clearChunks(){
+
+	if(loadedChunks.size() > 0){
+	std::vector<WorldChunk *>::iterator it = loadedChunks.begin();
+	
+		while(it != loadedChunks.end()){
+			freeChunk(std::pair<int,int>((*it)->x,(*it)->y));
+			it=loadedChunks.erase(it);		
+		}
+	}	
+	
+}
