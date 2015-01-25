@@ -50,6 +50,7 @@ void World::startGame() {
 	clearChunks();
 
 	state = GAMESTATE::PLAYING;
+	seed = time(0);
 	srand(seed);
 	sf::Color startColor = sf::Color(125,25,125);
 	levelTime = levelTimes[0];

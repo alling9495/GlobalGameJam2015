@@ -95,13 +95,17 @@ void Player::doAction(sf::Keyboard::Key keyStroke) {
 			break;
 		case SuperBoost:
 			dashing=true;
-			move(forward() * 1.5f);
+			move(forward() * 1.0f);
 			break;
 		case StrafeLeft:
-			move(left() * 0.3f);
+			//move(left() * 0.3f);
+			dashing = true;
+			turn(-12);
 			break;
 		case StrafeRight:
-			move(left() * -0.3f);
+			//move(left() * -0.3f);
+			dashing = true;
+			turn(12);
 			break;
 		default:
 			break;

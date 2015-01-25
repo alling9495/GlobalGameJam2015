@@ -266,7 +266,7 @@ void handleInput() {
     if(world.state != GAMESTATE::WON){
         sf::Keyboard::Key keySet[] = {KEY_S(W), KEY_S(S), KEY_S(A), KEY_S(D), KEY_S(I), KEY_S(K), KEY_S(L), KEY_S(J)};
 
-        for (int i = 0; i < sizeof(keySet); i++) {
+        for (int i = 0; i < (sizeof(keySet) / sizeof(keySet[0])); i++) {
             if (sf::Keyboard::isKeyPressed(keySet[i])) {
                 world.getPlayer().doAction(keySet[i]);
             }
