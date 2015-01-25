@@ -18,9 +18,7 @@ void update(sf::Time elapsed);
 void startGraphicsLoops();
 void pollInput();
 
-std::deque<Bullet *> bullets;
 std::deque<Particle *> particles;
-sf::CircleShape bulletImage(10.0f);
 int frames = 0;
 
 World world = World(time(0));
@@ -34,8 +32,6 @@ int main()
 
     sf::RenderWindow window(sf::VideoMode(800, 800), "Main Window");
     window.setFramerateLimit(60);
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
 
     sf::Clock clock, totalClock;
     Camera camera (world.getPlayer().getCenter());
@@ -112,7 +108,7 @@ int main()
 
         camera.setCenter(VectorUtil::offset(world.getPlayer().getCenter(), world.getPlayer().forward()*12.0f));
         std::string location = "(" + std::to_string((int)(world.getPlayer().getCenter().x)) + ", " 
-            + std::to_string((int)(world.getPlayer().getCenter().y)) + ")\n" + "Number of Bullets" + 
+            + std::to_string((int)(world.getPlayer().getCenter().y)) + ")\n" + "Number of Particles" + 
             std::to_string(particles.size());
         
         coordinates.setString(location);
