@@ -35,7 +35,6 @@ Player::~Player(){
 
 void Player::move(const sf::Vector2<float>& dir){
 	pos += dir;
-
 	sprite.setPosition(pos.x, pos.y);
 }
 void Player::draw(sf::RenderWindow & window){
@@ -51,6 +50,7 @@ const sf::Vector2<float> & Player::getCenter(){
 }
 
 sf::Vector2f Player::forward(){
+	moving = false;	
 	sprite.setRotation(angle+90);
 	return sf::Vector2f
 		((float)cos(angle*1.0/RAD2DEGf) * RAD2DEGf,(float)sin(angle*1.0/RAD2DEGf) * RAD2DEGf);
@@ -61,6 +61,7 @@ void Player::setSpeedMultiplier(float multiplier){
 }
 void Player::doAction(sf::Keyboard::Key keyStroke) {
 	switch(map[keyStroke]) {
+		
 		case TurnCounter:
 			// turn counter-clockwise
             turn(-7);
@@ -68,6 +69,7 @@ void Player::doAction(sf::Keyboard::Key keyStroke) {
 		case Forward:
 			// move forward
             move(forward() * speedMult);
+            moving = true;
 			break;
 		case Backward:
 			// move backwards
@@ -131,4 +133,8 @@ sf::Vector2f Player::left(){
 
 float Player::getAngle() {
 	return angle;
+}
+
+bool Player::isMoving(){
+	return moving;
 }

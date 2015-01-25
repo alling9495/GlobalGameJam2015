@@ -54,6 +54,8 @@ void World::update(sf::Time elapsed){
 	if(chunk != lastPlayerChunk){
 		std::cout << "Player entered " << chunk.first << "," << chunk.second << endl;
 		std::cout << "Chunks loaded: " << chunks.size() << endl;
+		getChunkWithOffset(0,0)->startDeallocationAnimation(
+			VectorUtil::offset(player.getCenter(),player.forward()*-3.0f),dissolveSpeedValues[level]);
 		unloadChunks(chunk);
 	
 		lastPlayerChunk = chunk;
@@ -182,16 +184,16 @@ void World::generateChunks(){
 	int x, y;
 	//Initial scan, guarentee at least 2 walls are open. (enterance and one exit)
 	int openCount = 0;
-	if(hasChunkWithOffset(-1,0) && !getChunkWithOffset(-1,0)->isWall){
+	if(hasChunkWithOffset(-1,0) && getChunkWithOffset(-1,0)->isSafe()){
 		openCount++;
 	}
-	if(hasChunkWithOffset(1,0)&&!getChunkWithOffset(1,0)->isWall){
+	if(hasChunkWithOffset(1,0)&&getChunkWithOffset(1,0)->isSafe()){
 		openCount++;
 	}
-	if(hasChunkWithOffset(0,-1)&&!getChunkWithOffset(0,-1)->isWall){
+	if(hasChunkWithOffset(0,-1)&&getChunkWithOffset(0,-1)->isSafe()){
 		openCount++;
 	}
-	if(hasChunkWithOffset(0,1)&&!getChunkWithOffset(0,1)->isWall){
+	if(hasChunkWithOffset(0,1)&&getChunkWithOffset(0,1)->isSafe()){
 		openCount++;
 	}
 	cout << "OPEN COUNT: " <<openCount << endl;

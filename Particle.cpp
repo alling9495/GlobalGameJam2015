@@ -3,12 +3,20 @@
 Particle::Particle() { 
     shape = sf::RectangleShape (sf::Vector2f(25.f, 25.f));
     lifeTime = sf::milliseconds(250);
+    isAlive=false;
 };
 
 Particle::Particle(float x, float y, float angle): Particle() {
    previous = sf::Vector2f(x, y);
    shape.setRotation(angle);
 };
+
+void Particle::init(float x, float y, float angle){
+   timeAlive = sf::Clock();
+   previous = sf::Vector2f(x, y);
+   shape.setRotation(angle);
+   isAlive=true;
+}
 
 Particle::~Particle() {};
 
@@ -27,6 +35,7 @@ bool Particle::move(const sf::Vector2<float> & center) {
     sf::Vector2f updatedCenter (previous.x - deltaX, previous.y - deltaY);
     shape.setPosition(updatedCenter);
     previous = updatedCenter;
+    isAlive = stillAlive();
     return stillAlive();
 };
 

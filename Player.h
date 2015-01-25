@@ -36,6 +36,7 @@ public:
 	void swapOrDoAction(sf::Keyboard::Key keyStroke);
 	sf::Vector2<float> left();
 	void setSpeedMultiplier(float mul);
+	bool isMoving();
 private:
 	float speedMult = 0.35f;
 	sf::CircleShape triangle;
@@ -43,6 +44,7 @@ private:
 	sf::Sprite sprite;
 	sf::Vector2<float> pos;
 	float angle;
+	bool moving = false;
 	std::map<sf::Keyboard::Key, Action> map;
 };
 #endif

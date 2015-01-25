@@ -23,8 +23,12 @@ sf::CircleShape bulletImage(10.0f);
 
 
 World world = World(0);
+
 int main()
 {
+    for(int i = 0; i < 250; i++){
+        particles.push_back(new Particle()); //Static particle array
+    }
     float particleCenterX = 200, particleCenterY = 200;
 
     sf::RenderWindow window(sf::VideoMode(800, 600), "Main Window");
@@ -91,8 +95,13 @@ int main()
         sf::Time elapsed = clock.restart(), totalTime = totalClock.getElapsedTime();
         world.update(elapsed);
         update(elapsed);
-        particles.push_front(new Particle(world.getPlayer().getCenter().x, world.getPlayer().getCenter().y, world.getPlayer().getAngle()));
-
+        
+        if(!particles[particles.size()-1]->isAlive && world.getPlayer().isMoving())
+        {
+            particles.push_front(particles.back());
+            particles.pop_back();
+            particles[0]->init(world.getPlayer().getCenter().x, world.getPlayer().getCenter().y, world.getPlayer().getAngle());
+        }
         
 
         camera.setCenter(VectorUtil::offset(world.getPlayer().getCenter(), world.getPlayer().forward()*4.0f));
@@ -134,10 +143,10 @@ int main()
         world.draw(window, &m_shader);
 
         //BULLETZ
-         
+        /*
         for(int i = 0; i < bullets.size(); i++)
         {
-            if(bullets[i]->move())
+            if(bullets[i]->move(player))
             {
                 std::cout << "rendering" << std::endl;
                 bullets[i]->render(window);
@@ -146,12 +155,13 @@ int main()
             else
             {
                 std::cout << "erasing" << std::endl;
-                delete bullets[i];
-                 bullets.erase(bullets.begin() + i);
-                 std::cout << "DONE!" << std::endl;
+                bullet toBack = bullets[i];
+                bullets.erase(bullets.begin() + i);
+                bullets.push_back()
+                std::cout << "DONE!" << std::endl;
             }
         }
-        
+        */
         // Intro command prompt spawn point
         sf::Text cmdPrompt;
         cmdPrompt.setFont(cmdFont);
@@ -164,16 +174,13 @@ int main()
         {
             if(particles[i]->move(world.getPlayer().getCenter()))
             {
-                std::cout << "Rendering Particles" << std::endl;
                 particles[i]->draw(window);
-                std::cout << "DONE!" << std::endl;
             }
             else
             {
-                std::cout << "erasing" << std::endl;
-                delete particles[i];
-                 particles.erase(particles.begin() + i);
-                 std::cout << "DONE!" << std::endl;
+                Particle* p = particles[i];
+                particles.erase(particles.begin() + i);
+                particles.push_back(p);
             }
         }
           

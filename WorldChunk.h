@@ -13,7 +13,7 @@ public:
 	void startDeallocationAnimation();
 	void startDeallocationAnimation(sf::Vector2f startingPosition, float speed);
 	void colorTiles(sf::Vector2f startingPosition, float speed,sf::Color color);
-
+	bool isSafe();
 	void update(sf::Time elapsed);
 	void draw(sf::RenderWindow & window, sf::Shader* shader = NULL);
 	int x;

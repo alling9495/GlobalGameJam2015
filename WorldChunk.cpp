@@ -87,3 +87,7 @@ void WorldChunk::colorTiles(sf::Vector2f startingPosition, float speed,sf::Color
 Tile & WorldChunk::getTile(int i, int j) {
 	return tiles[i][j];
 }
+
+bool WorldChunk::isSafe(){
+	return !(isWall||isBeingDestroyed);
+}
