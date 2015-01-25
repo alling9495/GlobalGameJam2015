@@ -16,7 +16,7 @@ sf::Color tileColors[] = {
 	sf::Color(125,25,125),
 	sf::Color(125,25,60),
 	sf::Color(200,25,25),
-	sf::Color(255,255,255)
+	sf::Color(0,255,0)
 };
 
 
@@ -25,16 +25,16 @@ World::World(int seed):
 {
 	levelTime = levelTimes[0];
 	std::pair<int,int> origin = std::pair<int,int>(0,0);
-	generateChunk(std::pair<int,int>(0,0),false);
-	generateChunk(origin,1,0,true);
-	generateChunk(origin,1,1,true);
-	generateChunk(origin,0,1,true);
-	generateChunk(origin,-1,1,true);
-	generateChunk(origin,-1,0,true);
-	generateChunk(origin,-1,-1,true);
-	generateChunk(origin,0,-1,false);
-	generateChunk(origin,1,-1,true);
-   colorTiles(tileColors[0]);
+	generateChunk(std::pair<int,int>(0,0),false, tileColors[0]);
+	generateChunk(origin,1,0,true,tileColors[0]);
+	generateChunk(origin,1,1,true,tileColors[0]);
+	generateChunk(origin,0,1,true,tileColors[0]);
+	generateChunk(origin,-1,1,true,tileColors[0]);
+	generateChunk(origin,-1,0,true,tileColors[0]);
+	generateChunk(origin,-1,-1,true,tileColors[0]);
+	generateChunk(origin,0,-1,false,tileColors[0]);
+	generateChunk(origin,1,-1,true,tileColors[0]);
+   
 
 	player.move(sf::Vector2f(TILE_SIZE*CHUNK_SIZE / 2, TILE_SIZE*CHUNK_SIZE / 2));
 	player.turn(-90);
@@ -68,7 +68,9 @@ void World::update(sf::Time elapsed){
 	for(std::vector<WorldChunk *>::iterator it = loadedChunks.begin(); it != loadedChunks.end(); it++){
 		(*it)->update(elapsed);
 	}
-
+		
+	
+	
 
 }
 World::~World(){
@@ -79,12 +81,11 @@ void World::draw(sf::RenderWindow & window){
 	bool left = isPlayerNearLeft();
 	bool bottom = isPlayerNearBottom();
 	bool right = isPlayerNearRight();
-	std::vector<WorldChunk *>::iterator it = loadedChunks.begin();
-	while(it != loadedChunks.end()){
-
+	for(std::vector<WorldChunk *>::iterator it = loadedChunks.begin(); it != loadedChunks.end(); it++){
 		(*it)->draw(window);
-		it++;
 	}
+
+	
 	
 	
 	player.draw(window);
@@ -126,18 +127,18 @@ void World::freeChunk(std::pair<int,int> key){
 	}
 }
 
-bool World::generateChunk(std::pair<int,int> pos, bool wall){
+bool World::generateChunk(std::pair<int,int> pos, bool wall, sf::Color &c){
 	if(!chunks.count(pos) != 0){
 
-		chunks[pos] = new WorldChunk(wall,pos.first,pos.second);
+		chunks[pos] = new WorldChunk(wall,pos.first,pos.second,c);
 		loadedChunks.push_back(chunks[pos]);
 		return true;
 	}
 	return false;
 }
 
-bool World::generateChunk(std::pair<int,int> root, int x, int y, bool wall){
-	return generateChunk(std::pair<int,int>(root.first + x, root.second + y),wall);
+bool World::generateChunk(std::pair<int,int> root, int x, int y, bool wall, sf::Color & c){
+	return generateChunk(std::pair<int,int>(root.first + x, root.second + y),wall,c);
 }
 
 WorldChunk * World::getChunkWithOffset(int x, int y){
@@ -178,7 +179,7 @@ void World::generateChunks(){
 			y = round(rand()%3 -1);
 		}
 
-	}while(!generateChunk(lastPlayerChunk,x,y,false));
+	}while(!generateChunk(lastPlayerChunk,x,y,false,tileColors[level]));
 
 
 
@@ -186,7 +187,7 @@ void World::generateChunks(){
 	for(x = -1; x < 2; x++){
 		for(y = -1; y < 2; y++){
 			if(rand()%4 == 0){
-				if(generateChunk(lastPlayerChunk,x,y,false)){
+				if(generateChunk(lastPlayerChunk,x,y,false,tileColors[level])){
 					if(rand()%4 == 0){
 						getChunkWithOffset(x,y)->startDeallocationAnimation();
 					}
@@ -194,7 +195,7 @@ void World::generateChunks(){
 			}
 			else{
 		
-				if(generateChunk(lastPlayerChunk,x,y,true)){
+				if(generateChunk(lastPlayerChunk,x,y,true,tileColors[level])){
 					if(rand()%4 == 0){
 						getChunkWithOffset(x,y)->startDeallocationAnimation();
 					}
@@ -206,9 +207,12 @@ void World::generateChunks(){
 
 void World::colorTiles(sf::Color color){
 	for(std::vector<WorldChunk *>::iterator it = loadedChunks.begin(); it != loadedChunks.end(); it++){
-		(*it)->colorTiles(player.getCenter(),4,color);
+		(*it)->colorTiles(player.getCenter(),8,color);
 	}
+
+	
 }
+
 bool World::isPlayerAlive() {
 	WorldChunk chunk = * chunks[getPlayerChunk()];
 	const sf::Vector2f pos = player.getCenter();

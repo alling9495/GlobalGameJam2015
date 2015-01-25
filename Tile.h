@@ -24,6 +24,6 @@ private:
 	float destroyDelay;
 	float colorDelay;
 	sf::Color nextColor;
-	bool isWall;
+	bool isWall = false;
 };
 #endif

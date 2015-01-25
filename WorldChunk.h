@@ -23,7 +23,5 @@ private:
 	Tile tiles[CHUNK_SIZE][CHUNK_SIZE];
 	bool isBeingDestroyed = false;
 
-
-
 };
 #endif

@@ -48,7 +48,7 @@ const sf::Vector2<float> & Player::getCenter(){
 sf::Vector2f Player::forward(){
 	triangle.setRotation(angle+90);	
 	return sf::Vector2f
-		((float)cos(angle*1/RAD2DEGf) * RAD2DEGf,(float)sin(angle*1/RAD2DEGf) * RAD2DEGf);
+		((float)cos(angle*1.0/RAD2DEGf) * RAD2DEGf,(float)sin(angle*1.0/RAD2DEGf) * RAD2DEGf);
 }
 
 void Player::setSpeedMultiplier(float multiplier){

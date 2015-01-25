@@ -41,13 +41,13 @@ void WorldChunk::draw(sf::RenderWindow & window){
 	}
 }
 void WorldChunk::update(sf::Time elapsed){
-	if(isBeingDestroyed){
-		for(int i = 0; i < CHUNK_SIZE; i++){
-			for(int j = 0; j < CHUNK_SIZE; j++){
-				tiles[i][j].update(elapsed);
-			}
-		}	
-	}
+
+	for(int i = 0; i < CHUNK_SIZE; i++){
+		for(int j = 0; j < CHUNK_SIZE; j++){
+			tiles[i][j].update(elapsed);
+		}
+	}	
+
 }
 
 void WorldChunk::startDeallocationAnimation(){
@@ -73,13 +73,10 @@ void WorldChunk::startDeallocationAnimation(sf::Vector2f startingPosition, float
 
 
 void WorldChunk::colorTiles(sf::Vector2f startingPosition, float speed,sf::Color color){
-	if(!isBeingDestroyed){
-	isBeingDestroyed=true;
-		for(int i = 0; i < CHUNK_SIZE; i++){
-			for(int j = 0; j < CHUNK_SIZE; j++){
-				float dist = getDist(startingPosition,tiles[i][j].getPosition());
-				tiles[i][j].updateColorWithDelay((dist + 100) * (1.0f/speed),color);
-			}
+	for(int i = 0; i < CHUNK_SIZE; i++){
+		for(int j = 0; j < CHUNK_SIZE; j++){
+			float dist = getDist(startingPosition,tiles[i][j].getPosition());
+			tiles[i][j].updateColorWithDelay((dist + 100) * (1.0f/speed),color);
 		}
 	}
 }
