@@ -15,7 +15,7 @@ public:
 	void colorTiles(sf::Vector2f startingPosition, float speed,sf::Color color);
 
 	void update(sf::Time elapsed);
-	void draw(sf::RenderWindow & window);
+	void draw(sf::RenderWindow & window, sf::Shader* shader = NULL);
 	int x;
 	int y;
 	Tile & getTile(int i, int j);

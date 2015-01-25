@@ -10,7 +10,7 @@ public:
 	~Tile();
 	const sf::Vector2f & getPosition();
 	void update(sf::Time elapsed);
-	void draw(sf::RenderWindow & window);
+	void draw(sf::RenderWindow & window, sf::Shader* shader = NULL);
 	void startDestoryAnimation(float delay);
 	void updateColor(sf::Color color);
 	void updateColorWithDelay(float delay, sf::Color newCol);	
