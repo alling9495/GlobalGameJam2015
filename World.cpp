@@ -57,11 +57,11 @@ void World::startGame() {
 	// std::pair<int,int> origin = std::pair<int,int>(0,0);
 	std::pair<int,int> origin = getPlayerChunk();
 	generateChunk(origin,TYPE::FLOOR, startColor);
-	generateChunk(origin,1,0,TYPE::WALL,tileColors[0]);
+	generateChunk(origin,1,0,TYPE::FLOOR,startColor);
 	generateChunk(origin,1,1,TYPE::WALL,tileColors[0]);
-	generateChunk(origin,0,1,TYPE::WALL,tileColors[0]);
+	generateChunk(origin,0,1,TYPE::FLOOR,startColor);
 	generateChunk(origin,-1,1,TYPE::WALL,tileColors[0]);
-	generateChunk(origin,-1,0,TYPE::WALL,tileColors[0]);
+	generateChunk(origin,-1,0,TYPE::FLOOR,startColor);
 	generateChunk(origin,-1,-1,TYPE::WALL,tileColors[0]);
 	generateChunk(origin,0,-1,TYPE::FLOOR,startColor);
 	generateChunk(origin,1,-1,TYPE::WALL,tileColors[0]); 	
