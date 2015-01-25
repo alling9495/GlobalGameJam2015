@@ -3,7 +3,9 @@
 #include "WorldChunk.h"
 #include "Camera.h"
 #include "World.h"
+#include "LinearBullet.h"
 #include <iostream>
+#include <deque>
 
 void closeWindowEvent(sf::RenderWindow & window, sf::Event event);
 void startGameLoop();
@@ -11,6 +13,8 @@ void handleInput();
 void update(sf::Time elapsed);
 void startGraphicsLoops();
 void pollInput();
+
+std::deque<Bullet *> bullets;
 
 World world = World(0);
 int main()
@@ -20,12 +24,16 @@ int main()
     window.setFramerateLimit(60);
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
+
+    sf::CircleShape bulletImage(10.0f);
+    bulletImage.setFillColor(sf::Color::Green);
+
     sf::Clock clock;
     Camera camera (world.getPlayer().getCenter());
 
     //HUD stuff
     sf::Font font;
-    if(!font.loadFromFile("font/FreeMono.ttf")) {
+    if(!font.loadFromFile("font/FreeSansBold.ttf")) {
         std::cout << "Fail Whale!" << std::endl;
         //exit(1);
     }
@@ -40,12 +48,14 @@ int main()
         while (window.pollEvent(event)) {
             closeWindowEvent(window, event);
         }
+
         sf::Time elapsed = clock.restart();
         world.update(elapsed);
         update(elapsed);
         camera.setCenter(world.getPlayer().getCenter());
         std::string location = "(" + std::to_string((int)(world.getPlayer().getCenter().x)) + ", " 
-            + std::to_string((int)(world.getPlayer().getCenter().y)) + ")";
+            + std::to_string((int)(world.getPlayer().getCenter().y)) + ")\n" + "Number of Bullets" + 
+            std::to_string(bullets.size());
         
         coordinates.setString(location);
 
@@ -63,17 +73,38 @@ int main()
 
         window.setView(camera.getView());
         window.clear();
-        //wc->draw(window);
+
         window.draw(shape);
 
         world.draw(window);
+
+        //BULLETZ
+        //
+         bullets.push_front(new LinearBullet(bulletImage,1000,world.getPlayer().getCenter().x,world.getPlayer().getCenter().y,
+            world.getPlayer().forward().x * 0.5,world.getPlayer().forward().y * 0.5));
+         
+        for(int i = 0; i < bullets.size(); i++)
+        {
+            if(bullets[i]->move())
+            {
+                bullets[i]->render(window);
+            }
+            else
+            {
+                 delete bullets[i];
+                 bullets.erase(bullets.begin() + i);
+            }
+        }
+        
+
+        //HUD VIEW
         window.setView(window.getDefaultView());
         window.draw(coordinates);
         window.display();
     }
-
     return 0;
 }
+
 
 void closeWindowEvent(sf::RenderWindow & window, sf::Event event) {
     if (event.type == sf::Event::Closed) {
