@@ -1,7 +1,10 @@
 #include "StartPoint.h"
 #include <math.h>
 using namespace std;
-StartPoint::StartPoint(sf::Vector2f chunk){
+StartPoint::StartPoint(sf::Vector2f chunk):
+	x((int)chunk.x),
+	y((int)chunk.y)
+{
 	position=sf::Vector2f(
 		chunk.x*CHUNK_SIZE*TILE_SIZE + CHUNK_SIZE*TILE_SIZE*0.5f ,
 		chunk.y*CHUNK_SIZE*TILE_SIZE + CHUNK_SIZE*TILE_SIZE*0.5f);

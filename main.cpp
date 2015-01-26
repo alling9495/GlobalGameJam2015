@@ -11,6 +11,7 @@
 #include <deque>
 #include <ctime>
 #include "StartPoint.h"
+#include "ArrowIndicator.h"
 #define KEY_S(keyStroke) sf::Keyboard::Key::keyStroke
 
 void closeWindowEvent(sf::RenderWindow & window, sf::Event event);
@@ -24,7 +25,7 @@ int frames = 0;
 World world = World(time(0));
 bool playDown = false, immDown = false;
 StartPoint* startPoint;
-
+ArrowIndicator * indicator;
 sf::Music music;
 int main()
 {
@@ -70,7 +71,9 @@ int main()
     sf::Text level;
     level.setFont(font);
     level.setCharacterSize(30);
-    startPoint = new StartPoint(sf::Vector2f(-1,-1));
+    startPoint = new StartPoint(sf::Vector2f(0,0));
+    indicator = new ArrowIndicator();
+
     camera.resetZoom();
         // Create the points
         // 
@@ -204,7 +207,11 @@ int main()
         window.draw(m_points,&m_shader);
         world.draw(window,&m_shader);
         startPoint->draw(window);
-
+        if(startPoint->isActive() && (
+         (abs(startPoint->x - world.getPlayerChunk().first) > 1) || (abs(startPoint->y - world.getPlayerChunk().second) > 1))) {
+            indicator->point(world.getPlayer().getCenter(), startPoint->position);
+            indicator->draw(window);
+        }
         //BULLETZ
         /*
         for(int i = 0; i < bullets.size(); i++)
@@ -232,7 +239,7 @@ int main()
         cmdPrompt.setPosition(-480, 420);
 
         cmdPrompt.setString("user@GGJ:~$ ./attack_vector\
-            \n@controls\n\tWASD / Arrows: move\n\tM: mute\n\tR: reset\n\tSpace: boost\
+            \n@controls\n\tWASD / Arrows: move\n\tM: mute\n\tR: reset\n\tSpace / I: boost\
             \n@author\n\tChris Williams\n\tAlex Ling,\n\tLejon McGowan\n\tKyle Piddington\
             \n@story\
             \n\tYou're a loose pointer\
@@ -289,10 +296,14 @@ void startGameLoop() {
 
 void handleInput() {
     if(world.state != GAMESTATE::WON){
-        sf::Keyboard::Key keySet[] = {KEY_S(W), KEY_S(A), KEY_S(D), KEY_S(Space), KEY_S(Left), KEY_S(Right), KEY_S(Up)};
+        sf::Keyboard::Key keySet[] = {KEY_S(W), KEY_S(Up), KEY_S(A), KEY_S(Left), KEY_S(D), KEY_S(Right), KEY_S(Space), KEY_S(I)};
 
         for (int i = 0; i < (sizeof(keySet) / sizeof(keySet[0])); i++) {
             if (sf::Keyboard::isKeyPressed(keySet[i])) {
+                // No double up/right/left/boost
+                if (i%2 == 1 && sf::Keyboard::isKeyPressed(keySet[i-1])) {
+                    continue;
+                }
                 world.getPlayer().doAction(keySet[i]);
             }
         };
@@ -357,14 +368,19 @@ void handleInput() {
 
 };
 
+
+
 void update(sf::Time elapsed) {
     handleInput();
     startPoint->update(elapsed);
     if(startPoint->isActive() && startPoint->pointIn(world.getPlayer().getCenter())){
         world.startGame();
         startPoint->fadeOut();
+
     }
+
 };
+
 
 
 
