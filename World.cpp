@@ -42,8 +42,12 @@ World::World(int seed):
 
 	player.move(sf::Vector2f(TILE_SIZE*CHUNK_SIZE / 2, TILE_SIZE*CHUNK_SIZE / 2));
 	//player.turn(-90);*/
+	immortal = false;
 }
-
+void World::toggleImmortality()
+{
+	immortal = !immortal;
+}
 void World::startGame() {
 
 	level = 0;
@@ -358,11 +362,14 @@ void World::endGame(std::pair<int,int> endingTile){
 
 void World::loseGame()
 {
-	player.setColor(sf::Color(255,0,0));
-	state= GAMESTATE::LOST;
-	player.setSpeedMultiplier(speedValues[0]);
-	level = -1;
-	forceColorTiles(sf::Color(0,0,0));
+	if(!immortal)
+	{
+		player.setColor(sf::Color(255,0,0));
+		state= GAMESTATE::LOST;
+		player.setSpeedMultiplier(speedValues[0]);
+		level = -1;
+		forceColorTiles(sf::Color(0,0,0));
+	}
 }
 
 void World::clearChunks(){

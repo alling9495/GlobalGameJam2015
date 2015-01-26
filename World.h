@@ -17,9 +17,11 @@ public:
 	void startGame();
 	GAMESTATE state;
 	std::pair<int,int> getPlayerChunk();
+	void toggleImmortality();
 	int level = -2;
 	
 private:
+	bool immortal;
 	float levelTime;
 	int seed;
 	Player player;
@@ -47,6 +49,7 @@ private:
 	void forceGenerateChunk(std::pair<int,int> pos, TYPE tileType, sf::Color c);
 	void forceGenerateChunk(std::pair<int,int> root, int offsetx, int offsetY, TYPE wall, sf::Color color);
 	void clearChunks();
+
 	void endGame(std::pair<int,int> endingTile);
 };
 #endif

@@ -22,7 +22,7 @@ std::deque<Particle *> particles;
 int frames = 0;
 
 World world = World(time(0));
-bool playDown = false;
+bool playDown = false, immDown = false;
 StartPoint* startPoint;
 
 sf::Music music;
@@ -305,6 +305,16 @@ void handleInput() {
         else if(!sf::Keyboard::isKeyPressed(KEY_S(M)))
         {
             playDown = false;
+        }
+
+        if(sf::Keyboard::isKeyPressed(KEY_S(G)) && !immDown)
+        {
+            world.toggleImmortality();
+            immDown = true;
+        }
+        else if(!sf::Keyboard::isKeyPressed(KEY_S(G)))
+        {
+            immDown = false;
         }
     }
 /*    if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
