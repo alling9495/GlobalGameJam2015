@@ -22,7 +22,6 @@ public:
 
 	void render(sf::RenderWindow& window, sf::Shader* shader = NULL)
 	{
-		std::cout << usingSprite<< std::endl;
 		if(usingSprite)
 			window.draw(sprite,shader);
 		else

@@ -7,11 +7,13 @@
 #include "LinearBullet.h"
 #include "VectorUtil.h"
 #include "Particle.h"
+#include "StartPoint.h"
+#include "ArrowIndicator.h"
+#include "FlavorText.h"
+
 #include <iostream>
 #include <deque>
 #include <ctime>
-#include "StartPoint.h"
-#include "ArrowIndicator.h"
 #define KEY_S(keyStroke) sf::Keyboard::Key::keyStroke
 
 void closeWindowEvent(sf::RenderWindow & window, sf::Event event);
@@ -27,6 +29,7 @@ bool playDown = false, immDown = false;
 StartPoint* startPoint;
 ArrowIndicator * indicator;
 sf::Music music;
+FlavorText terminalLines = FlavorText("flavortext.txt");
 int main()
 {
     for(int i = 0; i < 250; i++){
@@ -70,28 +73,25 @@ int main()
 
     sf::Text level;
     level.setFont(font);
-    level.setCharacterSize(30);
+    level.setCharacterSize(15);
     startPoint = new StartPoint(sf::Vector2f(0,0));
     indicator = new ArrowIndicator();
+    level.setPosition(0,20);
+
+    sf::Text terminalMessage;
+    terminalMessage.setFont(font);
+    terminalMessage.setCharacterSize(20);
+    
+
+    terminalMessage.setString(terminalLines.randomLine());
+
 
     camera.resetZoom();
-        // Create the points
-        // 
+      
     /*SHADER MAGIC! Setup...*/
     sf::VertexArray m_points;
     m_points.setPrimitiveType(sf::Points);
-    /*
-    for (int i = 0; i < 40000; ++i)
-    {
-        float x = static_cast<float>(std::rand() % 800);
-        float y = static_cast<float>(std::rand() % 600);
-        sf::Uint8 r = std::rand() % 255;
-        sf::Uint8 g = std::rand() % 255;
-        sf::Uint8 b = std::rand() % 255;
-        m_points.append(sf::Vertex(sf::Vector2f(x, y), sf::Color(r, g, b)));
-    }
-    */
-    /*giggity*/
+    
     // Load the shader
     sf::Shader m_shader, m_light;
     m_light.loadFromFile("simpleLight.glsl",sf::Shader::Fragment);
@@ -117,31 +117,66 @@ int main()
         sf::Vector2f playerCenter = world.getPlayer().getCenter();
 
         sf::Time elapsed = clock.restart(), totalTime = totalClock.getElapsedTime();
+        bool changed = false;
+        if((int)totalTime.asSeconds() % 5 == 0)
+        {
+            if(!changed)
+            {
+                terminalMessage.setString(terminalLines.randomLine()); 
+                changed = true;
+            }
+        }
+        else
+        {
+            changed = false;
+        }
         world.update(elapsed);
         update(elapsed);
 
-        
+        sf::Sprite& sprite = world.getPlayer().getSprite();
         if(!particles.back()->isAlive && world.getPlayer().isDashing() && frames>1)
         {
             particles.push_front(particles.back());
             particles.pop_back();
             particles[0]->init(world.getPlayer().getCenter().x, world.getPlayer().getCenter().y, world.getPlayer().getAngle());
             frames = 0;
+            if(sprite.getScale().x > MIN_SCALE)
+            {
+                sprite.scale(0.9,1.0);
+                particles[0]->getSprite().scale(0.9,1.0);
+                if(sprite.getScale().x > MAX_SCALE)
+                {
+                    sprite.setScale(MAX_SCALE,1.0);
+                    particles[0]->getSprite().setScale(MAX_SCALE,1.0);
+                }
+            }
+
+
+        }
+        
+        if(!world.getPlayer().isDashing())
+        {
+            if(sprite.getScale().x  < MAX_SCALE)
+            {
+                sprite.scale(1.1,1.0);
+                particles[0]->getSprite().scale(1.1,1.0);
+                if(sprite.getScale().x < MIN_SCALE)
+                {
+                    sprite.setScale(MIN_SCALE,1.0);
+                    particles[0]->getSprite().setScale(MIN_SCALE,1.0);
+                }
+            }
         }
 
         frames++;
     
         camera.setCenter(VectorUtil::offset(world.getPlayer().getCenter(), world.getPlayer().forward()*12.0f));
-        /*
-        std::string location = "(" + std::to_string((int)(world.getPlayer().getCenter().x)) + ", " 
-            + std::to_string((int)(world.getPlayer().getCenter().y)) + ")\n" + "Number of Particles" + 
-            std::to_string(particles.size());
-        */
+       
        std::string curLevel;
        char buf[100];
        switch(world.level) {
           case -2:
-             sprintf(buf, "");
+             sprintf(buf, " ");
              break;
           case -1:
              sprintf(buf, "Segmentation fault");
@@ -169,25 +204,9 @@ int main()
           std::sprintf(buf, "Accessing '%s'...", curLevel.c_str());
        }
        level.setString(buf);
-
+       //terminalMessage.setString(terminalLines.randomLine());
        // std::cout << location << std::endl;
        // Debug controls
-       /*
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::P)){
-            world.startGame();
-        }
-
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::R)){
-            camera.zoomOut(0.05f);
-        }
-
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Y)){
-            camera.zoomIn(0.05f);
-        }
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::T)){
-            camera.resetZoom();
-        }
-        */
 
         window.setView(camera.getView());
         window.clear();
@@ -212,26 +231,7 @@ int main()
             indicator->point(world.getPlayer().getCenter(), startPoint->position);
             indicator->draw(window);
         }
-        //BULLETZ
-        /*
-        for(int i = 0; i < bullets.size(); i++)
-        {
-            if(bullets[i]->move(player))
-            {
-                std::cout << "rendering" << std::endl;
-                bullets[i]->render(window);
-                std::cout << "DONE!" << std::endl;
-            }
-            else
-            {
-                std::cout << "erasing" << std::endl;
-                bullet toBack = bullets[i];
-                bullets.erase(bullets.begin() + i);
-                bullets.push_back()
-                std::cout << "DONE!" << std::endl;
-            }
-        }
-        */
+        
         // Intro command prompt spawn point
         sf::Text cmdPrompt;
         cmdPrompt.setFont(cmdFont);
@@ -271,7 +271,8 @@ int main()
         world.getPlayer().resetMoveState();
         //HUD VIEW
         window.setView(window.getDefaultView());
-        window.draw(level);
+        //window.draw(level);
+        window.draw(terminalMessage);
         if (world.state == GAMESTATE::WON) {
             window.draw(sprite);
         }
@@ -328,43 +329,7 @@ void handleInput() {
             immDown = false;
         }
     }
-/*    if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
-        world.getPlayer().doAction(sf::Keyboard::A);
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
-        world.getPlayer().doAction(sf::Keyboard::S);
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
-        world.getPlayer().doAction(sf::Keyboard::D);
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::F)){
-        world.getPlayer().doAction(sf::Keyboard::F);
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::F)){
-        world.getPlayer().swapOrDoAction(sf::Keyboard::F);
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::J)){
-        world.getPlayer().swapOrDoAction(sf::Keyboard::J);
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::K)){
-        world.getPlayer().swapOrDoAction(sf::Keyboard::K);
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::L)){
-        world.getPlayer().keyToSwapIn = sf::Keyboard::L;
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::SemiColon)){
-        world.getPlayer().keyToSwapIn = sf::Keyboard::SemiColon;
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::G)){
-        world.getPlayer().doAction(sf::Keyboard::G);
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-    {
-        bullets.push_front(new LinearBullet(bulletImage,1000,world.getPlayer().getCenter().x,world.getPlayer().getCenter().y,
-            world.getPlayer().forward().x * 0.5,world.getPlayer().forward().y * 0.5));
-    }*/
+
 
 };
 

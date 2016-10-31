@@ -1,0 +1,48 @@
+System.out.println("Hello world!");
+
+printf("%s\n", "Hello world!");
+
+echo $HELLO_WORLD
+
+rm -rf *
+
+Accessing servers...
+
+Removing files...
+
+man attack_vector
+
+kill -9 pidof{atatck_vector}
+
+WRITE 'Hello, world!'.
+
+trace {"Hello, world!"};
+
+var txtHello:TextField = new TextField("Hello, world!");
+
+str .as "HELLO WORLD"
+
+disp('Hello, world!')
+
+NSLog(@"Hello, world!\n");
+
+sudo apt-get install attack_vector
+
+brew attack_vector
+
+Processing...
+
+ERROR: Unable to remove '/'
+
+SUCCESS: Removed 'Documents'
+
+tar nvczf /tmp/backup . --exclude .snapshot
+
+ncdu --exclude .snapshot
+
+std::cout << "Hello, world!" << std::endl;
+
+$(CCFLAGS) attack_vector $(SRC)
+
+g++ attack_vector -lsfml-graphics -lsfml-audio main.cpp
+

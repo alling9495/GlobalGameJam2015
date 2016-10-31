@@ -103,8 +103,5 @@ bool WorldChunk::isSafe(){
 	return !(isWall||isBeingDestroyed);
 }
 bool WorldChunk::isNewLevel(){
-	if(myType==TYPE::GOAL){
-		cout<<"!!!!!!!!!!!!!!!!!!!!!"<<endl;
-	}
 	return myType==TYPE::GOAL;
 }

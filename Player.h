@@ -4,6 +4,10 @@
 #include <SFML/Audio.hpp>
 #include <math.h>
 #include <map>
+
+#define MAX_SCALE 1
+#define MIN_SCALE 0.6
+
 #define RAD2DEGf (float)(180.0f/M_PI)
 // Indexes an array, do not touch
 enum Action {
@@ -42,7 +46,9 @@ public:
 	void resetMoveState();
 	void setColor(sf::Color c);
 	void toggleSound();
+	sf::Sprite& getSprite();
 private:
+	void flipEffect();
 	sf::SoundBuffer sfxBuffer;
 	bool mute;
 	sf::Sound sfx;

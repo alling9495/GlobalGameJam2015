@@ -90,10 +90,7 @@ void World::update(sf::Time elapsed){
 		std::pair<int,int> chunk = getPlayerChunk();
 		
 		if(chunk != lastPlayerChunk){
-			std::cout << "Player entered " << chunk.first << "," << chunk.second << endl;
-			std::cout << "Chunks loaded: " << chunks.size() << endl;
 			if(chunks[chunk]->isNewLevel()){
-				cout << "LEVEL " << level;
 				if(level+1 == LEVELS){
 					endGame(chunk);
 				}
@@ -102,7 +99,6 @@ void World::update(sf::Time elapsed){
 					player.setSpeedMultiplier(speedValues[level]);
 					player.setColor(sf::Color(0,0,0));
 					colorTiles(tileColors[level]);
-					cout<<"LEVEL UP"<<endl;	
 				}
 			}
 			else{
@@ -225,7 +221,6 @@ WorldChunk * World::getChunkWithOffset(int x, int y){
 }
 
 bool World::hasChunkWithOffset(int x, int y){
-	cout << "Checking " << lastPlayerChunk.first + x << "," << lastPlayerChunk.second + y <<endl;
 	return chunks.count(
 		std::pair<int,int>(lastPlayerChunk.first + x, lastPlayerChunk.second + y)) > 0;
 }
@@ -240,7 +235,6 @@ void World::unloadChunks(std::pair<int,int> next){
 	while(it != loadedChunks.end()){
 		if(abs((*it)->x - next.first) > 1 || abs((*it)->y - next.second) > 1)
 		{
-			cout << "Free : "  << (*it)->x << " ," << (*it)->y << endl;
 			freeChunk(std::pair<int,int>((*it)->x,(*it)->y));
 			it=loadedChunks.erase(it);
 			
@@ -270,7 +264,6 @@ void World::generateChunks(){
 	if(hasChunkWithOffset(0,1)&&getChunkWithOffset(0,1)->isSafe()){
 		openCount++;
 	}
-	cout << "OPEN COUNT: " <<openCount << endl;
 	if(openCount < 1){
 		bool didGen=false;
 		do{
@@ -343,7 +336,7 @@ bool World::isPlayerAlive() {
 }
 
 void World::endGame(std::pair<int,int> endingTile){
-	cout<<"GAME END"<<endl;
+
 	player.setColor(sf::Color(255,255,255,0));
 	player.setSpeedMultiplier(0);
 	state=GAMESTATE::WON;				

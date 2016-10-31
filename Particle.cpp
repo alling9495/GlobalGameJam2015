@@ -31,6 +31,11 @@ void Particle::init(float x, float y, float angle){
 
 Particle::~Particle() {};
 
+sf::Sprite& Particle::getSprite()
+{
+  return sprite;
+}
+
 bool Particle::move(const sf::Vector2<float> & center) {
     /*float deltaX = (center.x + (rand() % 201 + (-100)) * 4 - previous.x ) / 15;
     float deltaY = (center.y + (rand() % 201 + (-100)) * 4 - previous.y ) / 15;*/

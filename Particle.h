@@ -13,6 +13,7 @@ public:
     void draw(sf::RenderWindow & window);
     bool stillAlive();
     bool isAlive = false;
+    sf::Sprite& getSprite();
 private:
     sf::RectangleShape shape;
     sf::Sprite sprite;

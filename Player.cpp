@@ -113,6 +113,7 @@ void Player::doAction(sf::Keyboard::Key keyStroke) {
 			move(forward() * 1.0f);
 			if(!mute)
 				sfx.play();
+			//flipEffect();
 			break;
 		case StrafeLeft:
 			//move(left() * 0.3f);
@@ -173,4 +174,15 @@ void Player::resetMoveState(){
 }
 void Player::setColor(sf::Color c){
 	sprite.setColor(c);
+}
+
+void Player::flipEffect() {
+	while(sprite.getScale().x > MIN_SCALE)
+		sprite.scale(0.8,1.0);
+
+}
+
+sf::Sprite& Player::getSprite()
+{
+	return sprite;
 }
