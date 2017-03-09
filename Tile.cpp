@@ -48,7 +48,7 @@ isWall(tileType==TYPE::WALL){
 			sf::Color(intensity*color.r,intensity*color.g,intensity*color.b,0));
 	}
 	renderTile.setFillColor(sf::Color(renderTile.getFillColor().r,renderTile.getFillColor().g,renderTile.getFillColor().b,0));
-
+	destroyDelay = 0.0f;
 }
 Tile::~Tile(){
 	

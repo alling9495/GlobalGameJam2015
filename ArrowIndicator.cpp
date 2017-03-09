@@ -1,4 +1,5 @@
 #include "ArrowIndicator.h"
+#define _USE_MATH_DEFINES
 #include <math.h>
 #define RAD2DEG 180.0f/M_PI
 ArrowIndicator::ArrowIndicator(){

@@ -1,0 +1,4 @@
+﻿LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/OPT:ICF' specification
+     Creating library C:\Users\Template_Legacy\Documents\Game Projects\GlobalGameJam2015\Release\AttackVector.lib and object C:\Users\Template_Legacy\Documents\Game Projects\GlobalGameJam2015\Release\AttackVector.exp
+  AttackVector.vcxproj -> C:\Users\Template_Legacy\Documents\Game Projects\GlobalGameJam2015\Release\AttackVector.exe
+  AttackVector.vcxproj -> C:\Users\Template_Legacy\Documents\Game Projects\GlobalGameJam2015\Release\AttackVector.pdb (Full PDB)

@@ -4,6 +4,7 @@ using namespace std;
 
 Player::Player(){
 
+	//if (!texture.loadFromFile("player.png")) {
 	if (!texture.loadFromFile("player.png")) {
 		// error!
 		std::cout << "unable to load player sprite" << std::endl;

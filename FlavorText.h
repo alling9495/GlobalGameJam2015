@@ -6,6 +6,8 @@
 #include <random>
 #include <functional>
 #include <stdlib.h> 
+#include <istream>
+#include <string>
 
 using namespace std;
 

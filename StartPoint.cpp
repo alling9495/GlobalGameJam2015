@@ -5,9 +5,13 @@ StartPoint::StartPoint(sf::Vector2f chunk):
 	x((int)chunk.x),
 	y((int)chunk.y)
 {
+	
 	position=sf::Vector2f(
 		chunk.x*CHUNK_SIZE*TILE_SIZE + CHUNK_SIZE*TILE_SIZE*0.5f ,
-		chunk.y*CHUNK_SIZE*TILE_SIZE + CHUNK_SIZE*TILE_SIZE*0.5f);
+		chunk.y*CHUNK_SIZE*TILE_SIZE + CHUNK_SIZE*TILE_SIZE*0.5f);	
+
+	square1 = sf::RectangleShape();
+	square2 = sf::RectangleShape();
 	square1.setSize(sf::Vector2f(TILE_SIZE*CHUNK_SIZE/4,TILE_SIZE*CHUNK_SIZE/4));
 	square2.setSize(sf::Vector2f(TILE_SIZE*CHUNK_SIZE/4,TILE_SIZE*CHUNK_SIZE/4));
 	square1.setPosition(position);
@@ -24,6 +28,7 @@ StartPoint::StartPoint(sf::Vector2f chunk):
 	square2.setOutlineThickness(5);
 	fadeDir = true;
 	alpha = 0;
+	angle = 0;
 };
 StartPoint::~StartPoint(){
 

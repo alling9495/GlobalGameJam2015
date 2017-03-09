@@ -76,7 +76,7 @@ int main()
     level.setCharacterSize(15);
     startPoint = new StartPoint(sf::Vector2f(0,0));
     indicator = new ArrowIndicator();
-    level.setPosition(0,20);
+    //level.setPosition(0,20);
 
     sf::Text terminalMessage;
     terminalMessage.setFont(font);

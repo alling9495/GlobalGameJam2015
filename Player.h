@@ -2,6 +2,7 @@
 #define __PLAYER_H__
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#define _USE_MATH_DEFINES
 #include <math.h>
 #include <map>
 
